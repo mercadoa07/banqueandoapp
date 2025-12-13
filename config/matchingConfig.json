@@ -1,0 +1,132 @@
+{
+  "version": "1.0",
+  "description": "Configuración del algoritmo de matching. Edita pesos y reglas aquí.",
+  
+  "weights": {
+    "paymentBehavior": 20,
+    "feeSensitivity": 15,
+    "interests": 15,
+    "shoppingPlaces": 12,
+    "digitalPreference": 10,
+    "income": 10,
+    "creditHistory": 8,
+    "cardUsage": 5,
+    "travelFreq": 3,
+    "values": 2
+  },
+
+  "baseScore": 40,
+  "maxScore": 100,
+
+  "bonusRules": [
+    {
+      "id": "travel_bonus",
+      "name": "Bonus viajero frecuente",
+      "condition": {
+        "factor": "interests",
+        "includes": "travel"
+      },
+      "andCondition": {
+        "factor": "travelFreq",
+        "in": ["3-5", "6+"]
+      },
+      "cardCategory": "travel",
+      "bonus": 15
+    },
+    {
+      "id": "no_fee_bonus",
+      "name": "Bonus sin cuota",
+      "condition": {
+        "factor": "feeSensitivity",
+        "equals": "no_fee"
+      },
+      "cardRequirement": {
+        "field": "fees.annualFee",
+        "equals": 0
+      },
+      "bonus": 12
+    },
+    {
+      "id": "digital_native",
+      "name": "Bonus digital",
+      "condition": {
+        "factor": "digitalPreference",
+        "equals": "digital"
+      },
+      "cardRequirement": {
+        "field": "digitalExperience.fullyDigital",
+        "equals": true
+      },
+      "bonus": 10
+    },
+    {
+      "id": "financier_bonus",
+      "name": "Bonus para quien financia",
+      "condition": {
+        "factor": "paymentBehavior",
+        "in": ["finance", "minimum"]
+      },
+      "cardRequirement": {
+        "field": "rates.interestRateEA",
+        "lessThan": 25
+      },
+      "bonus": 15
+    },
+    {
+      "id": "zero_interest",
+      "name": "Bonus 0% interés",
+      "condition": {
+        "factor": "paymentBehavior",
+        "in": ["finance", "minimum"]
+      },
+      "cardRequirement": {
+        "field": "rates.interestRateEA",
+        "equals": 0
+      },
+      "bonus": 25
+    }
+  ],
+
+  "penaltyRules": [
+    {
+      "id": "high_fee_penalty",
+      "name": "Penalidad cuota alta",
+      "condition": {
+        "factor": "feeSensitivity",
+        "equals": "no_fee"
+      },
+      "cardRequirement": {
+        "field": "fees.annualFee",
+        "greaterThan": 200000
+      },
+      "penalty": -20
+    },
+    {
+      "id": "income_mismatch",
+      "name": "Penalidad ingreso insuficiente",
+      "conditionType": "income_check",
+      "penalty": -30
+    }
+  ],
+
+  "matchFactorScoring": {
+    "exactMatch": 10,
+    "partialMatch": 5,
+    "categoryMatch": 3
+  },
+
+  "savingsCalculation": {
+    "baseRewardsRate": 0.01,
+    "milesValue": 50,
+    "cashbackMultiplier": 1,
+    "annualSpendMonths": 12
+  },
+
+  "displaySettings": {
+    "showTopResults": 3,
+    "showAlternatives": 2,
+    "minScoreToShow": 30,
+    "animateScore": true,
+    "scoreAnimationDuration": 1500
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "version": "1.0",
+  "description": "Preguntas del quiz. Cada pregunta mapea a un matchFactor.",
+
+  "sections": [
+    {
+      "id": "perfil_basico",
+      "name": "Perfil Básico",
+      "icon": "TrendingUp"
+    },
+    {
+      "id": "comportamiento",
+      "name": "Comportamiento Financiero",
+      "icon": "DollarSign"
+    },
+    {
+      "id": "estilo_vida",
+      "name": "Estilo de Vida",
+      "icon": "Heart"
+    },
+    {
+      "id": "experiencia",
+      "name": "Experiencia Digital",
+      "icon": "Smartphone"
+    }
+  ],
+
+  "questions": [
+    {
+      "id": "income",
+      "section": "perfil_basico",
+      "matchFactor": "income",
+      "question": "¿Cuál es tu ingreso mensual aproximado?",
+      "subtitle": "Esto nos ayuda a mostrarte tarjetas que SÍ te aprobarán",
+      "type": "single",
+      "required": false,
+      "options": [
+        { "value": "0-2", "label": "Menos de $2 millones", "emoji": "💵" },
+        { "value": "2-4", "label": "$2M - $4M", "emoji": "💵" },
+        { "value": "4-6", "label": "$4M - $6M", "emoji": "💰" },
+        { "value": "6-10", "label": "$6M - $10M", "emoji": "💰" },
+        { "value": "10+", "label": "Más de $10M", "emoji": "💎" },
+        { "value": "skip", "label": "Prefiero no decirlo", "emoji": "🤐" }
+      ]
+    },
+    {
+      "id": "credit_history",
+      "section": "perfil_basico",
+      "matchFactor": "creditHistory",
+      "question": "¿Cómo describirías tu historial crediticio?",
+      "subtitle": "Tu historial afecta las opciones disponibles",
+      "type": "single",
+      "required": true,
+      "options": [
+        { "value": "excellent", "label": "Excelente - Siempre pago a tiempo", "emoji": "⭐" },
+        { "value": "good", "label": "Bueno - Alguna vez me retrasé pero lo resolví", "emoji": "👍" },
+        { "value": "regular", "label": "Regular - He tenido algunas moras", "emoji": "😐" },
+        { "value": "building", "label": "Estoy construyendo - Es mi primera tarjeta", "emoji": "🌱" },
+        { "value": "unsure", "label": "No estoy seguro", "emoji": "🤔" }
+      ]
+    },
+    {
+      "id": "payment_behavior",
+      "section": "comportamiento",
+      "matchFactor": "paymentBehavior",
+      "question": "¿Cómo sueles pagar tu tarjeta?",
+      "subtitle": "Esto es MUY importante para elegir tu tarjeta ideal",
+      "type": "single",
+      "required": true,
+      "highlight": true,
+      "options": [
+        { "value": "full", "label": "Pago el TOTAL cada mes - Nunca financio", "emoji": "💯", "tip": "Priorizaremos BENEFICIOS" },
+        { "value": "sometimes", "label": "A veces pago el total, a veces financio", "emoji": "⚖️", "tip": "Balance entre beneficios y tasa" },
+        { "value": "finance", "label": "Casi siempre financio - Pago en cuotas", "emoji": "📊", "tip": "Priorizaremos BAJA TASA" },
+        { "value": "minimum", "label": "Pago el mínimo - Uso crédito rotativo", "emoji": "🔄", "tip": "TASA es crítica para ti" }
+      ]
+    },
+    {
+      "id": "card_usage",
+      "section": "comportamiento",
+      "matchFactor": "cardUsage",
+      "question": "¿Cómo usarás tu tarjeta principalmente?",
+      "subtitle": "Selecciona hasta 4 opciones",
+      "type": "multiple",
+      "max": 4,
+      "required": true,
+      "options": [
+        { "value": "daily", "label": "Compras diarias (mercado, gasolina)", "emoji": "🛒" },
+        { "value": "big_purchases", "label": "Compras grandes (electrodomésticos)", "emoji": "📺" },
+        { "value": "services", "label": "Pagar servicios y suscripciones", "emoji": "📱" },
+        { "value": "travel", "label": "Viajes (tiquetes, hoteles)", "emoji": "✈️" },
+        { "value": "online", "label": "Compras internacionales / online", "emoji": "🌎" },
+        { "value": "emergency", "label": "Emergencias / respaldo financiero", "emoji": "🆘" }
+      ]
+    },
+    {
+      "id": "monthly_spend",
+      "section": "comportamiento",
+      "matchFactor": "monthlySpend",
+      "question": "¿Cuánto gastas mensualmente con tarjeta?",
+      "subtitle": "Desliza para calcular tu potencial de rewards",
+      "type": "slider",
+      "required": false,
+      "min": 200000,
+      "max": 10000000,
+      "step": 100000,
+      "defaultValue": 1500000,
+      "format": "currency"
+    },
+    {
+      "id": "fee_sensitivity",
+      "section": "comportamiento",
+      "matchFactor": "feeSensitivity",
+      "question": "¿Te molesta pagar cuota de manejo?",
+      "subtitle": "Algunas tarjetas sin cuota tienen menos beneficios",
+      "type": "single",
+      "required": true,
+      "options": [
+        { "value": "no_fee", "label": "Sí, prefiero SIN cuota", "emoji": "🚫" },
+        { "value": "flexible", "label": "No me importa si los beneficios lo justifican", "emoji": "💎" },
+        { "value": "moderate", "label": "Depende del monto - hasta $50K/mes OK", "emoji": "🤔" },
+        { "value": "unsure", "label": "No estoy seguro", "emoji": "🤷" }
+      ]
+    },
+    {
+      "id": "interests",
+      "section": "estilo_vida",
+      "matchFactor": "interests",
+      "question": "¿Qué haces en tu tiempo libre?",
+      "subtitle": "Selecciona tus 3 principales intereses",
+      "type": "multiple",
+      "max": 3,
+      "required": true,
+      "options": [
+        { "value": "sports", "label": "Deportes", "emoji": "⚽" },
+        { "value": "travel", "label": "Viajar", "emoji": "✈️" },
+        { "value": "entertainment", "label": "Entretenimiento", "emoji": "🍿" },
+        { "value": "dining", "label": "Gastronomía", "emoji": "🍽️" },
+        { "value": "shopping", "label": "Shopping", "emoji": "🛍️" },
+        { "value": "education", "label": "Educación", "emoji": "📚" },
+        { "value": "gaming", "label": "Gaming & Tech", "emoji": "🎮" },
+        { "value": "family", "label": "Familia", "emoji": "👨‍👩‍👧" },
+        { "value": "wellness", "label": "Salud y bienestar", "emoji": "💪" }
+      ]
+    },
+    {
+      "id": "shopping_places",
+      "section": "estilo_vida",
+      "matchFactor": "shoppingPlaces",
+      "question": "¿En dónde compras o consumes más?",
+      "subtitle": "Esto nos ayuda a encontrar las mejores alianzas",
+      "type": "multiple",
+      "max": 5,
+      "required": false,
+      "categories": [
+        {
+          "name": "Supermercados",
+          "options": [
+            { "value": "exito", "label": "Éxito" },
+            { "value": "carulla", "label": "Carulla" },
+            { "value": "jumbo", "label": "Jumbo" },
+            { "value": "olimpica", "label": "Olímpica" },
+            { "value": "d1", "label": "D1/Ara" }
+          ]
+        },
+        {
+          "name": "Retail",
+          "options": [
+            { "value": "falabella", "label": "Falabella" },
+            { "value": "alkomprar", "label": "Alkomprar" },
+            { "value": "amazon", "label": "Amazon" }
+          ]
+        },
+        {
+          "name": "Apps/Servicios",
+          "options": [
+            { "value": "rappi", "label": "Rappi" },
+            { "value": "uber", "label": "Uber" },
+            { "value": "netflix", "label": "Streaming" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "travel_details",
+      "section": "estilo_vida",
+      "matchFactor": "travelFreq",
+      "question": "¿Con qué frecuencia viajas?",
+      "subtitle": null,
+      "type": "single",
+      "required": false,
+      "showIf": {
+        "question": "interests",
+        "includes": "travel"
+      },
+      "options": [
+        { "value": "1-2", "label": "1-2 veces al año", "emoji": "🎒" },
+        { "value": "3-5", "label": "3-5 veces al año", "emoji": "✈️" },
+        { "value": "6+", "label": "6+ veces al año", "emoji": "🌍" },
+        { "value": "rare", "label": "Rara vez viajo", "emoji": "🏠" }
+      ]
+    },
+    {
+      "id": "travel_preference",
+      "section": "estilo_vida",
+      "matchFactor": "travelPreference",
+      "question": "En viajes, ¿qué prefieres?",
+      "type": "single",
+      "required": false,
+      "showIf": {
+        "question": "interests",
+        "includes": "travel"
+      },
+      "options": [
+        { "value": "miles", "label": "Acumular millas para vuelos gratis", "emoji": "✈️" },
+        { "value": "cashback", "label": "Cashback que puedo usar en lo que quiera", "emoji": "💰" },
+        { "value": "vip", "label": "Acceso a salas VIP / fast track", "emoji": "👑" }
+      ]
+    },
+    {
+      "id": "team",
+      "section": "estilo_vida",
+      "matchFactor": "team",
+      "question": "¿Eres hincha de algún equipo?",
+      "subtitle": "Algunos bancos patrocinan equipos con beneficios especiales",
+      "type": "single",
+      "required": false,
+      "options": [
+        { "value": "millonarios", "label": "Millonarios", "emoji": "💙" },
+        { "value": "america", "label": "América", "emoji": "❤️" },
+        { "value": "nacional", "label": "Nacional", "emoji": "💚" },
+        { "value": "santafe", "label": "Santa Fe", "emoji": "❤️" },
+        { "value": "junior", "label": "Junior", "emoji": "🔴" },
+        { "value": "medellin", "label": "Medellín", "emoji": "❤️" },
+        { "value": "seleccion", "label": "Selección Colombia", "emoji": "🇨🇴" },
+        { "value": "none", "label": "No sigo fútbol", "emoji": "⚽" }
+      ]
+    },
+    {
+      "id": "values",
+      "section": "estilo_vida",
+      "matchFactor": "values",
+      "question": "¿Qué causas te importan?",
+      "subtitle": "Selecciona hasta 2",
+      "type": "multiple",
+      "max": 2,
+      "required": false,
+      "options": [
+        { "value": "environment", "label": "Medio ambiente", "emoji": "🌱" },
+        { "value": "education", "label": "Educación", "emoji": "📚" },
+        { "value": "inclusion", "label": "Inclusión financiera", "emoji": "🤝" },
+        { "value": "entrepreneurship", "label": "Emprendimiento", "emoji": "🚀" },
+        { "value": "none", "label": "Ninguna en particular", "emoji": "➖" }
+      ]
+    },
+    {
+      "id": "digital_preference",
+      "section": "experiencia",
+      "matchFactor": "digitalPreference",
+      "question": "¿Cómo prefieres manejar tu tarjeta?",
+      "type": "single",
+      "required": true,
+      "options": [
+        { "value": "digital", "label": "100% digital - App excelente, nunca oficina", "emoji": "📱" },
+        { "value": "hybrid", "label": "Híbrido - App + sucursales cuando necesito", "emoji": "🏦" },
+        { "value": "traditional", "label": "Tradicional - Prefiero oficina física", "emoji": "🏢" },
+        { "value": "no_preference", "label": "No tengo preferencia", "emoji": "🤷" }
+      ]
+    },
+    {
+      "id": "service_priority",
+      "section": "experiencia",
+      "matchFactor": "serviceExpectation",
+      "question": "¿Qué esperas del servicio al cliente?",
+      "type": "single",
+      "required": false,
+      "options": [
+        { "value": "24_7", "label": "Respuesta rápida 24/7 (chat/WhatsApp)", "emoji": "💬" },
+        { "value": "personal", "label": "Asesor personal dedicado", "emoji": "👤" },
+        { "value": "call_center", "label": "Call center eficiente", "emoji": "📞" },
+        { "value": "self_service", "label": "Autogestión (resuelvo solo en app)", "emoji": "🔧" }
+      ]
+    }
+  ]
+}
