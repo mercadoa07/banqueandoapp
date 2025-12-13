@@ -1,132 +1,272 @@
 {
-  "version": "1.0",
-  "description": "Configuración del algoritmo de matching. Edita pesos y reglas aquí.",
-  
+  "version": "2.0",
+  "lastUpdated": "2025-01-13",
+  "description": "Configuración del algoritmo de matching Banqueando v2",
+
   "weights": {
-    "paymentBehavior": 20,
-    "feeSensitivity": 15,
-    "interests": 15,
-    "shoppingPlaces": 12,
-    "digitalPreference": 10,
-    "income": 10,
-    "creditHistory": 8,
-    "cardUsage": 5,
-    "travelFreq": 3,
-    "values": 2
+    "interests": 10,
+    "feeSensitivity": 9,
+    "digitalPreference": 7,
+    "income": 7,
+    "paymentBehavior": 3,
+    "shoppingPlaces": 6,
+    "travelFreq": 5,
+    "values": 4,
+    "creditHistory": 5,
+    "cardUsage": 5
   },
 
-  "baseScore": 40,
-  "maxScore": 100,
+  "scoring": {
+    "baseScore": 30,
+    "maxScore": 100,
+    "exactMatchPoints": 10,
+    "partialMatchPoints": 5
+  },
+
+  "filters": {
+    "enableIncomeFilter": true,
+    "enableCreditHistoryFilter": true,
+    "strictMode": false
+  },
+
+  "incomeRanges": {
+    "0-2": { "min": 0, "max": 2000000, "label": "Menos de $2M" },
+    "2-4": { "min": 2000000, "max": 4000000, "label": "$2M - $4M" },
+    "4-6": { "min": 4000000, "max": 6000000, "label": "$4M - $6M" },
+    "6-10": { "min": 6000000, "max": 10000000, "label": "$6M - $10M" },
+    "10+": { "min": 10000000, "max": 999999999, "label": "Más de $10M" }
+  },
 
   "bonusRules": [
     {
-      "id": "travel_bonus",
-      "name": "Bonus viajero frecuente",
-      "condition": {
-        "factor": "interests",
-        "includes": "travel"
-      },
-      "andCondition": {
-        "factor": "travelFreq",
-        "in": ["3-5", "6+"]
-      },
-      "cardCategory": "travel",
-      "bonus": 15
-    },
-    {
-      "id": "no_fee_bonus",
-      "name": "Bonus sin cuota",
-      "condition": {
-        "factor": "feeSensitivity",
-        "equals": "no_fee"
-      },
-      "cardRequirement": {
-        "field": "fees.annualFee",
-        "equals": 0
+      "id": "perfect_digital_match",
+      "name": "Match digital perfecto",
+      "description": "Usuario 100% digital + tarjeta 100% digital",
+      "conditions": {
+        "userFactor": "digitalPreference",
+        "userValue": "digital",
+        "cardField": "digitalExperience.fullyDigital",
+        "cardValue": true
       },
       "bonus": 12
     },
     {
-      "id": "digital_native",
-      "name": "Bonus digital",
-      "condition": {
-        "factor": "digitalPreference",
-        "equals": "digital"
-      },
-      "cardRequirement": {
-        "field": "digitalExperience.fullyDigital",
-        "equals": true
-      },
-      "bonus": 10
-    },
-    {
-      "id": "financier_bonus",
-      "name": "Bonus para quien financia",
-      "condition": {
-        "factor": "paymentBehavior",
-        "in": ["finance", "minimum"]
-      },
-      "cardRequirement": {
-        "field": "rates.interestRateEA",
-        "lessThan": 25
+      "id": "frequent_traveler_miles",
+      "name": "Viajero frecuente + millas",
+      "description": "Viaja 3+ veces al año y tarjeta acumula millas",
+      "conditions": {
+        "userFactor": "travelFreq",
+        "userValueIn": ["3-5", "6+"],
+        "cardField": "rewards.type",
+        "cardValue": "miles"
       },
       "bonus": 15
     },
     {
-      "id": "zero_interest",
-      "name": "Bonus 0% interés",
-      "condition": {
-        "factor": "paymentBehavior",
-        "in": ["finance", "minimum"]
+      "id": "no_fee_seeker_match",
+      "name": "Buscador de $0 cuota satisfecho",
+      "description": "Quiere $0 cuota y tarjeta no tiene cuota",
+      "conditions": {
+        "userFactor": "feeSensitivity",
+        "userValue": "no_fee",
+        "cardField": "fees.annualFee",
+        "cardValue": 0
       },
-      "cardRequirement": {
-        "field": "rates.interestRateEA",
-        "equals": 0
+      "bonus": 18
+    },
+    {
+      "id": "cashback_daily_spender",
+      "name": "Gastador diario + cashback",
+      "description": "Usa tarjeta para compras diarias y tarjeta da cashback",
+      "conditions": {
+        "userFactor": "cardUsage",
+        "userValueIncludes": "daily",
+        "cardField": "rewards.type",
+        "cardValue": "cashback"
       },
-      "bonus": 25
+      "bonus": 10
+    },
+    {
+      "id": "financier_low_rate",
+      "name": "Financiador + tasa baja",
+      "description": "Financia compras y tarjeta tiene tasa < 25%",
+      "conditions": {
+        "userFactor": "paymentBehavior",
+        "userValueIn": ["finance", "minimum"],
+        "cardField": "rates.interestRateEA",
+        "cardValueLessThan": 25
+      },
+      "bonus": 12
+    },
+    {
+      "id": "rappi_user_rappicard",
+      "name": "Usuario Rappi + RappiCard",
+      "description": "Usa Rappi frecuentemente",
+      "conditions": {
+        "userFactor": "shoppingPlaces",
+        "userValueIncludes": "rappi",
+        "cardField": "id",
+        "cardValue": "rappicard"
+      },
+      "bonus": 20
+    },
+    {
+      "id": "first_card_easy_approval",
+      "name": "Primera tarjeta + fácil aprobación",
+      "description": "Está construyendo historial y tarjeta es fácil de obtener",
+      "conditions": {
+        "userFactor": "creditHistory",
+        "userValueIn": ["building", "unsure"],
+        "cardField": "requirements.creditHistory",
+        "cardValueIn": ["none", "flexible"]
+      },
+      "bonus": 15
+    },
+    {
+      "id": "eco_conscious_match",
+      "name": "Consciente ambiental + tarjeta eco",
+      "description": "Le importa el medio ambiente",
+      "conditions": {
+        "userFactor": "values",
+        "userValueIncludes": "environment",
+        "cardField": "category",
+        "cardValue": "eco"
+      },
+      "bonus": 12
     }
   ],
 
   "penaltyRules": [
     {
-      "id": "high_fee_penalty",
-      "name": "Penalidad cuota alta",
-      "condition": {
-        "factor": "feeSensitivity",
-        "equals": "no_fee"
+      "id": "no_fee_but_expensive_card",
+      "name": "Quiere $0 pero tarjeta es cara",
+      "description": "Usuario sensible a cuota pero tarjeta tiene cuota alta",
+      "conditions": {
+        "userFactor": "feeSensitivity",
+        "userValue": "no_fee",
+        "cardField": "fees.annualFee",
+        "cardValueGreaterThan": 100000
       },
-      "cardRequirement": {
-        "field": "fees.annualFee",
-        "greaterThan": 200000
-      },
-      "penalty": -20
+      "penalty": -25
     },
     {
-      "id": "income_mismatch",
-      "name": "Penalidad ingreso insuficiente",
-      "conditionType": "income_check",
-      "penalty": -30
+      "id": "low_income_premium_card",
+      "name": "Ingresos bajos + tarjeta premium",
+      "description": "No cumple requisitos de ingreso mínimo",
+      "conditions": {
+        "type": "income_check"
+      },
+      "penalty": -40
+    },
+    {
+      "id": "wants_digital_but_traditional",
+      "name": "Quiere digital pero tarjeta tradicional",
+      "description": "Prefiere 100% digital pero tarjeta requiere sucursal",
+      "conditions": {
+        "userFactor": "digitalPreference",
+        "userValue": "digital",
+        "cardField": "digitalExperience.fullyDigital",
+        "cardValue": false
+      },
+      "penalty": -15
+    },
+    {
+      "id": "finances_but_high_rate",
+      "name": "Financia pero tasa alta",
+      "description": "Paga en cuotas pero tarjeta tiene tasa > 27%",
+      "conditions": {
+        "userFactor": "paymentBehavior",
+        "userValueIn": ["finance", "minimum"],
+        "cardField": "rates.interestRateEA",
+        "cardValueGreaterThan": 27
+      },
+      "penalty": -12
     }
   ],
 
-  "matchFactorScoring": {
-    "exactMatch": 10,
-    "partialMatch": 5,
-    "categoryMatch": 3
+  "prosConsRules": {
+    "pros": [
+      {
+        "id": "zero_fee",
+        "condition": { "field": "fees.annualFee", "equals": 0 },
+        "text": "Sin cuota de manejo",
+        "icon": "💰"
+      },
+      {
+        "id": "low_rate",
+        "condition": { "field": "rates.interestRateEA", "lessThan": 25 },
+        "text": "Tasa de interés baja ({value}% EA)",
+        "icon": "📉"
+      },
+      {
+        "id": "high_cashback",
+        "condition": { "field": "rewards.type", "equals": "cashback" },
+        "text": "Cashback en compras",
+        "icon": "💵"
+      },
+      {
+        "id": "miles_program",
+        "condition": { "field": "rewards.type", "equals": "miles" },
+        "text": "Acumula millas para vuelos",
+        "icon": "✈️"
+      },
+      {
+        "id": "fully_digital",
+        "condition": { "field": "digitalExperience.fullyDigital", "equals": true },
+        "text": "100% digital, sin filas",
+        "icon": "📱"
+      },
+      {
+        "id": "easy_approval",
+        "condition": { "field": "requirements.creditHistory", "in": ["none", "flexible"] },
+        "text": "Fácil aprobación",
+        "icon": "✅"
+      },
+      {
+        "id": "good_app",
+        "condition": { "field": "digitalExperience.appRating", "greaterThan": 4.5 },
+        "text": "App excelente ({value}⭐)",
+        "icon": "⭐"
+      }
+    ],
+    "cons": [
+      {
+        "id": "has_annual_fee",
+        "condition": { "field": "fees.annualFee", "greaterThan": 100000 },
+        "text": "Tiene cuota de manejo (${value}/año)",
+        "icon": "💸"
+      },
+      {
+        "id": "high_rate",
+        "condition": { "field": "rates.interestRateEA", "greaterThan": 27 },
+        "text": "Tasa de interés alta ({value}% EA)",
+        "icon": "📈"
+      },
+      {
+        "id": "high_income_required",
+        "condition": { "field": "requirements.minIncome", "greaterThan": 4000000 },
+        "text": "Requiere ingresos altos",
+        "icon": "💼"
+      },
+      {
+        "id": "not_fully_digital",
+        "condition": { "field": "digitalExperience.fullyDigital", "equals": false },
+        "text": "Puede requerir trámites presenciales",
+        "icon": "🏦"
+      },
+      {
+        "id": "no_rewards",
+        "condition": { "field": "rewards.type", "equals": "none" },
+        "text": "Sin programa de recompensas",
+        "icon": "➖"
+      }
+    ]
   },
 
-  "savingsCalculation": {
-    "baseRewardsRate": 0.01,
-    "milesValue": 50,
-    "cashbackMultiplier": 1,
-    "annualSpendMonths": 12
-  },
-
-  "displaySettings": {
+  "display": {
     "showTopResults": 3,
-    "showAlternatives": 2,
-    "minScoreToShow": 30,
-    "animateScore": true,
-    "scoreAnimationDuration": 1500
+    "showProsConsPerCard": 4,
+    "minScoreToShow": 20,
+    "showMatchExplanation": true
   }
 }
