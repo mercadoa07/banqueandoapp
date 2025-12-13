@@ -1,94 +1,192 @@
 /**
- * Matching Engine para Banqueando
- * Este archivo contiene toda la lógica de matching.
- * Lee la configuración desde matchingConfig.json
+ * ============================================================
+ * BANQUEANDO - MATCHING ENGINE v2.0
+ * ============================================================
+ * 
+ * Este es el "cerebro" del comparador. Recibe las respuestas
+ * del usuario y calcula qué tarjetas son mejores para él.
+ * 
+ * LÓGICA PRINCIPAL:
+ * 1. FILTRAR    → Eliminar tarjetas que no puede obtener
+ * 2. PUNTUAR    → Calcular score basado en compatibilidad
+ * 3. BONIFICAR  → Sumar puntos por matches especiales
+ * 4. PENALIZAR  → Restar puntos por incompatibilidades
+ * 5. PROS/CONS  → Identificar ventajas y desventajas
+ * 6. ORDENAR    → Devolver top 3 con explicaciones
+ * 
+ * ============================================================
  */
 
 export class MatchingEngine {
   constructor(cards, config) {
     this.cards = cards;
     this.config = config;
+    this.debug = false; // Cambiar a true para ver logs
   }
 
   /**
-   * Calcula el match score para todas las tarjetas
-   * @param {Object} answers - Respuestas del usuario del quiz
-   * @returns {Array} - Tarjetas ordenadas por score con razones
+   * ============================================================
+   * MÉTODO PRINCIPAL: calculateMatches
+   * ============================================================
+   * Este es el método que llama App.jsx cuando el usuario
+   * termina el quiz.
+   * 
+   * @param {Object} answers - Respuestas del usuario
+   * @returns {Object} - { topMatch, alternatives, allResults }
    */
   calculateMatches(answers) {
-    const results = this.cards.map(card => {
-      const { score, reasons } = this.scoreCard(card, answers);
-      const savings = this.calculateSavings(card, answers);
+    this.log('🎯 Iniciando cálculo de matches...');
+    this.log('📝 Respuestas del usuario:', answers);
+
+    // PASO 1: Filtrar tarjetas que no puede obtener
+    const eligibleCards = this.filterByEligibility(answers);
+    this.log(`✅ Tarjetas elegibles: ${eligibleCards.length}/${this.cards.length}`);
+
+    // PASO 2-4: Calcular score para cada tarjeta
+    const scoredCards = eligibleCards.map(card => {
+      const scoreResult = this.calculateCardScore(card, answers);
+      const prosConsResult = this.calculateProsCons(card, answers);
       
       return {
         ...card,
-        score: Math.min(Math.max(score, 0), this.config.maxScore),
-        reasons,
-        personalizedSavings: savings
+        score: Math.min(Math.max(scoreResult.score, 0), this.config.scoring.maxScore),
+        matchReasons: scoreResult.reasons,
+        pros: prosConsResult.pros,
+        cons: prosConsResult.cons,
+        personalizedSavings: this.calculateSavings(card, answers)
       };
     });
 
-    return results.sort((a, b) => b.score - a.score);
+    // PASO 6: Ordenar por score
+    const sortedCards = scoredCards.sort((a, b) => b.score - a.score);
+
+    this.log('🏆 Resultados ordenados:', sortedCards.map(c => `${c.name}: ${c.score}`));
+
+    // Devolver en formato esperado por App.jsx
+    return {
+      topMatch: sortedCards[0],
+      alternatives: sortedCards.slice(1, this.config.display.showTopResults),
+      allResults: sortedCards
+    };
   }
 
   /**
-   * Calcula el score de una tarjeta específica
+   * ============================================================
+   * PASO 1: FILTRAR POR ELEGIBILIDAD
+   * ============================================================
+   * Elimina tarjetas que el usuario NO puede obtener por:
+   * - Ingresos insuficientes
+   * - Historial crediticio incompatible
+   * 
+   * NOTA: No elimina, solo marca con penalty severo para que
+   * aparezcan al final pero el usuario sepa que existen.
    */
-  scoreCard(card, answers) {
-    let score = this.config.baseScore;
+  filterByEligibility(answers) {
+    if (!this.config.filters.enableIncomeFilter) {
+      return [...this.cards];
+    }
+
+    return this.cards.filter(card => {
+      // Verificar ingresos
+      const userIncomeRange = this.config.incomeRanges[answers.income];
+      const userMaxIncome = userIncomeRange?.max || 999999999;
+      const cardMinIncome = card.requirements?.minIncome || 0;
+
+      // Si el usuario no especificó ingresos, no filtrar
+      if (answers.income === 'skip' || !answers.income) {
+        return true;
+      }
+
+      // Si estamos en modo estricto, eliminar
+      if (this.config.filters.strictMode && userMaxIncome < cardMinIncome) {
+        this.log(`❌ ${card.name} filtrada por ingresos (requiere ${cardMinIncome})`);
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  /**
+   * ============================================================
+   * PASO 2-4: CALCULAR SCORE DE UNA TARJETA
+   * ============================================================
+   * Combina:
+   * - Score base
+   * - Puntos por matchFactors
+   * - Bonuses por reglas especiales
+   * - Penalties por incompatibilidades
+   */
+  calculateCardScore(card, answers) {
+    let score = this.config.scoring.baseScore;
     const reasons = [];
 
-    // 1. Scoring por matchFactors directos
-    const factorScore = this.scoreMatchFactors(card, answers);
-    score += factorScore.points;
-    reasons.push(...factorScore.reasons);
+    // PASO 2: Scoring por matchFactors
+    const factorResult = this.scoreByMatchFactors(card, answers);
+    score += factorResult.points;
+    reasons.push(...factorResult.reasons);
 
-    // 2. Aplicar bonus rules
-    const bonusScore = this.applyBonusRules(card, answers);
-    score += bonusScore.points;
-    reasons.push(...bonusScore.reasons);
+    // PASO 3: Aplicar bonuses
+    const bonusResult = this.applyBonuses(card, answers);
+    score += bonusResult.points;
+    reasons.push(...bonusResult.reasons);
 
-    // 3. Aplicar penalty rules
-    const penaltyScore = this.applyPenaltyRules(card, answers);
-    score += penaltyScore.points;
-    reasons.push(...penaltyScore.reasons);
+    // PASO 4: Aplicar penalties
+    const penaltyResult = this.applyPenalties(card, answers);
+    score += penaltyResult.points;
+    reasons.push(...penaltyResult.reasons);
+
+    this.log(`📊 ${card.name}: base(${this.config.scoring.baseScore}) + factors(${factorResult.points}) + bonus(${bonusResult.points}) + penalty(${penaltyResult.points}) = ${score}`);
 
     return { score, reasons };
   }
 
   /**
-   * Scoring basado en matchFactors de la tarjeta
+   * ============================================================
+   * SCORING POR MATCH FACTORS
+   * ============================================================
+   * Compara las respuestas del usuario con los matchFactors
+   * definidos en cada tarjeta.
+   * 
+   * Los pesos vienen de config.weights
    */
-  scoreMatchFactors(card, answers) {
+  scoreByMatchFactors(card, answers) {
     let points = 0;
     const reasons = [];
-    const { weights, matchFactorScoring } = this.config;
+    const { weights, scoring } = this.config;
 
     if (!card.matchFactors) return { points, reasons };
 
     Object.entries(card.matchFactors).forEach(([factor, cardValues]) => {
       const userValue = answers[factor];
+      const weight = weights[factor] || 5;
+
       if (!userValue) return;
 
-      const weight = weights[factor] || 5;
       let matched = false;
+      let matchStrength = 0;
 
-      // Check si el valor del usuario está en los valores de la tarjeta
       if (Array.isArray(userValue)) {
-        // Usuario seleccionó múltiples (ej: interests)
+        // Usuario seleccionó múltiples opciones
         const matches = userValue.filter(v => cardValues.includes(v));
         if (matches.length > 0) {
-          points += (matchFactorScoring.partialMatch * matches.length * weight) / 10;
+          matchStrength = (matches.length / userValue.length);
           matched = true;
-          reasons.push(this.generateReason(factor, matches));
         }
       } else {
-        // Usuario seleccionó uno (ej: paymentBehavior)
+        // Usuario seleccionó una opción
         if (cardValues.includes(userValue)) {
-          points += (matchFactorScoring.exactMatch * weight) / 10;
+          matchStrength = 1;
           matched = true;
-          reasons.push(this.generateReason(factor, userValue));
         }
+      }
+
+      if (matched) {
+        const factorPoints = (scoring.exactMatchPoints * weight * matchStrength) / 10;
+        points += factorPoints;
+        
+        const reasonText = this.generateMatchReason(factor, userValue, factorPoints);
+        if (reasonText) reasons.push(reasonText);
       }
     });
 
@@ -96,31 +194,24 @@ export class MatchingEngine {
   }
 
   /**
-   * Aplica reglas de bonus
+   * ============================================================
+   * APLICAR BONUSES
+   * ============================================================
+   * Revisa cada regla de bonus en config y aplica si corresponde
    */
-  applyBonusRules(card, answers) {
+  applyBonuses(card, answers) {
     let points = 0;
     const reasons = [];
 
     this.config.bonusRules.forEach(rule => {
-      if (this.evaluateCondition(rule.condition, answers)) {
-        // Verificar condición AND si existe
-        if (rule.andCondition && !this.evaluateCondition(rule.andCondition, answers)) {
-          return;
-        }
-
-        // Verificar requisito de tarjeta si existe
-        if (rule.cardRequirement && !this.evaluateCardRequirement(rule.cardRequirement, card)) {
-          return;
-        }
-
-        // Verificar categoría de tarjeta si existe
-        if (rule.cardCategory && card.category !== rule.cardCategory) {
-          return;
-        }
-
+      if (this.evaluateRule(rule.conditions, card, answers)) {
         points += rule.bonus;
-        reasons.push(`✨ ${rule.name}`);
+        reasons.push({
+          type: 'bonus',
+          text: rule.name,
+          points: rule.bonus
+        });
+        this.log(`  ✨ Bonus aplicado: ${rule.name} (+${rule.bonus})`);
       }
     });
 
@@ -128,26 +219,37 @@ export class MatchingEngine {
   }
 
   /**
-   * Aplica reglas de penalización
+   * ============================================================
+   * APLICAR PENALTIES
+   * ============================================================
+   * Revisa cada regla de penalty en config y aplica si corresponde
    */
-  applyPenaltyRules(card, answers) {
+  applyPenalties(card, answers) {
     let points = 0;
     const reasons = [];
 
     this.config.penaltyRules.forEach(rule => {
       // Caso especial: verificación de ingresos
-      if (rule.conditionType === 'income_check') {
+      if (rule.conditions.type === 'income_check') {
         if (!this.checkIncomeEligibility(card, answers)) {
           points += rule.penalty;
-          reasons.push(`⚠️ Puede requerir ingresos mayores`);
+          reasons.push({
+            type: 'penalty',
+            text: 'Puede requerir ingresos mayores a los indicados',
+            points: rule.penalty
+          });
         }
         return;
       }
 
-      if (this.evaluateCondition(rule.condition, answers)) {
-        if (rule.cardRequirement && this.evaluateCardRequirement(rule.cardRequirement, card)) {
-          points += rule.penalty;
-        }
+      if (this.evaluateRule(rule.conditions, card, answers)) {
+        points += rule.penalty;
+        reasons.push({
+          type: 'penalty',
+          text: rule.name,
+          points: rule.penalty
+        });
+        this.log(`  ⚠️ Penalty aplicado: ${rule.name} (${rule.penalty})`);
       }
     });
 
@@ -155,148 +257,206 @@ export class MatchingEngine {
   }
 
   /**
-   * Evalúa una condición contra las respuestas
+   * ============================================================
+   * EVALUAR UNA REGLA
+   * ============================================================
+   * Verifica si las condiciones de una regla se cumplen
    */
-  evaluateCondition(condition, answers) {
-    const userValue = answers[condition.factor];
-    if (!userValue) return false;
+  evaluateRule(conditions, card, answers) {
+    const { userFactor, userValue, userValueIn, userValueIncludes,
+            cardField, cardValue, cardValueIn, cardValueLessThan, 
+            cardValueGreaterThan } = conditions;
 
-    if (condition.equals) {
-      return userValue === condition.equals;
-    }
-    if (condition.includes) {
-      return Array.isArray(userValue) 
-        ? userValue.includes(condition.includes)
-        : userValue === condition.includes;
-    }
-    if (condition.in) {
-      return condition.in.includes(userValue);
+    // Verificar condición del usuario
+    const userAnswer = answers[userFactor];
+    if (!userAnswer) return false;
+
+    let userConditionMet = false;
+
+    if (userValue !== undefined) {
+      userConditionMet = userAnswer === userValue;
+    } else if (userValueIn) {
+      userConditionMet = userValueIn.includes(userAnswer);
+    } else if (userValueIncludes) {
+      userConditionMet = Array.isArray(userAnswer) 
+        ? userAnswer.includes(userValueIncludes)
+        : userAnswer === userValueIncludes;
+    } else {
+      userConditionMet = true; // No hay condición de usuario
     }
 
-    return false;
+    if (!userConditionMet) return false;
+
+    // Verificar condición de la tarjeta
+    const cardFieldValue = this.getNestedValue(card, cardField);
+
+    if (cardValue !== undefined) {
+      return cardFieldValue === cardValue;
+    } else if (cardValueIn) {
+      return cardValueIn.includes(cardFieldValue);
+    } else if (cardValueLessThan !== undefined) {
+      return cardFieldValue < cardValueLessThan;
+    } else if (cardValueGreaterThan !== undefined) {
+      return cardFieldValue > cardValueGreaterThan;
+    }
+
+    return true;
   }
 
   /**
-   * Evalúa un requisito de tarjeta
+   * ============================================================
+   * PASO 5: CALCULAR PROS Y CONTRAS
+   * ============================================================
+   * Para cada tarjeta, identifica:
+   * - ✅ PROS: Por qué SÍ le conviene
+   * - ⚠️ CONS: Por qué podría NO convenirle
    */
-  evaluateCardRequirement(requirement, card) {
-    const value = this.getNestedValue(card, requirement.field);
+  calculateProsCons(card, answers) {
+    const pros = [];
+    const cons = [];
+    const { prosConsRules } = this.config;
+
+    // Evaluar PROS
+    prosConsRules.pros.forEach(rule => {
+      if (this.evaluateProConCondition(rule.condition, card)) {
+        let text = rule.text;
+        // Reemplazar {value} con el valor real
+        const value = this.getNestedValue(card, rule.condition.field);
+        text = text.replace('{value}', this.formatValue(value, rule.condition.field));
+        
+        pros.push({
+          icon: rule.icon,
+          text: text
+        });
+      }
+    });
+
+    // Evaluar CONS
+    prosConsRules.cons.forEach(rule => {
+      if (this.evaluateProConCondition(rule.condition, card)) {
+        let text = rule.text;
+        const value = this.getNestedValue(card, rule.condition.field);
+        text = text.replace('{value}', this.formatValue(value, rule.condition.field));
+        
+        cons.push({
+          icon: rule.icon,
+          text: text
+        });
+      }
+    });
+
+    // Limitar cantidad mostrada
+    const maxShow = this.config.display.showProsConsPerCard;
+    return {
+      pros: pros.slice(0, maxShow),
+      cons: cons.slice(0, maxShow)
+    };
+  }
+
+  /**
+   * Evalúa una condición de pro/con
+   */
+  evaluateProConCondition(condition, card) {
+    const value = this.getNestedValue(card, condition.field);
     
-    if (requirement.equals !== undefined) {
-      return value === requirement.equals;
-    }
-    if (requirement.lessThan !== undefined) {
-      return value < requirement.lessThan;
-    }
-    if (requirement.greaterThan !== undefined) {
-      return value > requirement.greaterThan;
-    }
-
+    if (condition.equals !== undefined) return value === condition.equals;
+    if (condition.lessThan !== undefined) return value < condition.lessThan;
+    if (condition.greaterThan !== undefined) return value > condition.greaterThan;
+    if (condition.in) return condition.in.includes(value);
+    
     return false;
   }
 
   /**
-   * Obtiene valor anidado de un objeto (ej: "fees.annualFee")
+   * ============================================================
+   * UTILIDADES
+   * ============================================================
    */
+
+  // Obtener valor anidado: "fees.annualFee" → card.fees.annualFee
   getNestedValue(obj, path) {
     return path.split('.').reduce((current, key) => current?.[key], obj);
   }
 
-  /**
-   * Verifica elegibilidad por ingresos
-   */
+  // Verificar elegibilidad por ingresos
   checkIncomeEligibility(card, answers) {
-    const incomeRanges = {
-      '0-2': 1500000,
-      '2-4': 3000000,
-      '4-6': 5000000,
-      '6-10': 8000000,
-      '10+': 15000000
-    };
-
-    const userIncome = incomeRanges[answers.income] || 0;
-    const minRequired = card.requirements?.minIncome || 0;
-
-    return userIncome >= minRequired;
+    if (answers.income === 'skip' || !answers.income) return true;
+    
+    const userIncomeRange = this.config.incomeRanges[answers.income];
+    if (!userIncomeRange) return true;
+    
+    const userMaxIncome = userIncomeRange.max;
+    const cardMinIncome = card.requirements?.minIncome || 0;
+    
+    return userMaxIncome >= cardMinIncome;
   }
 
-  /**
-   * Calcula ahorros personalizados
-   */
+  // Calcular ahorros personalizados
   calculateSavings(card, answers) {
-    const { savingsCalculation } = this.config;
     const monthlySpend = answers.monthlySpend || 1500000;
-    const annualSpend = monthlySpend * savingsCalculation.annualSpendMonths;
-
+    const annualSpend = monthlySpend * 12;
     let savings = 0;
 
-    // Calcular según tipo de reward
     switch (card.rewards?.type) {
       case 'cashback':
-        const cashbackRate = parseFloat(card.rewards.rate) / 100 || savingsCalculation.baseRewardsRate;
-        savings = annualSpend * cashbackRate * savingsCalculation.cashbackMultiplier;
+        const rate = parseFloat(card.rewards.rate) / 100 || 0.02;
+        savings = annualSpend * rate;
         break;
-      
       case 'miles':
-        const milesPerDollar = 1; // Simplificado
-        const annualMiles = (annualSpend / 4000) * milesPerDollar;
-        savings = annualMiles * savingsCalculation.milesValue;
+        const milesEarned = (annualSpend / 4000) * 1;
+        savings = milesEarned * 50; // Valor estimado por milla
         break;
-      
       case 'points':
-        savings = annualSpend * savingsCalculation.baseRewardsRate;
+        savings = annualSpend * 0.01;
         break;
-      
       default:
-        savings = annualSpend * 0.005; // Mínimo por usar tarjeta
+        savings = annualSpend * 0.005;
     }
 
     // Restar cuota de manejo
     savings -= card.fees?.annualFee || 0;
-
+    
     return Math.max(Math.floor(savings), 0);
   }
 
-  /**
-   * Genera razón legible para el usuario
-   */
-  generateReason(factor, value) {
-    const reasonTemplates = {
-      interests: (v) => `Coincide con tus intereses: ${Array.isArray(v) ? v.join(', ') : v}`,
-      digitalPreference: () => 'Experiencia digital ideal para ti',
-      feeSensitivity: () => 'Sin cuota de manejo',
-      paymentBehavior: (v) => v === 'full' 
-        ? 'Optimizada para quien paga el total' 
-        : 'Tasa competitiva para financiar',
-      shoppingPlaces: (v) => `Beneficios especiales en ${Array.isArray(v) ? v.slice(0,2).join(' y ') : v}`,
-      team: (v) => `Patrocina ${v} - beneficios para hinchas`,
-      values: () => 'Alineada con tus valores',
-      travelFreq: () => 'Perfecta para tu frecuencia de viajes'
+  // Generar razón de match legible
+  generateMatchReason(factor, value, points) {
+    const templates = {
+      interests: `Coincide con tus intereses`,
+      digitalPreference: `Experiencia digital ideal para ti`,
+      feeSensitivity: `Se ajusta a tu preferencia de cuota`,
+      paymentBehavior: `Compatible con tu forma de pago`,
+      shoppingPlaces: `Beneficios en tus lugares frecuentes`,
+      travelFreq: `Ideal para tu frecuencia de viajes`,
+      values: `Alineada con tus valores`,
+      cardUsage: `Perfecta para el uso que le darás`
     };
 
-    const template = reasonTemplates[factor];
-    return template ? template(value) : `Match en ${factor}`;
+    if (points < 3) return null; // No mostrar matches débiles
+    return templates[factor] || null;
   }
 
-  /**
-   * Obtiene las mejores tarjetas según configuración
-   */
-  getTopResults(answers) {
-    const allResults = this.calculateMatches(answers);
-    const { showTopResults, showAlternatives, minScoreToShow } = this.config.displaySettings;
+  // Formatear valores para mostrar
+  formatValue(value, field) {
+    if (field.includes('Fee') || field.includes('Income')) {
+      return value.toLocaleString();
+    }
+    return value;
+  }
 
-    const qualified = allResults.filter(card => card.score >= minScoreToShow);
-
-    return {
-      topMatch: qualified[0] || allResults[0],
-      alternatives: qualified.slice(1, 1 + showAlternatives),
-      allResults: qualified.slice(0, showTopResults + showAlternatives)
-    };
+  // Logger para debug
+  log(...args) {
+    if (this.debug) {
+      console.log('[MatchingEngine]', ...args);
+    }
   }
 }
 
 /**
- * Factory function para crear el engine
+ * ============================================================
+ * FACTORY FUNCTION
+ * ============================================================
+ * Crea una instancia del engine con los datos cargados
  */
 export function createMatchingEngine(cardsData, configData) {
   return new MatchingEngine(cardsData.cards, configData);
