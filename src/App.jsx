@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, ChevronLeft, Sparkles, CreditCard, TrendingUp, Heart, DollarSign, Smartphone } from 'lucide-react';
 
 // Importar configuraciones
@@ -8,6 +8,9 @@ import matchingConfig from '../config/matchingConfig.json';
 
 // Importar engine
 import { createMatchingEngine } from './engine/matchingEngine.js';
+
+// Importar analytics
+import { saveQuizSession } from './lib/supabase.js';
 
 // Mapeo de iconos
 const iconMap = {
@@ -26,6 +29,9 @@ function App() {
   const [results, setResults] = useState(null);
   const [matchScore, setMatchScore] = useState(0);
   const [engine, setEngine] = useState(null);
+  
+  // Para tracking de tiempo
+  const quizStartTime = useRef(null);
 
   // Filtrar preguntas visibles según condiciones
   const visibleQuestions = questionsData.questions.filter(q => {
@@ -45,6 +51,12 @@ function App() {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
   };
 
+  // Iniciar quiz y registrar tiempo
+  const startQuiz = () => {
+    quizStartTime.current = Date.now();
+    setStep('quiz');
+  };
+
   const nextQuestion = () => {
     if (currentQuestion < visibleQuestions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
@@ -59,12 +71,17 @@ function App() {
     }
   };
 
-  const calculateResults = () => {
+  const calculateResults = async () => {
     if (!engine) return;
     
     const matchResults = engine.getTopResults(answers);
     setResults(matchResults);
     setStep('results');
+    
+    // Calcular tiempo de completado
+    const timeToComplete = quizStartTime.current 
+      ? Math.round((Date.now() - quizStartTime.current) / 1000)
+      : null;
     
     // Animar score
     const targetScore = matchResults.topMatch.score;
@@ -74,6 +91,21 @@ function App() {
       setMatchScore(Math.min(count, targetScore));
       if (count >= targetScore) clearInterval(interval);
     }, 20);
+
+    // ============================================================
+    // GUARDAR ANALYTICS EN SUPABASE
+    // ============================================================
+    try {
+      await saveQuizSession({
+        answers: answers,
+        topMatch: matchResults.topMatch,
+        alternatives: matchResults.alternatives,
+        timeToComplete: timeToComplete
+      });
+    } catch (error) {
+      console.error('[App] Error guardando analytics:', error);
+      // No interrumpir la experiencia del usuario si falla analytics
+    }
   };
 
   const resetQuiz = () => {
@@ -82,6 +114,7 @@ function App() {
     setAnswers({});
     setResults(null);
     setMatchScore(0);
+    quizStartTime.current = null;
   };
 
   const progress = ((currentQuestion + 1) / visibleQuestions.length) * 100;
@@ -126,7 +159,7 @@ function App() {
           </div>
           
           <button
-            onClick={() => setStep('quiz')}
+            onClick={startQuiz}
             className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center mx-auto"
           >
             Empezar Quiz
@@ -191,6 +224,32 @@ function App() {
               </div>
             </div>
 
+            {/* Pros */}
+            {topMatch.pros && topMatch.pros.length > 0 && (
+              <div className="space-y-2 mb-4">
+                <h3 className="font-bold text-gray-800 text-lg">✅ A FAVOR:</h3>
+                {topMatch.pros.map((pro, idx) => (
+                  <div key={idx} className="flex items-start bg-green-50 p-3 rounded-lg">
+                    <span className="text-xl mr-3">{pro.icon}</span>
+                    <span className="text-gray-700">{pro.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Cons */}
+            {topMatch.cons && topMatch.cons.length > 0 && (
+              <div className="space-y-2 mb-4">
+                <h3 className="font-bold text-gray-800 text-lg">⚠️ A CONSIDERAR:</h3>
+                {topMatch.cons.map((con, idx) => (
+                  <div key={idx} className="flex items-start bg-yellow-50 p-3 rounded-lg">
+                    <span className="text-xl mr-3">{con.icon}</span>
+                    <span className="text-gray-700">{con.text}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Benefits */}
             <div className="space-y-3 mb-6">
               <h3 className="font-bold text-gray-800 text-lg">✨ BENEFICIOS:</h3>
@@ -205,11 +264,11 @@ function App() {
                 </div>
               ))}
 
-              {/* Reasons */}
-              {topMatch.reasons?.length > 0 && (
+              {/* Match Reasons */}
+              {topMatch.matchReasons?.length > 0 && (
                 <>
                   <h3 className="font-bold text-gray-800 text-lg mt-6">🎯 POR QUÉ ES PARA TI:</h3>
-                  {topMatch.reasons.slice(0, 3).map((reason, idx) => (
+                  {topMatch.matchReasons.filter(r => typeof r === 'string').slice(0, 3).map((reason, idx) => (
                     <div key={idx} className="flex items-start bg-cyan-50 p-3 rounded-lg">
                       <Sparkles className="w-5 h-5 text-cyan-600 mr-3 mt-0.5" />
                       <span className="text-gray-700">{reason}</span>
@@ -266,6 +325,14 @@ function App() {
                           <p className="text-sm text-green-600 font-semibold">
                             Ahorras ${alt.personalizedSavings?.toLocaleString() || 0}/año
                           </p>
+                          {/* Pros/Cons resumen */}
+                          <div className="flex gap-2 mt-1 flex-wrap">
+                            {alt.pros?.slice(0, 2).map((pro, i) => (
+                              <span key={i} className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                                {pro.icon} {pro.text.substring(0, 20)}...
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
                       <div className="text-right ml-4">
