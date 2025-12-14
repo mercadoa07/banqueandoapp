@@ -72,6 +72,15 @@ export class MatchingEngine {
 
   /**
    * ============================================================
+   * MÉTODO ALIAS: getTopResults (para compatibilidad con App.jsx)
+   * ============================================================
+   */
+  getTopResults(answers) {
+    return this.calculateMatches(answers);
+  }
+
+  /**
+   * ============================================================
    * PASO 1: FILTRAR POR ELEGIBILIDAD
    * ============================================================
    * Elimina tarjetas que el usuario NO puede obtener por:
