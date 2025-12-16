@@ -123,12 +123,6 @@ function App() {
     setStep('login');
   };
 
-  // Login con Google
-  const handleGoogleLogin = async () => {
-    setIsLoading(true);
-    await signInWithGoogle();
-  };
-
   // Calcular resultados (con usuario)
   const calculateResultsWithUser = async (quizAnswers, currentUser, matchingEngine) => {
     const engineToUse = matchingEngine || engine;
