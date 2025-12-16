@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronLeft, Sparkles, CreditCard, TrendingUp, Heart, DollarSign, Smartphone } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles, CreditCard, TrendingUp, Heart, DollarSign, Smartphone, Mail, User } from 'lucide-react';
 
 // Importar configuraciones
 import cardsData from '../config/cards.json';
@@ -9,8 +9,14 @@ import matchingConfig from '../config/matchingConfig.json';
 // Importar engine
 import { createMatchingEngine } from './engine/matchingEngine.js';
 
-// Importar analytics
-import { saveQuizSession } from './lib/supabase.js';
+// Importar auth y analytics
+import { 
+  saveQuizSession, 
+  signInWithGoogle, 
+  getSession, 
+  saveQuizState, 
+  getQuizState 
+} from './lib/supabase.js';
 
 // Mapeo de iconos
 const iconMap = {
@@ -29,6 +35,8 @@ function App() {
   const [results, setResults] = useState(null);
   const [matchScore, setMatchScore] = useState(0);
   const [engine, setEngine] = useState(null);
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Para tracking de tiempo
   const quizStartTime = useRef(null);
@@ -41,17 +49,48 @@ function App() {
     return Array.isArray(answer) ? answer.includes(includes) : answer === includes;
   });
 
+  // Inicialización
   useEffect(() => {
-    // Inicializar engine
-    const matchingEngine = createMatchingEngine(cardsData, matchingConfig);
-    setEngine(matchingEngine);
+    const init = async () => {
+      // Inicializar engine
+      const matchingEngine = createMatchingEngine(cardsData, matchingConfig);
+      setEngine(matchingEngine);
+      
+      // Verificar si hay sesión de usuario
+      const { user: currentUser } = await getSession();
+      if (currentUser) {
+        setUser(currentUser);
+        
+        // Recuperar estado del quiz si existe
+        const savedState = getQuizState();
+        if (savedState) {
+          setAnswers(savedState.answers || {});
+          setCurrentQuestion(savedState.currentQuestion || 0);
+          quizStartTime.current = savedState.startTime || Date.now();
+          
+          // Si el quiz estaba completo, calcular resultados
+          if (savedState.quizCompleted) {
+            setStep('calculating');
+            setTimeout(() => {
+              calculateResultsWithUser(savedState.answers, currentUser, matchingEngine);
+            }, 500);
+          } else {
+            setStep('quiz');
+          }
+        }
+      }
+      
+      setIsLoading(false);
+    };
+    
+    init();
   }, []);
 
   const handleAnswer = (questionId, value) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
   };
 
-  // Iniciar quiz y registrar tiempo
+  // Iniciar quiz
   const startQuiz = () => {
     quizStartTime.current = Date.now();
     setStep('quiz');
@@ -61,7 +100,8 @@ function App() {
     if (currentQuestion < visibleQuestions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
     } else {
-      calculateResults();
+      // Quiz completado - ir a login
+      goToLogin();
     }
   };
 
@@ -71,14 +111,35 @@ function App() {
     }
   };
 
-  const calculateResults = async () => {
-    if (!engine) return;
+  // Ir a pantalla de login
+  const goToLogin = () => {
+    // Guardar estado del quiz
+    saveQuizState({
+      answers,
+      currentQuestion,
+      startTime: quizStartTime.current,
+      quizCompleted: true
+    });
+    setStep('login');
+  };
+
+  // Login con Google
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    await signInWithGoogle();
+  };
+
+  // Calcular resultados (con usuario)
+  const calculateResultsWithUser = async (quizAnswers, currentUser, matchingEngine) => {
+    const engineToUse = matchingEngine || engine;
+    if (!engineToUse) return;
     
-    const matchResults = engine.getTopResults(answers);
+    const answersToUse = quizAnswers || answers;
+    const matchResults = engineToUse.getTopResults(answersToUse);
     setResults(matchResults);
     setStep('results');
     
-    // Calcular tiempo de completado
+    // Calcular tiempo
     const timeToComplete = quizStartTime.current 
       ? Math.round((Date.now() - quizStartTime.current) / 1000)
       : null;
@@ -92,20 +153,42 @@ function App() {
       if (count >= targetScore) clearInterval(interval);
     }, 20);
 
-    // ============================================================
-    // GUARDAR ANALYTICS EN SUPABASE
-    // ============================================================
+    // Guardar analytics
     try {
       await saveQuizSession({
-        answers: answers,
+        answers: answersToUse,
         topMatch: matchResults.topMatch,
         alternatives: matchResults.alternatives,
-        timeToComplete: timeToComplete
+        timeToComplete,
+        user: currentUser
       });
     } catch (error) {
       console.error('[App] Error guardando analytics:', error);
-      // No interrumpir la experiencia del usuario si falla analytics
     }
+  };
+
+  // Continuar sin login (solo email)
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [nameInput, setNameInput] = useState('');
+
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault();
+    if (!emailInput) return;
+    
+    // Crear usuario temporal con email
+    const tempUser = {
+      id: null,
+      email: emailInput,
+      user_metadata: { name: nameInput }
+    };
+    
+    setUser(tempUser);
+    setStep('calculating');
+    
+    setTimeout(() => {
+      calculateResultsWithUser(answers, tempUser, engine);
+    }, 500);
   };
 
   const resetQuiz = () => {
@@ -115,10 +198,22 @@ function App() {
     setResults(null);
     setMatchScore(0);
     quizStartTime.current = null;
+    setShowEmailForm(false);
+    setEmailInput('');
+    setNameInput('');
   };
 
   const progress = ((currentQuestion + 1) / visibleQuestions.length) * 100;
   const currentQ = visibleQuestions[currentQuestion];
+
+  // LOADING
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center">
+        <div className="text-white text-xl">Cargando...</div>
+      </div>
+    );
+  }
 
   // LANDING PAGE
   if (step === 'landing') {
@@ -174,6 +269,131 @@ function App() {
     );
   }
 
+  // LOGIN PAGE
+  if (step === 'login') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center">
+          <div className="mb-6">
+            <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-4 rounded-full inline-block">
+              <Sparkles className="w-10 h-10 text-white" />
+            </div>
+          </div>
+          
+          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-gray-800">
+            ¡Tu resultado está listo! 🎉
+          </h2>
+          <p className="text-gray-600 mb-8">
+            Para ver tu tarjeta ideal y guardar tu resultado, ingresa con tu cuenta
+          </p>
+          
+          {!showEmailForm ? (
+            <>
+              {/* Botón Google */}
+              <button
+                onClick={handleGoogleLogin}
+                className="w-full bg-white border-2 border-gray-200 text-gray-700 px-6 py-4 rounded-xl font-semibold hover:border-gray-300 hover:shadow-lg transition-all flex items-center justify-center mb-4"
+              >
+                <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Continuar con Google
+              </button>
+              
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white text-gray-500">o</span>
+                </div>
+              </div>
+              
+              {/* Opción email */}
+              <button
+                onClick={() => setShowEmailForm(true)}
+                className="w-full bg-gray-100 text-gray-700 px-6 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all flex items-center justify-center"
+              >
+                <Mail className="w-5 h-5 mr-3" />
+                Continuar con email
+              </button>
+            </>
+          ) : (
+            /* Formulario de email */
+            <form onSubmit={handleEmailSubmit} className="text-left">
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2">
+                  <User className="w-4 h-4 inline mr-2" />
+                  Tu nombre
+                </label>
+                <input
+                  type="text"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  placeholder="Ej: Juan Pérez"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
+                />
+              </div>
+              
+              <div className="mb-6">
+                <label className="block text-gray-700 font-medium mb-2">
+                  <Mail className="w-4 h-4 inline mr-2" />
+                  Tu email *
+                </label>
+                <input
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="tu@email.com"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
+                />
+              </div>
+              
+              <button
+                type="submit"
+                disabled={!emailInput}
+                className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Ver mi resultado →
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => setShowEmailForm(false)}
+                className="w-full mt-3 text-gray-500 hover:text-gray-700"
+              >
+                ← Volver
+              </button>
+            </form>
+          )}
+          
+          <p className="text-xs text-gray-400 mt-6">
+            🔒 Solo usaremos tu info para enviarte tu resultado y ofertas relevantes
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // CALCULATING PAGE
+  if (step === 'calculating') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center p-4">
+        <div className="text-center text-white">
+          <div className="mb-6">
+            <Sparkles className="w-16 h-16 mx-auto animate-pulse" />
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Analizando tu perfil...</h2>
+          <p className="text-white/80">Encontrando tu tarjeta ideal</p>
+        </div>
+      </div>
+    );
+  }
+
   // RESULTS PAGE
   if (step === 'results' && results) {
     const { topMatch, alternatives } = results;
@@ -181,6 +401,13 @@ function App() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 p-4 py-8">
         <div className="max-w-4xl mx-auto">
+          {/* User greeting */}
+          {user && (
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6 text-white text-center">
+              <p>👋 Hola, <strong>{user.user_metadata?.name || user.email}</strong></p>
+            </div>
+          )}
+
           {/* Header */}
           <div className="bg-white rounded-3xl shadow-2xl p-8 mb-6 text-center">
             <Sparkles className="w-16 h-16 text-yellow-500 mx-auto mb-4 animate-pulse" />
@@ -263,19 +490,6 @@ function App() {
                   <span className="text-gray-700">{benefit}</span>
                 </div>
               ))}
-
-              {/* Match Reasons */}
-              {topMatch.matchReasons?.length > 0 && (
-                <>
-                  <h3 className="font-bold text-gray-800 text-lg mt-6">🎯 POR QUÉ ES PARA TI:</h3>
-                  {topMatch.matchReasons.filter(r => typeof r === 'string').slice(0, 3).map((reason, idx) => (
-                    <div key={idx} className="flex items-start bg-cyan-50 p-3 rounded-lg">
-                      <Sparkles className="w-5 h-5 text-cyan-600 mr-3 mt-0.5" />
-                      <span className="text-gray-700">{reason}</span>
-                    </div>
-                  ))}
-                </>
-              )}
             </div>
 
             {/* Fees */}
@@ -288,9 +502,6 @@ function App() {
                       ? '✨ GRATIS' 
                       : `$${(topMatch.fees?.monthlyFee || 0).toLocaleString()}/mes`}
                   </p>
-                  {topMatch.fees?.feeWaiverCondition && (
-                    <p className="text-xs text-gray-500">{topMatch.fees.feeWaiverCondition}</p>
-                  )}
                 </div>
                 <div>
                   <span className="text-gray-600 text-sm">Tasa de interés</span>
@@ -325,14 +536,6 @@ function App() {
                           <p className="text-sm text-green-600 font-semibold">
                             Ahorras ${alt.personalizedSavings?.toLocaleString() || 0}/año
                           </p>
-                          {/* Pros/Cons resumen */}
-                          <div className="flex gap-2 mt-1 flex-wrap">
-                            {alt.pros?.slice(0, 2).map((pro, i) => (
-                              <span key={i} className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                                {pro.icon} {pro.text.substring(0, 20)}...
-                              </span>
-                            ))}
-                          </div>
                         </div>
                       </div>
                       <div className="text-right ml-4">
