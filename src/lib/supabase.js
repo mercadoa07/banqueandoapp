@@ -241,6 +241,7 @@ export async function saveQuizSession({ answers, topMatch, alternatives, timeToC
     user_id: user?.id || null,
     user_email: user?.email || null,
     user_name: user?.user_metadata?.full_name || user?.user_metadata?.name || null,
+    user_phone: user?.user_metadata?.phone || user?.phone || null,
     
     // Respuestas del quiz
     answers: answers,
