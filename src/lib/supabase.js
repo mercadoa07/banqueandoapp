@@ -149,6 +149,15 @@ export async function getSession() {
       
       if (response.ok) {
         const user = await response.json();
+        
+        // Recuperar teléfono guardado antes del login
+        const savedPhone = sessionStorage.getItem('banqueando_phone');
+        if (savedPhone) {
+          user.phone = savedPhone;
+          user.user_metadata = user.user_metadata || {};
+          user.user_metadata.phone = savedPhone;
+        }
+        
         // Guardar en sessionStorage
         sessionStorage.setItem('banqueando_user', JSON.stringify(user));
         sessionStorage.setItem('banqueando_token', accessToken);
