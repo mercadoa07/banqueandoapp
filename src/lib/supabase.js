@@ -1,10 +1,12 @@
 /**
  * ============================================================
- * SUPABASE - Configuración y conexión
+ * SUPABASE - Configuración, Auth y Analytics
  * ============================================================
  * 
- * Este archivo conecta la app con Supabase para guardar
- * las sesiones del quiz y analytics.
+ * Este archivo conecta la app con Supabase para:
+ * - Autenticación con Google
+ * - Guardar sesiones del quiz
+ * - Analytics
  * 
  * UBICACIÓN: src/lib/supabase.js
  * ============================================================
@@ -13,6 +15,9 @@
 // Configuración de Supabase
 const SUPABASE_URL = 'https://aaofldffwmqbkykyupii.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_A3MAhIiNYXnzbBuEwBpAxw_moFD4Btc';
+
+// URL de redirección después del login
+const REDIRECT_URL = window.location.origin;
 
 /**
  * Cliente simple de Supabase (sin dependencias externas)
@@ -93,6 +98,111 @@ export const supabase = new SupabaseClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /**
  * ============================================================
+ * FUNCIONES DE AUTENTICACIÓN
+ * ============================================================
+ */
+
+/**
+ * Iniciar sesión con Google
+ */
+export async function signInWithGoogle() {
+  try {
+    const redirectTo = `${REDIRECT_URL}?auth=callback`;
+    const authUrl = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectTo)}`;
+    
+    // Guardar estado del quiz antes de redirigir
+    const quizState = sessionStorage.getItem('banqueando_quiz_state');
+    if (quizState) {
+      sessionStorage.setItem('banqueando_quiz_state_backup', quizState);
+    }
+    
+    // Redirigir a Google
+    window.location.href = authUrl;
+    
+    return { success: true };
+  } catch (error) {
+    console.error('[Auth] Error con Google:', error);
+    return { error: error.message };
+  }
+}
+
+/**
+ * Obtener sesión actual del usuario
+ */
+export async function getSession() {
+  try {
+    // Buscar token en URL (después de callback)
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = hashParams.get('access_token');
+    
+    if (accessToken) {
+      // Limpiar URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // Obtener datos del usuario
+      const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'apikey': SUPABASE_ANON_KEY
+        }
+      });
+      
+      if (response.ok) {
+        const user = await response.json();
+        // Guardar en sessionStorage
+        sessionStorage.setItem('banqueando_user', JSON.stringify(user));
+        sessionStorage.setItem('banqueando_token', accessToken);
+        return { user, accessToken };
+      }
+    }
+    
+    // Buscar sesión guardada
+    const savedUser = sessionStorage.getItem('banqueando_user');
+    const savedToken = sessionStorage.getItem('banqueando_token');
+    
+    if (savedUser && savedToken) {
+      return { user: JSON.parse(savedUser), accessToken: savedToken };
+    }
+    
+    return { user: null };
+  } catch (error) {
+    console.error('[Auth] Error obteniendo sesión:', error);
+    return { user: null, error: error.message };
+  }
+}
+
+/**
+ * Cerrar sesión
+ */
+export function signOut() {
+  sessionStorage.removeItem('banqueando_user');
+  sessionStorage.removeItem('banqueando_token');
+  sessionStorage.removeItem('banqueando_quiz_state');
+  return { success: true };
+}
+
+/**
+ * Guardar estado del quiz (para recuperar después del login)
+ */
+export function saveQuizState(state) {
+  sessionStorage.setItem('banqueando_quiz_state', JSON.stringify(state));
+}
+
+/**
+ * Recuperar estado del quiz
+ */
+export function getQuizState() {
+  const state = sessionStorage.getItem('banqueando_quiz_state') 
+    || sessionStorage.getItem('banqueando_quiz_state_backup');
+  
+  // Limpiar backup
+  sessionStorage.removeItem('banqueando_quiz_state_backup');
+  
+  return state ? JSON.parse(state) : null;
+}
+
+/**
+ * ============================================================
  * FUNCIONES DE ANALYTICS
  * ============================================================
  */
@@ -119,12 +229,18 @@ function getDeviceType() {
  * @param {Object} params.topMatch - Tarjeta ganadora
  * @param {Array} params.alternatives - Tarjetas alternativas
  * @param {number} params.timeToComplete - Tiempo en segundos
+ * @param {Object} params.user - Usuario autenticado (opcional)
  */
-export async function saveQuizSession({ answers, topMatch, alternatives, timeToComplete }) {
+export async function saveQuizSession({ answers, topMatch, alternatives, timeToComplete, user }) {
   const sessionData = {
     // Datos del dispositivo
     device_type: getDeviceType(),
-    user_agent: navigator.userAgent.substring(0, 500), // Limitar longitud
+    user_agent: navigator.userAgent.substring(0, 500),
+    
+    // Datos del usuario (si está autenticado)
+    user_id: user?.id || null,
+    user_email: user?.email || null,
+    user_name: user?.user_metadata?.full_name || user?.user_metadata?.name || null,
     
     // Respuestas del quiz
     answers: answers,
