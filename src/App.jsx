@@ -171,16 +171,18 @@ function App() {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [emailInput, setEmailInput] = useState('');
   const [nameInput, setNameInput] = useState('');
+  const [phoneInput, setPhoneInput] = useState('');
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    if (!emailInput) return;
+    if (!emailInput || !phoneInput) return;
     
     // Crear usuario temporal con email
     const tempUser = {
       id: null,
       email: emailInput,
-      user_metadata: { name: nameInput }
+      phone: phoneInput,
+      user_metadata: { name: nameInput, phone: phoneInput }
     };
     
     setUser(tempUser);
@@ -201,6 +203,7 @@ function App() {
     setShowEmailForm(false);
     setEmailInput('');
     setNameInput('');
+    setPhoneInput('');
   };
 
   const progress = ((currentQuestion + 1) / visibleQuestions.length) * 100;
@@ -338,7 +341,7 @@ function App() {
                 />
               </div>
               
-              <div className="mb-6">
+              <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
                   <Mail className="w-4 h-4 inline mr-2" />
                   Tu email *
@@ -352,10 +355,24 @@ function App() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
                 />
               </div>
+
+              <div className="mb-6">
+                <label className="block text-gray-700 font-medium mb-2">
+                  📱 Tu WhatsApp *
+                </label>
+                <input
+                  type="tel"
+                  value={phoneInput}
+                  onChange={(e) => setPhoneInput(e.target.value)}
+                  placeholder="Ej: 3001234567"
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
+                />
+              </div>
               
               <button
                 type="submit"
-                disabled={!emailInput}
+                disabled={!emailInput || !phoneInput}
                 className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Ver mi resultado →
