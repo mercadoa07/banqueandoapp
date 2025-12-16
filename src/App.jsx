@@ -167,15 +167,23 @@ function App() {
     }
   };
 
-  // Continuar sin login (solo email)
+  // Estados para formularios
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [emailInput, setEmailInput] = useState('');
   const [nameInput, setNameInput] = useState('');
   const [phoneInput, setPhoneInput] = useState('');
+  const [phoneCollected, setPhoneCollected] = useState(false);
+
+  // Guardar teléfono y continuar a elegir método de login
+  const handlePhoneSubmit = (e) => {
+    e.preventDefault();
+    if (!phoneInput) return;
+    setPhoneCollected(true);
+  };
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    if (!emailInput || !phoneInput) return;
+    if (!emailInput) return;
     
     // Crear usuario temporal con email
     const tempUser = {
@@ -193,6 +201,14 @@ function App() {
     }, 500);
   };
 
+  // Login con Google (guardamos teléfono primero)
+  const handleGoogleLogin = async () => {
+    // Guardar teléfono en sessionStorage para recuperarlo después del callback
+    sessionStorage.setItem('banqueando_phone', phoneInput);
+    setIsLoading(true);
+    await signInWithGoogle();
+  };
+
   const resetQuiz = () => {
     setStep('landing');
     setCurrentQuestion(0);
@@ -204,6 +220,7 @@ function App() {
     setEmailInput('');
     setNameInput('');
     setPhoneInput('');
+    setPhoneCollected(false);
   };
 
   const progress = ((currentQuestion + 1) / visibleQuestions.length) * 100;
@@ -286,12 +303,45 @@ function App() {
           <h2 className="text-2xl md:text-3xl font-bold mb-2 text-gray-800">
             ¡Tu resultado está listo! 🎉
           </h2>
-          <p className="text-gray-600 mb-8">
-            Para ver tu tarjeta ideal y guardar tu resultado, ingresa con tu cuenta
-          </p>
           
-          {!showEmailForm ? (
+          {/* PASO 1: Pedir teléfono primero */}
+          {!phoneCollected ? (
             <>
+              <p className="text-gray-600 mb-6">
+                Ingresa tu WhatsApp para enviarte tu resultado personalizado
+              </p>
+              
+              <form onSubmit={handlePhoneSubmit} className="text-left">
+                <div className="mb-6">
+                  <label className="block text-gray-700 font-medium mb-2">
+                    📱 Tu WhatsApp *
+                  </label>
+                  <input
+                    type="tel"
+                    value={phoneInput}
+                    onChange={(e) => setPhoneInput(e.target.value)}
+                    placeholder="Ej: 3001234567"
+                    required
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none text-center text-lg"
+                  />
+                </div>
+                
+                <button
+                  type="submit"
+                  disabled={!phoneInput}
+                  className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Continuar →
+                </button>
+              </form>
+            </>
+          ) : !showEmailForm ? (
+            /* PASO 2: Elegir método de login */
+            <>
+              <p className="text-gray-600 mb-8">
+                Ahora elige cómo quieres continuar
+              </p>
+              
               {/* Botón Google */}
               <button
                 onClick={handleGoogleLogin}
@@ -323,10 +373,21 @@ function App() {
                 <Mail className="w-5 h-5 mr-3" />
                 Continuar con email
               </button>
+              
+              <button
+                onClick={() => setPhoneCollected(false)}
+                className="mt-4 text-gray-500 hover:text-gray-700 text-sm"
+              >
+                ← Cambiar número
+              </button>
             </>
           ) : (
-            /* Formulario de email */
+            /* PASO 3: Formulario de email (si no eligió Google) */
             <form onSubmit={handleEmailSubmit} className="text-left">
+              <p className="text-gray-600 mb-6 text-center">
+                Completa tus datos para ver tu resultado
+              </p>
+              
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
                   <User className="w-4 h-4 inline mr-2" />
@@ -341,7 +402,7 @@ function App() {
                 />
               </div>
               
-              <div className="mb-4">
+              <div className="mb-6">
                 <label className="block text-gray-700 font-medium mb-2">
                   <Mail className="w-4 h-4 inline mr-2" />
                   Tu email *
@@ -355,24 +416,16 @@ function App() {
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
                 />
               </div>
-
-              <div className="mb-6">
-                <label className="block text-gray-700 font-medium mb-2">
-                  📱 Tu WhatsApp *
-                </label>
-                <input
-                  type="tel"
-                  value={phoneInput}
-                  onChange={(e) => setPhoneInput(e.target.value)}
-                  placeholder="Ej: 3001234567"
-                  required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
-                />
+              
+              <div className="mb-6 bg-gray-50 p-3 rounded-lg">
+                <p className="text-sm text-gray-600">
+                  📱 WhatsApp: <strong>{phoneInput}</strong>
+                </p>
               </div>
               
               <button
                 type="submit"
-                disabled={!emailInput || !phoneInput}
+                disabled={!emailInput}
                 className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Ver mi resultado →
