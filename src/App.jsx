@@ -656,20 +656,165 @@ function App() {
   // ============================================================
   if (step === 'results' && results) {
     const { topMatch, alternatives } = results;
+    
+    // Combinar todas las tarjetas para mostrar
+    const allCards = [topMatch, ...(alternatives || [])].slice(0, 3);
+
+    // Componente de tarjeta individual
+    const CardResult = ({ card, rank, isTop }) => {
+      const rankLabels = ['🏆 MEJOR MATCH', '🥈 ALTERNATIVA', '🥉 OPCIÓN'];
+      const rankColors = [
+        'border-violet-400 bg-gradient-to-br from-violet-50/50 to-cyan-50/50',
+        'border-gray-200 bg-white',
+        'border-gray-200 bg-white'
+      ];
+      
+      return (
+        <div className={`rounded-2xl p-5 shadow-lg border-2 ${rankColors[rank]} flex flex-col h-full`}>
+          
+          {/* Header: Badge + Score */}
+          <div className="flex justify-between items-start mb-3">
+            <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+              isTop 
+                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white' 
+                : 'bg-gray-100 text-gray-600'
+            }`}>
+              {rankLabels[rank]}
+            </span>
+            <div className="text-right">
+              <p className={`text-2xl font-bold ${isTop ? 'bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent' : 'text-gray-700'}`}>
+                {Math.round(card.score)}%
+              </p>
+              <p className="text-xs text-gray-400">Match</p>
+            </div>
+          </div>
+
+          {/* Card Info */}
+          <div className="flex items-center mb-3">
+            <div className="text-4xl mr-3">{card.image}</div>
+            <div>
+              <h3 className="font-bold text-gray-800 text-lg leading-tight">{card.name}</h3>
+              <p className="text-gray-500 text-sm">{card.bank}</p>
+            </div>
+          </div>
+
+          {/* ¿Por qué es para ti? */}
+          {card.matchReasons && card.matchReasons.length > 0 && (
+            <div className="bg-violet-50 rounded-xl p-3 mb-3 border border-violet-100">
+              <h4 className="font-semibold text-violet-800 text-sm mb-2">💡 ¿Por qué es para ti?</h4>
+              <div className="space-y-1">
+                {card.matchReasons.slice(0, 3).map((reason, idx) => (
+                  <p key={idx} className="text-xs text-violet-700 flex items-start">
+                    <span className="mr-1">→</span> {reason}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Beneficios principales */}
+          {card.benefits && card.benefits.length > 0 && (
+            <div className="mb-3">
+              <h4 className="font-semibold text-gray-700 text-sm mb-2">✨ Beneficios</h4>
+              <div className="space-y-1">
+                {card.benefits.slice(0, 3).map((benefit, idx) => (
+                  <div key={idx} className="flex items-center bg-green-50 p-2 rounded-lg">
+                    <span className="text-xs text-gray-700">{benefit}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Aspectos principales */}
+          <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
+            <div className="grid grid-cols-2 gap-2 text-center">
+              <div>
+                <p className="text-xs text-gray-500">Cuota</p>
+                <p className="font-bold text-gray-800 text-sm">
+                  {card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0
+                    ? '✨ GRATIS' 
+                    : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes`}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500">Tasa</p>
+                <p className="font-bold text-gray-800 text-sm">{card.rates?.interestRateEA || 'N/A'}% EA</p>
+              </div>
+            </div>
+            {card.requirements?.minIncome && (
+              <div className="mt-2 pt-2 border-t border-gray-200 text-center">
+                <p className="text-xs text-gray-500">Ingreso mínimo</p>
+                <p className="font-semibold text-gray-700 text-sm">
+                  ${(card.requirements.minIncome / 1000000).toFixed(1)}M
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Ahorro estimado */}
+          <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 p-3 rounded-xl mb-3 border border-emerald-100">
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-xs text-gray-500">💰 Ahorro anual</p>
+                <p className="text-xl font-bold text-emerald-600">
+                  ${(card.personalizedSavings || 0).toLocaleString()}
+                </p>
+              </div>
+              {isTop && (
+                <button 
+                  onClick={() => setShowSavingsBreakdown(true)}
+                  className="text-emerald-600 hover:text-emerald-800 p-1"
+                  title="Ver desglose"
+                >
+                  <Info className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* A considerar (solo si hay) */}
+          {card.cons && card.cons.length > 0 && (
+            <div className="mb-3">
+              <h4 className="font-semibold text-amber-700 text-sm mb-1">⚠️ A considerar</h4>
+              <div className="space-y-1">
+                {card.cons.slice(0, 2).map((con, idx) => (
+                  <p key={idx} className="text-xs text-amber-700 flex items-start">
+                    <span className="mr-1">•</span> {con.text || con}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* CTA */}
+          <button 
+            onClick={() => handleApplyClick(card)}
+            className={`w-full py-3 rounded-xl font-semibold transition-all ${
+              isTop 
+                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white hover:shadow-lg hover:scale-[1.02]' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            {isTop ? 'Solicitar Ahora →' : 'Ver más →'}
+          </button>
+        </div>
+      );
+    };
 
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 p-4 py-8">
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-6xl mx-auto">
           
           {/* User greeting */}
           {user && (
-            <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-2xl p-4 mb-6 text-white text-center shadow-lg">
+            <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-2xl p-4 mb-6 text-white text-center shadow-lg max-w-md mx-auto">
               <p>👋 Hola, <strong>{user.user_metadata?.name || user.email}</strong></p>
             </div>
           )}
 
           {/* Header */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-6" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+          <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-8 max-w-md mx-auto" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
             <Sparkles className="w-12 h-12 text-amber-500 mx-auto mb-3" />
             <h1 className="text-2xl font-bold text-gray-800 mb-1">
               ¡Encontramos tu match!
@@ -679,132 +824,24 @@ function App() {
             </p>
           </div>
 
-          {/* Top Match */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-violet-400 mb-6" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
-            
-            {/* Badge + Score */}
-            <div className="flex justify-between items-start mb-4">
-              <span className="bg-gradient-to-r from-violet-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                🏆 MEJOR MATCH
-              </span>
-              <div className="text-right">
-                <p className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
-                  {matchScore}%
-                </p>
-                <p className="text-xs text-gray-400">Match</p>
-              </div>
-            </div>
-
-            {/* Card Info */}
-            <div className="flex items-center mb-4">
-              <div className="text-5xl mr-4">{topMatch.image}</div>
-              <div>
-                <h2 className="text-xl font-bold text-gray-800">{topMatch.name}</h2>
-                <p className="text-gray-500">{topMatch.bank}</p>
-              </div>
-            </div>
-
-            {/* Savings */}
-            <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 p-4 rounded-xl mb-4 border border-emerald-100">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-xs text-gray-500 mb-1">💰 Ahorro anual estimado</p>
-                  <p className="text-3xl font-bold text-emerald-600">
-                    ${topMatch.personalizedSavings?.toLocaleString() || 0}
-                  </p>
-                </div>
-                <button 
-                  onClick={() => setShowSavingsBreakdown(true)}
-                  className="text-emerald-600 hover:text-emerald-800 p-1"
-                  title="Ver desglose"
-                >
-                  <Info className="w-5 h-5" />
-                </button>
-              </div>
-              <p className="text-xs text-gray-400 mt-2 italic">{LEGAL_TEXTS.savingsDisclaimer.substring(0, 100)}...</p>
-            </div>
-
-            {/* Pros */}
-            {topMatch.pros && topMatch.pros.length > 0 && (
-              <div className="space-y-2 mb-4">
-                <h3 className="font-semibold text-gray-800 text-sm">✅ A FAVOR:</h3>
-                {topMatch.pros.slice(0, 3).map((pro, idx) => (
-                  <div key={idx} className="flex items-center bg-green-50 p-2 rounded-lg">
-                    <span className="text-sm mr-2">{pro.icon}</span>
-                    <span className="text-sm text-gray-700">{pro.text}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Cons */}
-            {topMatch.cons && topMatch.cons.length > 0 && (
-              <div className="space-y-2 mb-4">
-                <h3 className="font-semibold text-gray-800 text-sm">⚠️ A CONSIDERAR:</h3>
-                {topMatch.cons.slice(0, 2).map((con, idx) => (
-                  <div key={idx} className="flex items-center bg-amber-50 p-2 rounded-lg">
-                    <span className="text-sm mr-2">{con.icon}</span>
-                    <span className="text-sm text-gray-700">{con.text}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Fees */}
-            <div className="bg-gray-50 p-4 rounded-xl mb-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <span className="text-gray-500 text-xs">Cuota de manejo</span>
-                  <p className="font-bold text-gray-800">
-                    {topMatch.fees?.annualFee === 0 
-                      ? '✨ GRATIS' 
-                      : `$${(topMatch.fees?.monthlyFee || 0).toLocaleString()}/mes`}
-                  </p>
-                </div>
-                <div>
-                  <span className="text-gray-500 text-xs">Tasa de interés</span>
-                  <p className="font-bold text-gray-800">{topMatch.rates?.interestRateEA || 'N/A'}% EA</p>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <button 
-              onClick={() => handleApplyClick(topMatch)}
-              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:scale-[1.02]"
-            >
-              Solicitar Ahora →
-            </button>
+          {/* Cards Grid - 3 columnas en desktop, 1 en móvil */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {allCards.map((card, idx) => (
+              <CardResult 
+                key={card.id} 
+                card={card} 
+                rank={idx} 
+                isTop={idx === 0}
+              />
+            ))}
           </div>
 
-          {/* Alternatives */}
-          {alternatives?.length > 0 && (
-            <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
-              <h3 className="font-bold text-gray-800 mb-4">💡 Otras opciones para ti:</h3>
-              <div className="space-y-3">
-                {alternatives.map((alt, idx) => (
-                  <div key={idx} className="border border-gray-200 rounded-xl p-4 hover:border-violet-300 transition-all">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center flex-1">
-                        <div className="text-3xl mr-3">{alt.image}</div>
-                        <div>
-                          <h4 className="font-bold text-gray-800">{alt.name}</h4>
-                          <p className="text-xs text-gray-500">{alt.bank}</p>
-                          <p className="text-xs text-green-600 font-semibold">
-                            Ahorras ${alt.personalizedSavings?.toLocaleString() || 0}/año
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right ml-3">
-                        <p className="text-2xl font-bold text-violet-600">{alt.score}%</p>
-                        <p className="text-xs text-gray-400">Match</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Disclaimer */}
+          <div className="bg-white rounded-xl p-4 shadow-md max-w-2xl mx-auto mb-6">
+            <p className="text-xs text-gray-400 text-center italic">
+              {LEGAL_TEXTS.savingsDisclaimer}
+            </p>
+          </div>
 
           <div className="text-center mb-6">
             <button onClick={resetQuiz} className="text-violet-600 hover:text-violet-800 font-medium">
