@@ -698,13 +698,27 @@ function App() {
             </div>
           </div>
 
-          {/* ¿Por qué es para ti? */}
-          {card.matchReasons && card.matchReasons.length > 0 && (
-            <div className="bg-violet-50 rounded-xl p-3 mb-3 border border-violet-100">
-              <h4 className="font-semibold text-violet-800 text-sm mb-2">💡 ¿Por qué es para ti?</h4>
+          {/* Por qué es el MEJOR MATCH (solo para el ganador) */}
+          {isTop && card.whyWinner && card.whyWinner.length > 0 && (
+            <div className="bg-gradient-to-r from-violet-100 to-cyan-100 rounded-xl p-3 mb-3 border border-violet-200">
+              <h4 className="font-semibold text-violet-800 text-sm mb-2">🏆 Le gana a las demás porque:</h4>
               <div className="space-y-1">
-                {card.matchReasons.slice(0, 3).map((reason, idx) => (
+                {card.whyWinner.map((reason, idx) => (
                   <p key={idx} className="text-xs text-violet-700 flex items-start">
+                    <span className="mr-1 text-green-600">✓</span> {reason}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Por qué considerar esta alternativa */}
+          {!isTop && card.whyConsider && card.whyConsider.length > 0 && (
+            <div className="bg-amber-50 rounded-xl p-3 mb-3 border border-amber-200">
+              <h4 className="font-semibold text-amber-800 text-sm mb-2">💡 Podría ser mejor si:</h4>
+              <div className="space-y-1">
+                {card.whyConsider.map((reason, idx) => (
+                  <p key={idx} className="text-xs text-amber-700 flex items-start">
                     <span className="mr-1">→</span> {reason}
                   </p>
                 ))}
@@ -742,7 +756,7 @@ function App() {
                 <p className="font-bold text-gray-800 text-sm">{card.rates?.interestRateEA || 'N/A'}% EA</p>
               </div>
             </div>
-            {card.requirements?.minIncome && (
+            {card.requirements?.minIncome && card.requirements.minIncome > 0 && (
               <div className="mt-2 pt-2 border-t border-gray-200 text-center">
                 <p className="text-xs text-gray-500">Ingreso mínimo</p>
                 <p className="font-semibold text-gray-700 text-sm">
@@ -840,6 +854,13 @@ function App() {
           <div className="bg-white rounded-xl p-4 shadow-md max-w-2xl mx-auto mb-6">
             <p className="text-xs text-gray-400 text-center italic">
               {LEGAL_TEXTS.savingsDisclaimer}
+            </p>
+          </div>
+
+          {/* Disclaimer de datos de bancos */}
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 max-w-2xl mx-auto mb-6">
+            <p className="text-xs text-blue-700 text-center">
+              ℹ️ Los datos mostrados (tasas, cuotas, beneficios) son obtenidos de los sitios web oficiales de cada banco y pueden variar sin previo aviso. Consulta siempre las condiciones vigentes antes de solicitar.
             </p>
           </div>
 
