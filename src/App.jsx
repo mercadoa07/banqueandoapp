@@ -744,24 +744,32 @@ function App() {
           <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
             <div className="grid grid-cols-2 gap-2 text-center">
               <div>
-                <p className="text-xs text-gray-500">Cuota</p>
+                <p className="text-xs text-gray-500">Cuota*</p>
                 <p className="font-bold text-gray-800 text-sm">
                   {card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0
-                    ? '✨ GRATIS' 
-                    : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes`}
+                    ? '✨ GRATIS*' 
+                    : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes*`}
                 </p>
+                {/* Mostrar condición para $0 si existe */}
+                {card.fees?.feeWaiverCondition && (
+                  <p className="text-[10px] text-amber-600 mt-1 leading-tight">
+                    {card.fees.feeWaiverCondition}
+                  </p>
+                )}
               </div>
               <div>
-                <p className="text-xs text-gray-500">Tasa</p>
-                <p className="font-bold text-gray-800 text-sm">{card.rates?.interestRateEA || 'N/A'}% EA</p>
+                <p className="text-xs text-gray-500">Tasa*</p>
+                <p className="font-bold text-gray-800 text-sm">{card.rates?.interestRateEA || 'N/A'}% EA*</p>
+                <p className="text-[10px] text-gray-400 mt-1">Puede variar</p>
               </div>
             </div>
             {card.requirements?.minIncome && card.requirements.minIncome > 0 && (
               <div className="mt-2 pt-2 border-t border-gray-200 text-center">
-                <p className="text-xs text-gray-500">Ingreso mínimo</p>
+                <p className="text-xs text-gray-500">Ingreso mínimo*</p>
                 <p className="font-semibold text-gray-700 text-sm">
                   ${(card.requirements.minIncome / 1000000).toFixed(1)}M
                 </p>
+                <p className="text-[10px] text-gray-400">Sujeto a estudio</p>
               </div>
             )}
           </div>
@@ -857,10 +865,17 @@ function App() {
             </p>
           </div>
 
-          {/* Disclaimer de datos de bancos */}
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 max-w-2xl mx-auto mb-6">
-            <p className="text-xs text-blue-700 text-center">
-              ℹ️ Los datos mostrados (tasas, cuotas, beneficios) son obtenidos de los sitios web oficiales de cada banco y pueden variar sin previo aviso. Consulta siempre las condiciones vigentes antes de solicitar.
+          {/* Disclaimer de datos de bancos - AGRESIVO */}
+          <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 max-w-2xl mx-auto mb-6">
+            <h4 className="font-bold text-amber-800 text-sm mb-2">⚠️ IMPORTANTE - Lee antes de solicitar:</h4>
+            <ul className="text-xs text-amber-700 space-y-1">
+              <li>• <strong>Tasas de interés:</strong> Varían mensualmente. Consulta el tarifario vigente del banco.</li>
+              <li>• <strong>Cuota de manejo $0:</strong> Casi siempre requiere cumplir condiciones (# de compras, monto mínimo, nómina, etc).</li>
+              <li>• <strong>Beneficios:</strong> Pueden cambiar sin previo aviso. Verifica términos y condiciones.</li>
+              <li>• <strong>Aprobación:</strong> Sujeta a estudio de crédito del banco.</li>
+            </ul>
+            <p className="text-[10px] text-amber-600 mt-2 italic">
+              Datos obtenidos de sitios web oficiales (Dic 2025). Banqueando no es responsable de cambios en las condiciones de los bancos.
             </p>
           </div>
 
