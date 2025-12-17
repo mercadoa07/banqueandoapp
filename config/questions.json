@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "description": "Preguntas del quiz. Cada pregunta mapea a un matchFactor.",
+  "version": "2.0",
+  "description": "Preguntas del quiz - Actualizado con mejoras de redacción",
 
   "sections": [
     {
@@ -69,10 +69,10 @@
       "required": true,
       "highlight": true,
       "options": [
-        { "value": "full", "label": "Pago el TOTAL cada mes - Nunca financio", "emoji": "💯", "tip": "Priorizaremos BENEFICIOS" },
-        { "value": "sometimes", "label": "A veces pago el total, a veces financio", "emoji": "⚖️", "tip": "Balance entre beneficios y tasa" },
-        { "value": "finance", "label": "Casi siempre financio - Pago en cuotas", "emoji": "📊", "tip": "Priorizaremos BAJA TASA" },
-        { "value": "minimum", "label": "Pago el mínimo - Uso crédito rotativo", "emoji": "🔄", "tip": "TASA es crítica para ti" }
+        { "value": "full", "label": "Pago todo el saldo cada mes", "emoji": "💯", "tip": "Priorizaremos BENEFICIOS" },
+        { "value": "sometimes", "label": "A veces pago todo, a veces pago en cuotas", "emoji": "⚖️", "tip": "Balance entre beneficios y tasa" },
+        { "value": "finance", "label": "Generalmente pago en cuotas", "emoji": "📊", "tip": "Priorizaremos BAJA TASA" },
+        { "value": "minimum", "label": "Solo pago el mínimo cada mes", "emoji": "🔄", "tip": "TASA es crítica para ti" }
       ]
     },
     {
@@ -90,7 +90,8 @@
         { "value": "services", "label": "Pagar servicios y suscripciones", "emoji": "📱" },
         { "value": "travel", "label": "Viajes (tiquetes, hoteles)", "emoji": "✈️" },
         { "value": "online", "label": "Compras internacionales / online", "emoji": "🌎" },
-        { "value": "emergency", "label": "Emergencias / respaldo financiero", "emoji": "🆘" }
+        { "value": "emergency", "label": "Emergencias / respaldo financiero", "emoji": "🆘" },
+        { "value": "balance_transfer", "label": "Compra de cartera (pasar deuda de otra tarjeta)", "emoji": "💳" }
       ]
     },
     {
@@ -148,9 +149,9 @@
       "section": "estilo_vida",
       "matchFactor": "shoppingPlaces",
       "question": "¿En dónde compras o consumes más?",
-      "subtitle": "Esto nos ayuda a encontrar las mejores alianzas",
+      "subtitle": "Selecciona hasta 8 opciones",
       "type": "multiple",
-      "max": 5,
+      "max": 8,
       "required": false,
       "categories": [
         {
@@ -160,6 +161,7 @@
             { "value": "carulla", "label": "Carulla" },
             { "value": "jumbo", "label": "Jumbo" },
             { "value": "olimpica", "label": "Olímpica" },
+            { "value": "alkosto", "label": "Alkosto" },
             { "value": "d1", "label": "D1/Ara" }
           ]
         },
@@ -168,15 +170,40 @@
           "options": [
             { "value": "falabella", "label": "Falabella" },
             { "value": "alkomprar", "label": "Alkomprar" },
+            { "value": "ktronix", "label": "Ktronix" },
             { "value": "amazon", "label": "Amazon" }
           ]
         },
         {
-          "name": "Apps/Servicios",
+          "name": "Gasolina",
+          "options": [
+            { "value": "terpel", "label": "Terpel" },
+            { "value": "primax", "label": "Primax" },
+            { "value": "mobil", "label": "Mobil" }
+          ]
+        },
+        {
+          "name": "Domicilios/Apps",
           "options": [
             { "value": "rappi", "label": "Rappi" },
-            { "value": "uber", "label": "Uber" },
-            { "value": "netflix", "label": "Streaming" }
+            { "value": "ifood", "label": "iFood" },
+            { "value": "uber", "label": "Uber" }
+          ]
+        },
+        {
+          "name": "Entretenimiento",
+          "options": [
+            { "value": "netflix", "label": "Netflix/Streaming" },
+            { "value": "spotify", "label": "Spotify" },
+            { "value": "cine_colombia", "label": "Cine Colombia" }
+          ]
+        },
+        {
+          "name": "Viajes",
+          "options": [
+            { "value": "avianca", "label": "Avianca" },
+            { "value": "latam", "label": "LATAM" },
+            { "value": "hoteles", "label": "Hoteles" }
           ]
         }
       ]
@@ -250,6 +277,8 @@
         { "value": "education", "label": "Educación", "emoji": "📚" },
         { "value": "inclusion", "label": "Inclusión financiera", "emoji": "🤝" },
         { "value": "entrepreneurship", "label": "Emprendimiento", "emoji": "🚀" },
+        { "value": "technology", "label": "Tecnología", "emoji": "💻" },
+        { "value": "social_welfare", "label": "Bienestar social", "emoji": "❤️" },
         { "value": "none", "label": "Ninguna en particular", "emoji": "➖" }
       ]
     },
