@@ -46,11 +46,13 @@ export class MatchingEngine {
     const scoredCards = eligibleCards.map(card => {
       const scoreResult = this.calculateCardScore(card, answers);
       const prosConsResult = this.calculateProsCons(card, answers);
+      const benefits = this.extractBenefits(card, answers);
       
       return {
         ...card,
         score: Math.min(Math.max(scoreResult.score, 0), this.config.scoring.maxScore),
         matchReasons: scoreResult.reasons,
+        benefits: benefits,
         pros: prosConsResult.pros,
         cons: prosConsResult.cons,
         personalizedSavings: this.calculateSavings(card, answers)
@@ -194,7 +196,7 @@ export class MatchingEngine {
         const factorPoints = (scoring.exactMatchPoints * weight * matchStrength) / 10;
         points += factorPoints;
         
-        const reasonText = this.generateMatchReason(factor, userValue, factorPoints);
+        const reasonText = this.generateMatchReason(factor, userValue, cardValues, factorPoints);
         if (reasonText) reasons.push(reasonText);
       }
     });
@@ -387,6 +389,71 @@ export class MatchingEngine {
     return path.split('.').reduce((current, key) => current?.[key], obj);
   }
 
+  /**
+   * ============================================================
+   * EXTRAER BENEFICIOS DE LA TARJETA
+   * ============================================================
+   * Genera lista de beneficios legibles para mostrar al usuario
+   */
+  extractBenefits(card, answers) {
+    const benefits = [];
+    
+    // Beneficios desde el campo benefits de la tarjeta (si existe)
+    if (card.benefits && Array.isArray(card.benefits)) {
+      benefits.push(...card.benefits.slice(0, 5));
+    }
+    
+    // Generar beneficios desde los datos de la tarjeta
+    if (benefits.length < 3) {
+      // Cuota gratis
+      if (card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0) {
+        benefits.push('✨ Sin cuota de manejo');
+      }
+      
+      // Rewards
+      if (card.rewards?.type === 'miles') {
+        const rate = card.rewards.milesPerCOP || 4000;
+        benefits.push(`✈️ Acumula 1 milla por cada $${rate.toLocaleString()} gastados`);
+      } else if (card.rewards?.type === 'cashback') {
+        const rate = card.rewards.rate || '2%';
+        benefits.push(`💰 ${rate} de cashback en compras`);
+      } else if (card.rewards?.type === 'points') {
+        benefits.push('🎁 Acumula puntos canjeables');
+      }
+      
+      // Seguros
+      if (card.perks?.travelInsurance) {
+        benefits.push('🛡️ Seguro de viaje incluido');
+      }
+      if (card.perks?.purchaseProtection) {
+        benefits.push('🛡️ Protección de compras');
+      }
+      
+      // Salas VIP
+      if (card.perks?.loungeAccess) {
+        benefits.push('👑 Acceso a salas VIP en aeropuertos');
+      }
+      
+      // Sin comisión internacional
+      if (card.fees?.foreignTransactionFee === 0) {
+        benefits.push('🌎 Sin comisión por compras internacionales');
+      }
+      
+      // App digital
+      if (card.digital?.appRating && card.digital.appRating >= 4.5) {
+        benefits.push(`📱 App excelente (${card.digital.appRating}/5)`);
+      }
+      
+      // Tasa baja
+      if (card.rates?.interestRateEA && card.rates.interestRateEA < 25) {
+        benefits.push(`📉 Tasa competitiva: ${card.rates.interestRateEA}% EA`);
+      }
+    }
+    
+    // Limitar a 5 beneficios
+    return benefits.slice(0, 5);
+  }
+
   // Verificar elegibilidad por ingresos
   checkIncomeEligibility(card, answers) {
     if (answers.income === 'skip' || !answers.income) return true;
@@ -428,21 +495,132 @@ export class MatchingEngine {
     return Math.max(Math.floor(savings), 0);
   }
 
-  // Generar razón de match legible
-  generateMatchReason(factor, value, points) {
-    const templates = {
-      interests: `Coincide con tus intereses`,
-      digitalPreference: `Experiencia digital ideal para ti`,
-      feeSensitivity: `Se ajusta a tu preferencia de cuota`,
-      paymentBehavior: `Compatible con tu forma de pago`,
-      shoppingPlaces: `Beneficios en tus lugares frecuentes`,
-      travelFreq: `Ideal para tu frecuencia de viajes`,
-      values: `Alineada con tus valores`,
-      cardUsage: `Perfecta para el uso que le darás`
+  // Generar razón de match legible y personalizada
+  generateMatchReason(factor, userValue, cardValues, points) {
+    if (points < 2) return null; // No mostrar matches débiles
+    
+    const valueLabels = {
+      // Intereses
+      travel: 'viajar',
+      sports: 'deportes',
+      entertainment: 'entretenimiento',
+      dining: 'gastronomía',
+      shopping: 'compras',
+      education: 'educación',
+      gaming: 'gaming y tecnología',
+      family: 'familia',
+      wellness: 'salud y bienestar',
+      // Digital preference
+      digital: '100% digital',
+      hybrid: 'híbrido (app + oficinas)',
+      traditional: 'atención presencial',
+      // Fee sensitivity
+      no_fee: 'sin cuota de manejo',
+      flexible: 'beneficios sobre cuota',
+      // Payment behavior
+      full: 'pagar el total cada mes',
+      sometimes: 'pago mixto',
+      finance: 'pagar en cuotas',
+      minimum: 'pago mínimo',
+      // Card usage
+      daily: 'compras diarias',
+      big_purchases: 'compras grandes',
+      services: 'servicios y suscripciones',
+      online: 'compras internacionales',
+      emergency: 'emergencias',
+      balance_transfer: 'compra de cartera',
+      // Shopping places
+      exito: 'Éxito',
+      carulla: 'Carulla',
+      jumbo: 'Jumbo',
+      olimpica: 'Olímpica',
+      falabella: 'Falabella',
+      rappi: 'Rappi',
+      avianca: 'Avianca',
+      latam: 'LATAM',
+      netflix: 'streaming',
+      spotify: 'Spotify',
+      terpel: 'Terpel',
+      // Values
+      environment: 'medio ambiente',
+      entrepreneurship: 'emprendimiento',
+      inclusion: 'inclusión financiera',
+      technology: 'tecnología',
+      social_welfare: 'bienestar social'
     };
 
-    if (points < 3) return null; // No mostrar matches débiles
-    return templates[factor] || null;
+    const templates = {
+      interests: (val) => {
+        if (Array.isArray(val)) {
+          const labels = val.map(v => valueLabels[v] || v).slice(0, 2);
+          return `Te gusta ${labels.join(' y ')} → Tiene beneficios especiales para ti`;
+        }
+        return `Te gusta ${valueLabels[val] || val} → Beneficios alineados`;
+      },
+      digitalPreference: (val) => {
+        if (val === 'digital') return 'Prefieres 100% digital → App premiada y sin filas';
+        if (val === 'hybrid') return 'Prefieres híbrido → Buena app + sucursales';
+        if (val === 'traditional') return 'Prefieres oficinas → Red amplia de sucursales';
+        return null;
+      },
+      feeSensitivity: (val) => {
+        if (val === 'no_fee') return 'Quieres sin cuota → Esta no cobra cuota de manejo';
+        if (val === 'flexible') return 'Valoras beneficios → Excelente relación costo/beneficio';
+        return null;
+      },
+      paymentBehavior: (val) => {
+        if (val === 'full') return 'Pagas el total → Maximiza beneficios y rewards';
+        if (val === 'finance' || val === 'minimum') return 'Financias compras → Tasa de interés competitiva';
+        return null;
+      },
+      shoppingPlaces: (val) => {
+        if (Array.isArray(val) && val.length > 0) {
+          const labels = val.map(v => valueLabels[v] || v).slice(0, 2);
+          return `Compras en ${labels.join(', ')} → Puntos extra en estos comercios`;
+        }
+        return null;
+      },
+      travelFreq: (val) => {
+        if (val === '6+' || val === '3-5') return 'Viajas frecuentemente → Acumula millas rápido';
+        if (val === '1-2') return 'Viajas ocasionalmente → Millas sin vencimiento';
+        return null;
+      },
+      travelPreference: (val) => {
+        if (val === 'miles') return 'Quieres millas → Programa de millas robusto';
+        if (val === 'cashback') return 'Prefieres cashback → Devolución directa a tu bolsillo';
+        if (val === 'vip') return 'Valoras experiencias → Acceso a salas VIP';
+        return null;
+      },
+      cardUsage: (val) => {
+        if (Array.isArray(val)) {
+          if (val.includes('travel')) return 'Usarás para viajes → Seguro de viaje incluido';
+          if (val.includes('online')) return 'Compras online → Sin comisión internacional';
+          if (val.includes('daily')) return 'Uso diario → Cashback en todas las compras';
+          if (val.includes('balance_transfer')) return 'Quieres compra de cartera → Tasa preferencial';
+        }
+        return null;
+      },
+      values: (val) => {
+        if (Array.isArray(val)) {
+          if (val.includes('environment')) return 'Te importa el ambiente → Tarjeta eco-friendly';
+          if (val.includes('technology')) return 'Te gusta la tecnología → Innovación constante';
+        }
+        return null;
+      },
+      team: (val) => {
+        if (val && val !== 'none') {
+          return `Hincha de ${valueLabels[val] || val} → Beneficios exclusivos para fans`;
+        }
+        return null;
+      }
+    };
+
+    const template = templates[factor];
+    if (template) {
+      return template(userValue);
+    }
+    
+    return null;
   }
 
   // Formatear valores para mostrar
