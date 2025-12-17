@@ -252,6 +252,11 @@ export async function saveQuizSession({ answers, topMatch, alternatives, timeToC
     user_name: user?.user_metadata?.full_name || user?.user_metadata?.name || null,
     user_phone: user?.user_metadata?.phone || user?.phone || null,
     
+    // Aceptación de términos legales
+    accepted_terms: user?.termsAccepted || true,
+    accepted_privacy: user?.termsAccepted || true,
+    accepted_at: user?.termsAcceptedAt || new Date().toISOString(),
+    
     // Respuestas del quiz
     answers: answers,
     
