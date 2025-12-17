@@ -1,6 +1,7 @@
 {
   "lastUpdated": "2025-12",
   "currency": "COP",
+  "dataDisclaimer": "Datos obtenidos de sitios web oficiales de cada banco. Pueden variar sin previo aviso. Última verificación: Diciembre 2025.",
   "cards": [
     {
       "id": "nu_classic",
@@ -14,38 +15,40 @@
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
-        "feeWaiverCondition": null
+        "feeWaiverCondition": "Sin condiciones - siempre $0"
       },
       "rates": {
         "interestRateEA": 24.99,
         "interestRateMV": 1.88,
-        "cashAdvanceFee": 6800
+        "cashAdvanceFee": 6800,
+        "rateDisclaimer": "Tasa puede variar. Consulta tarifario vigente."
       },
       "rewards": {
         "type": "none",
         "rate": null,
-        "description": "Sin programa de puntos tradicional"
+        "description": "Sin programa de puntos. 0% interés pagando a 1 cuota."
       },
       "benefits": [
-        "100% sin cuota de manejo permanente",
+        "Sin cuota de manejo (sin condiciones)",
         "App calificada 4.8/5",
         "0% interés pagando a 1 cuota",
         "Aprobación 100% online",
-        "Tarjetas virtuales ilimitadas",
-        "Notificaciones en tiempo real"
+        "Tarjetas virtuales ilimitadas"
       ],
       "requirements": {
         "minIncome": 0,
         "minAge": 18,
-        "creditHistory": "none"
+        "creditHistory": "none",
+        "disclaimer": "Sujeto a estudio de crédito"
       },
       "digitalExperience": {
         "appRating": 4.8,
         "fullyDigital": true,
         "virtualCard": true
       },
-      "idealFor": ["Primera tarjeta", "100% digital", "Sin cuota de manejo"],
+      "idealFor": ["Primera tarjeta", "100% digital", "Sin cuota garantizada"],
       "applyUrl": "https://nu.com.co",
+      "sourceUrl": "https://cdn.nubank.com.br/colombia/tarjeta_credito_tarifas_y_costos.pdf",
       "matchFactors": {
         "digitalPreference": ["digital"],
         "feeSensitivity": ["no_fee"],
@@ -66,27 +69,29 @@
       "fees": {
         "annualFee": 348000,
         "monthlyFee": 29000,
-        "feeWaiverCondition": null
+        "feeWaiverCondition": "No hay exoneración - siempre cobra $29K/mes"
       },
       "rates": {
         "interestRateEA": 0,
         "interestRateMV": 0,
-        "cashAdvanceFee": 0
+        "cashAdvanceFee": 0,
+        "rateDisclaimer": "0% no aplica para intereses de mora"
       },
       "rewards": {
         "type": "none",
         "rate": null,
-        "description": "Beneficio es 0% interés en todo"
+        "description": "Beneficio es 0% interés en todas las compras"
       },
       "benefits": [
         "0% interés en TODAS las compras",
         "1 avance gratis por mes",
-        "Ideal para compras a cuotas grandes"
+        "Ideal para compras grandes a cuotas"
       ],
       "requirements": {
         "minIncome": 2000000,
         "minAge": 18,
-        "creditHistory": "good"
+        "creditHistory": "good",
+        "disclaimer": "Producto en PILOTO - disponibilidad limitada"
       },
       "digitalExperience": {
         "appRating": 4.8,
@@ -95,6 +100,7 @@
       },
       "idealFor": ["Financiar compras grandes", "Pago en cuotas sin intereses"],
       "applyUrl": "https://nu.com.co",
+      "sourceUrl": "https://blog.nu.com.co/conoce-nu-control/",
       "matchFactors": {
         "digitalPreference": ["digital"],
         "paymentBehavior": ["finance", "minimum"],
@@ -114,29 +120,32 @@
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
-        "feeWaiverCondition": null
+        "feeWaiverCondition": "Sin condiciones - siempre $0"
       },
       "rates": {
-        "interestRateEA": 24.89,
-        "interestRateMV": 1.87,
-        "cashAdvanceFee": 7700
+        "interestRateEA": 28.0,
+        "interestRateMV": 2.1,
+        "cashAdvanceFee": 5900,
+        "rateDisclaimer": "Tasa variable mes a mes. Consulta rappicard.co/tasas-y-tarifas"
       },
       "rewards": {
         "type": "cashback",
-        "rate": "Hasta 5%",
-        "description": "Cashback en Rappi y aliados"
+        "rate": "1% general + 5% Travel",
+        "description": "1% cashback en todo. 5% solo en Travel de Rappi (tiquetes, hoteles, autos)",
+        "disclaimer": "5% solo aplica en botón Travel de Rappi, no en cualquier viaje"
       },
       "benefits": [
-        "Sin cuota de manejo",
-        "Hasta 4% cashback en Rappi",
+        "Sin cuota de manejo (sin condiciones)",
+        "1% cashback en todas las compras",
+        "5% cashback en Rappi Travel*",
         "Rappi Pro Black incluido",
-        "0% interés en 3, 6, 12 cuotas con aliados",
-        "15% dcto en Cabify"
+        "0% interés en aliados seleccionados"
       ],
       "requirements": {
         "minIncome": 1000000,
         "minAge": 18,
-        "creditHistory": "flexible"
+        "creditHistory": "flexible",
+        "disclaimer": "Sujeto a estudio de crédito"
       },
       "digitalExperience": {
         "appRating": 4.5,
@@ -145,6 +154,7 @@
       },
       "idealFor": ["Usuarios Rappi", "Cashback", "Delivery y apps"],
       "applyUrl": "https://rappicard.co",
+      "sourceUrl": "https://rappicard.co/tasas-y-tarifas/",
       "matchFactors": {
         "digitalPreference": ["digital"],
         "feeSensitivity": ["no_fee"],
@@ -165,29 +175,31 @@
       "fees": {
         "annualFee": 294000,
         "monthlyFee": 24500,
-        "feeWaiverCondition": "$0 primer año"
+        "feeWaiverCondition": "$0 primer año. Después según monto de compras*"
       },
       "rates": {
-        "interestRateEA": 25.02,
-        "interestRateMV": 1.88,
-        "cashAdvanceFee": 8000
+        "interestRateEA": 24.89,
+        "interestRateMV": 1.87,
+        "cashAdvanceFee": 8000,
+        "rateDisclaimer": "Tasa puede variar. Consulta tarifario BBVA."
       },
       "rewards": {
         "type": "points",
         "rate": "Puntos BBVA",
-        "description": "Acumula puntos canjeables"
+        "description": "Acumula puntos. Doble puntos en compras online."
       },
       "benefits": [
+        "$0 cuota primer año",
         "CVV dinámico (cambia cada 5 min)",
         "Sin datos impresos - máxima seguridad",
-        "0% cuota primer año",
         "Doble puntos compras online",
         "Apple Pay y Google Pay"
       ],
       "requirements": {
         "minIncome": 1000000,
         "minAge": 18,
-        "creditHistory": "flexible"
+        "creditHistory": "flexible",
+        "disclaimer": "Empleados $1M / Independientes $2M"
       },
       "digitalExperience": {
         "appRating": 4.4,
@@ -196,6 +208,7 @@
       },
       "idealFor": ["Compras online seguras", "Seguridad máxima", "Digital"],
       "applyUrl": "https://www.bbva.com.co/personas/productos/tarjetas/credito/visa/aqua.html",
+      "sourceUrl": "https://www.bbva.com.co/personas/productos/tarjetas/credito/visa/aqua.html",
       "matchFactors": {
         "digitalPreference": ["digital", "hybrid"],
         "cardUsage": ["online", "daily"],
@@ -206,36 +219,38 @@
       "id": "bbva_coral",
       "name": "BBVA Coral",
       "bank": "BBVA Colombia",
-      "franchise": "Visa",
+      "franchise": "Mastercard",
       "category": "eco",
       "tier": "classic",
       "image": "🪸",
       "color": "#FF6B6B",
       "fees": {
-        "annualFee": 0,
-        "monthlyFee": 0,
-        "feeWaiverCondition": "Gratis con nómina BBVA"
+        "annualFee": 294000,
+        "monthlyFee": 24500,
+        "feeWaiverCondition": "$0 primeros 6 meses. Después con nómina BBVA*"
       },
       "rates": {
         "interestRateEA": 25.59,
         "interestRateMV": 1.92,
-        "cashAdvanceFee": 8000
+        "cashAdvanceFee": 8000,
+        "rateDisclaimer": "Tasa puede variar. Consulta tarifario BBVA."
       },
       "rewards": {
         "type": "impact",
         "rate": "0.66%",
-        "description": "BBVA dona para restaurar corales del Caribe"
+        "description": "BBVA dona 0.66% de tu facturación a restaurar corales del Caribe"
       },
       "benefits": [
         "BBVA dona 0.66% a restauración de corales",
-        "Tarjeta eco-friendly",
-        "Sin cuota con nómina BBVA",
+        "Tarjeta eco-friendly (plástico reciclado)",
+        "$0 primeros 6 meses",
         "CVV dinámico"
       ],
       "requirements": {
         "minIncome": 1000000,
         "minAge": 18,
-        "creditHistory": "flexible"
+        "creditHistory": "flexible",
+        "disclaimer": "Empleados $1M / Independientes $2M"
       },
       "digitalExperience": {
         "appRating": 4.4,
@@ -244,6 +259,7 @@
       },
       "idealFor": ["Consumidores conscientes", "Impacto ambiental"],
       "applyUrl": "https://www.bbva.com.co",
+      "sourceUrl": "https://www.bbva.com/es/sostenibilidad/bbva-colombia-lanza-la-tarjeta-coral/",
       "matchFactors": {
         "values": ["environment"],
         "digitalPreference": ["digital", "hybrid"]
@@ -261,29 +277,31 @@
       "fees": {
         "annualFee": 347880,
         "monthlyFee": 28990,
-        "feeWaiverCondition": "3 meses gratis. $0 con 20K puntos CMR"
+        "feeWaiverCondition": "3 meses gratis. Solo cobra si usas o tienes saldo. $0 con 20K puntos."
       },
       "rates": {
         "interestRateEA": 28.96,
         "interestRateMV": 2.14,
-        "cashAdvanceFee": 9000
+        "cashAdvanceFee": 9000,
+        "rateDisclaimer": "Tasa puede variar. Consulta tarifario Falabella."
       },
       "rewards": {
         "type": "points",
         "rate": "CMR Puntos",
-        "description": "Puntos canjeables en Falabella, Homecenter, viajes"
+        "description": "Puntos en todas las compras. Doble en Falabella/Homecenter."
       },
       "benefits": [
         "Hasta 40% dcto en aliados",
         "CMR Puntos acumulables",
         "0% comisión internacional",
-        "Club Gasolina: 10% devolución",
+        "Club Gasolina: 10% cashback",
         "Dctos Makro, Cruz Verde, Cinemark"
       ],
       "requirements": {
         "minIncome": 1300000,
         "minAge": 21,
-        "creditHistory": "flexible"
+        "creditHistory": "flexible",
+        "disclaimer": "Pensionados: mayores de 35 años"
       },
       "digitalExperience": {
         "appRating": 4.2,
@@ -292,6 +310,7 @@
       },
       "idealFor": ["Compras retail", "Falabella/Homecenter", "Descuentos aliados"],
       "applyUrl": "https://www.bancofalabella.com.co/tarjetas-credito-cmr",
+      "sourceUrl": "https://www.bancofalabella.com.co/tarjetas-credito-cmr/mastercard",
       "matchFactors": {
         "shoppingPlaces": ["falabella", "exito", "carulla"],
         "interests": ["shopping", "family"],
@@ -311,29 +330,31 @@
       "fees": {
         "annualFee": 370800,
         "monthlyFee": 30900,
-        "feeWaiverCondition": "$0 si gasta $695K/mes"
+        "feeWaiverCondition": "5-6 meses gratis por internet. Después según gasto mensual*"
       },
       "rates": {
         "interestRateEA": 25.02,
         "interestRateMV": 1.88,
-        "cashAdvanceFee": 8500
+        "cashAdvanceFee": 8500,
+        "rateDisclaimer": "Tasa puede variar. Consulta bancolombia.com"
       },
       "rewards": {
         "type": "points",
-        "rate": "1 Punto x $2 USD",
-        "description": "Puntos Colombia canjeables"
+        "rate": "6 Puntos x $6,600",
+        "description": "Puntos Colombia canjeables. Vencen en 12 meses."
       },
       "benefits": [
-        "Red más grande del país",
+        "Red más grande del país (540+ oficinas)",
         "Puntos Colombia",
         "0% interés a 1 cuota",
         "Seguro protección compras $200 USD",
         "Asistencia hogar y viajes"
       ],
       "requirements": {
-        "minIncome": 1000000,
+        "minIncome": 1423500,
         "minAge": 18,
-        "creditHistory": "flexible"
+        "creditHistory": "flexible",
+        "disclaimer": "1 SMMLV. Sujeto a estudio de crédito."
       },
       "digitalExperience": {
         "appRating": 4.3,
@@ -342,6 +363,7 @@
       },
       "idealFor": ["Red amplia oficinas", "Puntos Colombia", "Banco tradicional"],
       "applyUrl": "https://www.bancolombia.com/personas/tarjetas-de-credito",
+      "sourceUrl": "https://www.bancolombia.com/personas/tarjetas-de-credito/mastercard/clasica",
       "matchFactors": {
         "digitalPreference": ["hybrid", "traditional"],
         "team": ["nacional", "medellin"],
@@ -359,29 +381,31 @@
       "color": "#ED1C24",
       "fees": {
         "annualFee": 206000,
-        "monthlyFee": 51500,
-        "feeWaiverCondition": "6 meses gratis"
+        "monthlyFee": 17167,
+        "feeWaiverCondition": "6 meses gratis. Después $0 con reto de facturación*"
       },
       "rates": {
         "interestRateEA": 28.93,
         "interestRateMV": 2.14,
-        "cashAdvanceFee": 7700
+        "cashAdvanceFee": 7700,
+        "rateDisclaimer": "Tasa 21-29% según promoción. Consulta davivienda.com"
       },
       "rewards": {
         "type": "points",
-        "rate": "1 DaviPunto x $2 USD",
-        "description": "DaviPuntos para viajes y millas"
+        "rate": "1 DaviPunto x USD $1",
+        "description": "DaviPuntos para viajes y millas Avianca"
       },
       "benefits": [
-        "DaviPuntos redimibles",
+        "DaviPuntos redimibles por millas Avianca",
         "Canje por millas Avianca",
         "Asistencia internacional $60K USD",
         "Ultrabox - casillero virtual USA"
       ],
       "requirements": {
-        "minIncome": 1300000,
+        "minIncome": 1423500,
         "minAge": 18,
-        "creditHistory": "good"
+        "creditHistory": "good",
+        "disclaimer": "1 SMMLV. Sujeto a estudio de crédito."
       },
       "digitalExperience": {
         "appRating": 4.1,
@@ -390,6 +414,7 @@
       },
       "idealFor": ["Puntos para viajes", "Compras internacionales"],
       "applyUrl": "https://www.davivienda.com/personas/tarjetas-de-credito",
+      "sourceUrl": "https://www.davivienda.com/personas/tarjetas-de-credito",
       "matchFactors": {
         "interests": ["travel", "family"],
         "digitalPreference": ["hybrid", "traditional"],
@@ -409,29 +434,32 @@
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
-        "feeWaiverCondition": "$0 con 4 compras/mes"
+        "feeWaiverCondition": "$0 con mínimo 4 compras/mes"
       },
       "rates": {
         "interestRateEA": 26.5,
         "interestRateMV": 1.98,
-        "cashAdvanceFee": 8500
+        "cashAdvanceFee": 8500,
+        "rateDisclaimer": "Tasa puede variar. Consulta scotiabankcolpatria.com"
       },
       "rewards": {
         "type": "miles",
-        "rate": "1 milla x $1 USD",
-        "description": "LifeMiles para Avianca y Star Alliance"
+        "rate": "1 milla x USD $1",
+        "description": "LifeMiles para Avianca y Star Alliance. Hasta 4,000 millas bienvenida.",
+        "disclaimer": "Millas solo por compras. No aplica avances ni consolidación."
       },
       "benefits": [
-        "Hasta 4.000 millas bienvenida",
-        "1 milla por dólar",
-        "2 millas en aliados (Terpel, Totto)",
-        "10% dcto tiquetes Avianca",
+        "Hasta 4,000 millas bienvenida",
+        "1 milla por dólar facturado",
+        "Milla extra en aliados (Terpel, Totto)",
+        "10% dcto permanente tiquetes Avianca web",
         "50% dcto salas Avianca Lounge"
       ],
       "requirements": {
         "minIncome": 2000000,
         "minAge": 21,
-        "creditHistory": "good"
+        "creditHistory": "good",
+        "disclaimer": "Sujeto a estudio de crédito Scotiabank"
       },
       "digitalExperience": {
         "appRating": 4.0,
@@ -440,6 +468,7 @@
       },
       "idealFor": ["Viajeros frecuentes", "Millas Avianca", "Vuelos gratis"],
       "applyUrl": "https://www.scotiabankcolpatria.com/personas/tarjeta-de-credito/lifemiles",
+      "sourceUrl": "https://www.scotiabankcolpatria.com/personas/tarjetas-de-credito/avianca-lifemiles-gold-visa",
       "matchFactors": {
         "interests": ["travel"],
         "travelFreq": ["3-5", "6+"],
@@ -460,29 +489,32 @@
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
-        "feeWaiverCondition": "$0 cumpliendo requisitos"
+        "feeWaiverCondition": "$0 con mínimo 12 compras/mes"
       },
       "rates": {
         "interestRateEA": 26.5,
         "interestRateMV": 1.98,
-        "cashAdvanceFee": 8500
+        "cashAdvanceFee": 8500,
+        "rateDisclaimer": "Tasa puede variar. Consulta scotiabankcolpatria.com"
       },
       "rewards": {
         "type": "miles",
-        "rate": "1.5 millas x $1 USD",
-        "description": "LifeMiles premium + estatus Elite"
+        "rate": "1 milla x USD $1",
+        "description": "LifeMiles premium. Hasta 15,000 millas bienvenida + estatus Elite.",
+        "disclaimer": "Millas solo por compras. No aplica avances ni consolidación."
       },
       "benefits": [
-        "Hasta 15.000 millas bienvenida",
-        "Estatus Silver Elite incluido",
-        "7 accesos anuales salas VIP",
+        "Hasta 15,000 millas bienvenida",
+        "Estatus Silver Elite incluido 1er año",
+        "7 accesos anuales salas VIP gratis",
         "Equipaje extra gratuito",
         "25% dcto redenciones mensuales"
       ],
       "requirements": {
         "minIncome": 6000000,
         "minAge": 21,
-        "creditHistory": "excellent"
+        "creditHistory": "excellent",
+        "disclaimer": "Segmento premium. Alto ingreso requerido."
       },
       "digitalExperience": {
         "appRating": 4.0,
@@ -491,6 +523,7 @@
       },
       "idealFor": ["Viajeros muy frecuentes", "Salas VIP", "Experiencia premium"],
       "applyUrl": "https://www.scotiabankcolpatria.com/personas/tarjeta-de-credito/lifemiles",
+      "sourceUrl": "https://www.scotiabankcolpatria.com/personas/tarjeta-de-credito/avianca-lifemiles-infinite-visa",
       "matchFactors": {
         "interests": ["travel"],
         "travelFreq": ["6+"],
