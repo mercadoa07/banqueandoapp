@@ -62,14 +62,214 @@ export class MatchingEngine {
     // PASO 6: Ordenar por score
     const sortedCards = scoredCards.sort((a, b) => b.score - a.score);
 
+    // PASO 7: Generar razones comparativas
+    const topCards = sortedCards.slice(0, 3);
+    const cardsWithComparison = this.generateComparativeReasons(topCards, answers);
+
     this.log('🏆 Resultados ordenados:', sortedCards.map(c => `${c.name}: ${c.score}`));
 
     // Devolver en formato esperado por App.jsx
     return {
-      topMatch: sortedCards[0],
-      alternatives: sortedCards.slice(1, this.config.display.showTopResults),
+      topMatch: cardsWithComparison[0],
+      alternatives: cardsWithComparison.slice(1, this.config.display.showTopResults),
       allResults: sortedCards
     };
+  }
+
+  /**
+   * ============================================================
+   * GENERAR RAZONES COMPARATIVAS
+   * ============================================================
+   * Para el mejor match: "Le gana a las demás porque..."
+   * Para alternativas: "Podría ser mejor para ti si..."
+   */
+  generateComparativeReasons(topCards, answers) {
+    if (topCards.length < 2) return topCards;
+
+    const [winner, ...alternatives] = topCards;
+    
+    // Generar razones de por qué el winner le gana a los demás
+    const winnerReasons = this.generateWinnerReasons(winner, alternatives, answers);
+    
+    // Generar razones de cuándo cada alternativa podría ser mejor
+    const alternativesWithReasons = alternatives.map(alt => ({
+      ...alt,
+      whyConsider: this.generateAlternativeReasons(alt, winner, answers)
+    }));
+
+    return [
+      { ...winner, whyWinner: winnerReasons },
+      ...alternativesWithReasons
+    ];
+  }
+
+  /**
+   * Genera razones de por qué la tarjeta ganadora le gana a las demás
+   */
+  generateWinnerReasons(winner, alternatives, answers) {
+    const reasons = [];
+    
+    // Comparar ahorro
+    const maxAltSavings = Math.max(...alternatives.map(a => a.personalizedSavings || 0));
+    if ((winner.personalizedSavings || 0) > maxAltSavings) {
+      const diff = (winner.personalizedSavings || 0) - maxAltSavings;
+      if (diff > 50000) {
+        reasons.push(`Mayor ahorro anual ($${(winner.personalizedSavings || 0).toLocaleString()} vs $${maxAltSavings.toLocaleString()} de las otras)`);
+      }
+    }
+    
+    // Comparar cuota de manejo
+    const winnerFee = winner.fees?.annualFee || 0;
+    const altsWithFee = alternatives.filter(a => (a.fees?.annualFee || 0) > winnerFee);
+    if (winnerFee === 0 && altsWithFee.length > 0) {
+      reasons.push('Sin cuota de manejo (las otras cobran)');
+    }
+    
+    // Comparar tasa de interés (si usuario financia)
+    if (['finance', 'minimum', 'sometimes'].includes(answers.paymentBehavior)) {
+      const winnerRate = winner.rates?.interestRateEA || 100;
+      const minAltRate = Math.min(...alternatives.map(a => a.rates?.interestRateEA || 100));
+      if (winnerRate < minAltRate) {
+        reasons.push(`Tasa más baja (${winnerRate}% vs ${minAltRate}% de otras)`);
+      }
+      if (winnerRate === 0) {
+        reasons.push('0% interés en todas las compras');
+      }
+    }
+    
+    // Comparar millas (si usuario viaja)
+    if (answers.interests?.includes('travel') || answers.cardUsage?.includes('travel')) {
+      if (winner.rewards?.type === 'miles') {
+        const altMilesCards = alternatives.filter(a => a.rewards?.type === 'miles');
+        if (altMilesCards.length === 0) {
+          reasons.push('Única que acumula millas entre tus opciones');
+        } else {
+          // Comparar tasa de acumulación
+          const winnerMilesRate = winner.rewards?.rate || '';
+          if (winnerMilesRate.includes('1.5')) {
+            reasons.push('Acumula 1.5 millas por dólar (más que las otras)');
+          }
+        }
+      }
+      
+      // Salas VIP
+      if (winner.benefits?.some(b => b.toLowerCase().includes('vip') || b.toLowerCase().includes('lounge'))) {
+        const altsWithVIP = alternatives.filter(a => 
+          a.benefits?.some(b => b.toLowerCase().includes('vip') || b.toLowerCase().includes('lounge'))
+        );
+        if (altsWithVIP.length === 0) {
+          reasons.push('Incluye acceso a salas VIP (las otras no)');
+        }
+      }
+    }
+    
+    // Comparar cashback (si usuario usa para compras diarias)
+    if (answers.cardUsage?.includes('daily') || answers.shoppingPlaces?.length > 0) {
+      if (winner.rewards?.type === 'cashback') {
+        const altCashbackCards = alternatives.filter(a => a.rewards?.type === 'cashback');
+        if (altCashbackCards.length === 0) {
+          reasons.push('Devuelve dinero en cada compra (cashback)');
+        }
+      }
+    }
+    
+    // Comparar experiencia digital
+    if (answers.digitalPreference === 'digital') {
+      const winnerRating = winner.digitalExperience?.appRating || 0;
+      const maxAltRating = Math.max(...alternatives.map(a => a.digitalExperience?.appRating || 0));
+      if (winnerRating > maxAltRating && winnerRating >= 4.5) {
+        reasons.push(`Mejor app del mercado (${winnerRating}/5 estrellas)`);
+      }
+      if (winner.digitalExperience?.fullyDigital && !alternatives.every(a => a.digitalExperience?.fullyDigital)) {
+        reasons.push('100% digital sin trámites presenciales');
+      }
+    }
+    
+    // Comparar requisitos de ingreso
+    const winnerMinIncome = winner.requirements?.minIncome || 0;
+    const minAltIncome = Math.min(...alternatives.map(a => a.requirements?.minIncome || 0));
+    if (winnerMinIncome < minAltIncome && winnerMinIncome === 0) {
+      reasons.push('Sin requisito de ingresos mínimos');
+    }
+
+    // Si no hay razones específicas, agregar una genérica basada en score
+    if (reasons.length === 0) {
+      const scoreDiff = winner.score - (alternatives[0]?.score || 0);
+      if (scoreDiff > 5) {
+        reasons.push('Mejor combinación general de beneficios para tu perfil');
+      }
+    }
+
+    return reasons.slice(0, 3); // Máximo 3 razones
+  }
+
+  /**
+   * Genera razones de cuándo una alternativa podría ser mejor
+   */
+  generateAlternativeReasons(alt, winner, answers) {
+    const reasons = [];
+    
+    // Cuota más baja
+    const altFee = alt.fees?.annualFee || 0;
+    const winnerFee = winner.fees?.annualFee || 0;
+    if (altFee < winnerFee) {
+      if (altFee === 0) {
+        reasons.push('Prefieres $0 en cuota de manejo');
+      } else {
+        reasons.push(`Buscas cuota más baja ($${(altFee/12).toLocaleString()}/mes)`);
+      }
+    }
+    
+    // Tasa más baja
+    const altRate = alt.rates?.interestRateEA || 100;
+    const winnerRate = winner.rates?.interestRateEA || 100;
+    if (altRate < winnerRate) {
+      if (altRate === 0) {
+        reasons.push('Financias compras y quieres 0% interés');
+      } else {
+        reasons.push(`Financias mucho y buscas menor tasa (${altRate}% EA)`);
+      }
+    }
+    
+    // Cashback vs Millas
+    if (alt.rewards?.type === 'cashback' && winner.rewards?.type !== 'cashback') {
+      reasons.push('Prefieres dinero de vuelta en vez de millas');
+    }
+    if (alt.rewards?.type === 'miles' && winner.rewards?.type !== 'miles') {
+      reasons.push('Tu prioridad son las millas para viajar');
+    }
+    
+    // Menor requisito de ingresos
+    const altMinIncome = alt.requirements?.minIncome || 0;
+    const winnerMinIncome = winner.requirements?.minIncome || 0;
+    if (altMinIncome < winnerMinIncome) {
+      reasons.push('Tus ingresos no alcanzan para la primera opción');
+    }
+    
+    // Mejor para retail/compras específicas
+    if (alt.category === 'retail' && winner.category !== 'retail') {
+      reasons.push('Compras frecuentemente en tiendas retail');
+    }
+    
+    // Digital vs tradicional
+    if (alt.digitalExperience?.fullyDigital && !winner.digitalExperience?.fullyDigital) {
+      reasons.push('Solo quieres una experiencia 100% digital');
+    }
+    if (!alt.digitalExperience?.fullyDigital && winner.digitalExperience?.fullyDigital) {
+      reasons.push('Prefieres poder ir a oficinas físicas');
+    }
+
+    // Si no hay razones, generar una basada en beneficios únicos
+    if (reasons.length === 0 && alt.benefits?.length > 0) {
+      const uniqueBenefit = alt.benefits.find(b => 
+        !winner.benefits?.some(wb => wb.toLowerCase().includes(b.toLowerCase().split(' ')[0]))
+      );
+      if (uniqueBenefit) {
+        reasons.push(`Valoras: ${uniqueBenefit}`);
+      }
+    }
+
+    return reasons.slice(0, 2); // Máximo 2 razones
   }
 
   /**
