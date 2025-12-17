@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronLeft, Sparkles, CreditCard, TrendingUp, Heart, DollarSign, Smartphone, Mail, User } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles, CreditCard, TrendingUp, Heart, DollarSign, Smartphone, Mail, User, Info, X } from 'lucide-react';
 
 // Importar configuraciones
 import cardsData from '../config/cards.json';
@@ -17,6 +17,9 @@ import {
   saveQuizState, 
   getQuizState 
 } from './lib/supabase.js';
+
+// Importar constantes legales
+import { LEGAL_TEXTS, SAVINGS_CONFIG, LEGAL_URLS } from './constants/legal.js';
 
 // Mapeo de iconos
 const iconMap = {
@@ -41,6 +44,17 @@ function App() {
   // Para tracking de tiempo
   const quizStartTime = useRef(null);
 
+  // Estados para formularios y modales
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [emailInput, setEmailInput] = useState('');
+  const [nameInput, setNameInput] = useState('');
+  const [phoneInput, setPhoneInput] = useState('');
+  const [phoneCollected, setPhoneCollected] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [showSavingsBreakdown, setShowSavingsBreakdown] = useState(false);
+  const [showApplyPopup, setShowApplyPopup] = useState(false);
+  const [selectedCardForApply, setSelectedCardForApply] = useState(null);
+
   // Filtrar preguntas visibles según condiciones
   const visibleQuestions = questionsData.questions.filter(q => {
     if (!q.showIf) return true;
@@ -52,23 +66,19 @@ function App() {
   // Inicialización
   useEffect(() => {
     const init = async () => {
-      // Inicializar engine
       const matchingEngine = createMatchingEngine(cardsData, matchingConfig);
       setEngine(matchingEngine);
       
-      // Verificar si hay sesión de usuario
       const { user: currentUser } = await getSession();
       if (currentUser) {
         setUser(currentUser);
         
-        // Recuperar estado del quiz si existe
         const savedState = getQuizState();
         if (savedState) {
           setAnswers(savedState.answers || {});
           setCurrentQuestion(savedState.currentQuestion || 0);
           quizStartTime.current = savedState.startTime || Date.now();
           
-          // Si el quiz estaba completo, calcular resultados
           if (savedState.quizCompleted) {
             setStep('calculating');
             setTimeout(() => {
@@ -90,7 +100,6 @@ function App() {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
   };
 
-  // Iniciar quiz
   const startQuiz = () => {
     quizStartTime.current = Date.now();
     setStep('quiz');
@@ -100,7 +109,6 @@ function App() {
     if (currentQuestion < visibleQuestions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
     } else {
-      // Quiz completado - ir a login
       goToLogin();
     }
   };
@@ -111,9 +119,7 @@ function App() {
     }
   };
 
-  // Ir a pantalla de login
   const goToLogin = () => {
-    // Guardar estado del quiz
     saveQuizState({
       answers,
       currentQuestion,
@@ -123,68 +129,31 @@ function App() {
     setStep('login');
   };
 
-  // Calcular resultados (con usuario)
-  const calculateResultsWithUser = async (quizAnswers, currentUser, matchingEngine) => {
-    const engineToUse = matchingEngine || engine;
-    if (!engineToUse) return;
-    
-    const answersToUse = quizAnswers || answers;
-    const matchResults = engineToUse.getTopResults(answersToUse);
-    setResults(matchResults);
-    setStep('results');
-    
-    // Calcular tiempo
-    const timeToComplete = quizStartTime.current 
-      ? Math.round((Date.now() - quizStartTime.current) / 1000)
-      : null;
-    
-    // Animar score
-    const targetScore = matchResults.topMatch.score;
-    let count = 0;
-    const interval = setInterval(() => {
-      count += 2;
-      setMatchScore(Math.min(count, targetScore));
-      if (count >= targetScore) clearInterval(interval);
-    }, 20);
-
-    // Guardar analytics
-    try {
-      await saveQuizSession({
-        answers: answersToUse,
-        topMatch: matchResults.topMatch,
-        alternatives: matchResults.alternatives,
-        timeToComplete,
-        user: currentUser
-      });
-    } catch (error) {
-      console.error('[App] Error guardando analytics:', error);
-    }
-  };
-
-  // Estados para formularios
-  const [showEmailForm, setShowEmailForm] = useState(false);
-  const [emailInput, setEmailInput] = useState('');
-  const [nameInput, setNameInput] = useState('');
-  const [phoneInput, setPhoneInput] = useState('');
-  const [phoneCollected, setPhoneCollected] = useState(false);
-
-  // Guardar teléfono y continuar a elegir método de login
   const handlePhoneSubmit = (e) => {
     e.preventDefault();
-    if (!phoneInput) return;
+    if (!phoneInput || !termsAccepted) return;
     setPhoneCollected(true);
+  };
+
+  const handleGoogleLogin = async () => {
+    sessionStorage.setItem('banqueando_phone', phoneInput);
+    sessionStorage.setItem('banqueando_terms_accepted', 'true');
+    sessionStorage.setItem('banqueando_terms_accepted_at', new Date().toISOString());
+    setIsLoading(true);
+    await signInWithGoogle();
   };
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     if (!emailInput) return;
     
-    // Crear usuario temporal con email
     const tempUser = {
       id: null,
       email: emailInput,
       phone: phoneInput,
-      user_metadata: { name: nameInput, phone: phoneInput }
+      user_metadata: { name: nameInput, phone: phoneInput },
+      termsAccepted: true,
+      termsAcceptedAt: new Date().toISOString()
     };
     
     setUser(tempUser);
@@ -195,12 +164,93 @@ function App() {
     }, 500);
   };
 
-  // Login con Google (guardamos teléfono primero)
-  const handleGoogleLogin = async () => {
-    // Guardar teléfono en sessionStorage para recuperarlo después del callback
-    sessionStorage.setItem('banqueando_phone', phoneInput);
-    setIsLoading(true);
-    await signInWithGoogle();
+  const calculateResultsWithUser = async (quizAnswers, currentUser, matchingEngine) => {
+    const engineToUse = matchingEngine || engine;
+    if (!engineToUse) return;
+    
+    const answersToUse = quizAnswers || answers;
+    const matchResults = engineToUse.getTopResults(answersToUse);
+    setResults(matchResults);
+    setStep('results');
+    
+    const timeToComplete = quizStartTime.current 
+      ? Math.round((Date.now() - quizStartTime.current) / 1000)
+      : null;
+    
+    const targetScore = matchResults.topMatch.score;
+    let count = 0;
+    const interval = setInterval(() => {
+      count += 2;
+      setMatchScore(Math.min(count, targetScore));
+      if (count >= targetScore) clearInterval(interval);
+    }, 20);
+
+    try {
+      await saveQuizSession({
+        answers: answersToUse,
+        topMatch: matchResults.topMatch,
+        alternatives: matchResults.alternatives,
+        timeToComplete,
+        user: {
+          ...currentUser,
+          termsAccepted: true,
+          termsAcceptedAt: currentUser.termsAcceptedAt || sessionStorage.getItem('banqueando_terms_accepted_at')
+        }
+      });
+    } catch (error) {
+      console.error('[App] Error guardando analytics:', error);
+    }
+  };
+
+  const handleApplyClick = (card) => {
+    setSelectedCardForApply(card);
+    setShowApplyPopup(true);
+  };
+
+  const confirmApply = () => {
+    if (selectedCardForApply?.applyUrl) {
+      window.open(selectedCardForApply.applyUrl, '_blank');
+    }
+    setShowApplyPopup(false);
+  };
+
+  // Calcular desglose de ahorro
+  const calculateSavingsBreakdown = (card) => {
+    const monthlySpend = answers.monthly_spend || 1500000;
+    const breakdown = [];
+    
+    // Ahorro en cuota de manejo
+    const cardFee = card.fees?.monthlyFee || 0;
+    const feeSavings = (SAVINGS_CONFIG.averageMonthlyFee - cardFee) * 12;
+    if (feeSavings > 0) {
+      breakdown.push({
+        concept: `Cuota de manejo ($0 vs promedio $${SAVINGS_CONFIG.averageMonthlyFee.toLocaleString()}/mes)`,
+        amount: feeSavings
+      });
+    }
+    
+    // Cashback
+    if (card.rewards?.cashbackPercent) {
+      const cashback = monthlySpend * (card.rewards.cashbackPercent / 100) * 12;
+      breakdown.push({
+        concept: `Cashback (${card.rewards.cashbackPercent}% de tu gasto)`,
+        amount: Math.round(cashback)
+      });
+    }
+    
+    // Millas
+    if (card.rewards?.milesPerCOP) {
+      const milesPerMonth = monthlySpend / card.rewards.milesPerCOP;
+      const milesPerYear = milesPerMonth * 12;
+      const mileValue = SAVINGS_CONFIG.mileValues[card.rewards.mileProgram] || SAVINGS_CONFIG.mileValues.generic;
+      const milesValue = milesPerYear * mileValue * SAVINGS_CONFIG.trm;
+      breakdown.push({
+        concept: `Millas (${Math.round(milesPerYear).toLocaleString()} millas/año)`,
+        amount: Math.round(milesValue)
+      });
+    }
+    
+    return breakdown;
   };
 
   const resetQuiz = () => {
@@ -215,99 +265,215 @@ function App() {
     setNameInput('');
     setPhoneInput('');
     setPhoneCollected(false);
+    setTermsAccepted(false);
   };
 
   const progress = ((currentQuestion + 1) / visibleQuestions.length) * 100;
   const currentQ = visibleQuestions[currentQuestion];
 
+  // ============================================================
+  // COMPONENTE: Footer Legal
+  // ============================================================
+  const LegalFooter = ({ variant = 'general' }) => (
+    <div className="mt-8 pt-6 border-t border-gray-200">
+      <div className="text-xs text-gray-400 space-y-1 text-center">
+        {variant === 'landing' ? (
+          <p>{LEGAL_TEXTS.landingFooter}</p>
+        ) : (
+          <>
+            <p>• {LEGAL_TEXTS.generalFooter.line1}</p>
+            <p>• {LEGAL_TEXTS.generalFooter.line2}</p>
+            <p>• {LEGAL_TEXTS.generalFooter.line3}</p>
+          </>
+        )}
+        <p className="mt-3 font-medium">{LEGAL_TEXTS.generalFooter.copyright}</p>
+        <div className="flex justify-center gap-4 mt-2">
+          <a href={LEGAL_URLS.privacy} className="text-violet-500 hover:text-violet-700">Política de Privacidad</a>
+          <a href={LEGAL_URLS.terms} className="text-violet-500 hover:text-violet-700">Términos y Condiciones</a>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ============================================================
+  // COMPONENTE: Modal Desglose de Ahorro
+  // ============================================================
+  const SavingsBreakdownModal = ({ card, onClose }) => {
+    const breakdown = calculateSavingsBreakdown(card);
+    const total = breakdown.reduce((sum, item) => sum + item.amount, 0);
+    
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-bold text-gray-800">{LEGAL_TEXTS.savingsBreakdown.title}</h3>
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          
+          <div className="space-y-3 mb-4">
+            {breakdown.map((item, idx) => (
+              <div key={idx} className="flex justify-between items-center py-2 border-b border-gray-100">
+                <span className="text-sm text-gray-600">{item.concept}</span>
+                <span className="font-semibold text-green-600">+${item.amount.toLocaleString()}</span>
+              </div>
+            ))}
+            <div className="flex justify-between items-center py-2 bg-green-50 px-3 rounded-lg">
+              <span className="font-bold text-gray-800">Total estimado</span>
+              <span className="font-bold text-green-600 text-lg">${total.toLocaleString()}/año</span>
+            </div>
+          </div>
+          
+          <p className="text-xs text-gray-400 italic">{LEGAL_TEXTS.savingsBreakdown.footer}</p>
+          
+          <button 
+            onClick={onClose}
+            className="w-full mt-4 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+          >
+            Entendido
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // ============================================================
+  // COMPONENTE: Modal Confirmar Aplicación
+  // ============================================================
+  const ApplyPopup = ({ card, onConfirm, onClose }) => (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+        <h3 className="text-lg font-bold text-gray-800 mb-4">{LEGAL_TEXTS.applyPopup.title}</h3>
+        
+        <div className="space-y-2 mb-6">
+          {LEGAL_TEXTS.applyPopup.items.map((item, idx) => (
+            <div key={idx} className="flex items-start">
+              <span className="text-violet-500 mr-2">•</span>
+              <span className="text-sm text-gray-600">
+                {item.replace('{bankName}', card?.bank || 'la entidad')}
+              </span>
+            </div>
+          ))}
+        </div>
+        
+        <div className="flex gap-3">
+          <button 
+            onClick={onClose}
+            className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button 
+            onClick={onConfirm}
+            className="flex-1 bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-3 rounded-xl font-medium hover:shadow-lg transition-all"
+          >
+            Continuar →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ============================================================
   // LOADING
+  // ============================================================
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center">
-        <div className="text-white text-xl">Cargando...</div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center">
+        <div className="text-gray-600 text-xl">Cargando...</div>
       </div>
     );
   }
 
+  // ============================================================
   // LANDING PAGE
+  // ============================================================
   if (step === 'landing') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center p-4">
-        <div className="max-w-2xl w-full bg-white rounded-3xl shadow-2xl p-8 md:p-12 text-center">
-          <div className="mb-6 flex justify-center">
-            <div className="bg-gradient-to-br from-purple-500 to-cyan-500 p-4 rounded-full animate-pulse">
-              <CreditCard className="w-12 h-12 text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+            
+            {/* Logo */}
+            <div className="mb-6 flex justify-center">
+              <div className="bg-gradient-to-br from-violet-600 to-cyan-500 p-4 rounded-2xl shadow-lg">
+                <CreditCard className="w-10 h-10 text-white" />
+              </div>
             </div>
+            
+            {/* Title */}
+            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+              Banqueando
+            </h1>
+            <p className="text-gray-500 font-medium mb-1">Encuentra Tu Tarjeta Ideal</p>
+            <p className="text-gray-400 text-sm mb-6">
+              En 2 minutos analizamos tu perfil y te recomendamos la tarjeta perfecta
+            </p>
+            
+            {/* Features */}
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              <div className="bg-gradient-to-br from-violet-50 to-violet-100/50 p-3 rounded-xl border border-violet-100">
+                <Sparkles className="w-6 h-6 text-violet-600 mx-auto mb-1" />
+                <p className="text-xs font-semibold text-gray-700">Personal</p>
+                <p className="text-xs text-gray-400">Para ti</p>
+              </div>
+              <div className="bg-gradient-to-br from-cyan-50 to-cyan-100/50 p-3 rounded-xl border border-cyan-100">
+                <TrendingUp className="w-6 h-6 text-cyan-600 mx-auto mb-1" />
+                <p className="text-xs font-semibold text-gray-700">Ahorra</p>
+                <p className="text-xs text-gray-400">Dinero</p>
+              </div>
+              <div className="bg-gradient-to-br from-emerald-50 to-emerald-100/50 p-3 rounded-xl border border-emerald-100">
+                <Heart className="w-6 h-6 text-emerald-600 mx-auto mb-1" />
+                <p className="text-xs font-semibold text-gray-700">Gratis</p>
+                <p className="text-xs text-gray-400">100%</p>
+              </div>
+            </div>
+            
+            {/* CTA */}
+            <button
+              onClick={startQuiz}
+              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-2xl font-semibold text-base transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+            >
+              Empezar Quiz →
+            </button>
+            
+            <p className="text-xs text-gray-400 mt-4">🔒 Tus datos son privados</p>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text text-transparent">
-            Banqueando
-          </h1>
-          <p className="text-xl text-gray-500 mb-2">Encuentra Tu Tarjeta Ideal</p>
-          
-          <p className="text-lg text-gray-600 mb-8">
-            En 2 minutos analizamos tu perfil y te recomendamos LA tarjeta perfecta para ti
-          </p>
-          
-          <div className="grid md:grid-cols-3 gap-4 mb-8 text-left">
-            <div className="bg-purple-50 p-4 rounded-xl">
-              <Sparkles className="w-8 h-8 text-purple-600 mb-2" />
-              <h3 className="font-bold text-gray-800">Personalizado</h3>
-              <p className="text-sm text-gray-600">Match basado en tu estilo de vida</p>
-            </div>
-            <div className="bg-blue-50 p-4 rounded-xl">
-              <TrendingUp className="w-8 h-8 text-blue-600 mb-2" />
-              <h3 className="font-bold text-gray-800">Ahorra dinero</h3>
-              <p className="text-sm text-gray-600">Te mostramos cuánto ahorrarás</p>
-            </div>
-            <div className="bg-cyan-50 p-4 rounded-xl">
-              <Heart className="w-8 h-8 text-cyan-600 mb-2" />
-              <h3 className="font-bold text-gray-800">100% gratis</h3>
-              <p className="text-sm text-gray-600">Sin costo, sin compromiso</p>
-            </div>
-          </div>
-          
-          <button
-            onClick={startQuiz}
-            className="bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center mx-auto"
-          >
-            Empezar Quiz
-            <ChevronRight className="ml-2 w-6 h-6" />
-          </button>
-          
-          <p className="text-xs text-gray-500 mt-6">
-            🔒 Tus datos son privados y nunca se comparten
-          </p>
+          <LegalFooter variant="landing" />
         </div>
       </div>
     );
   }
 
+  // ============================================================
   // LOGIN PAGE
+  // ============================================================
   if (step === 'login') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-2xl p-8 text-center">
-          <div className="mb-6">
-            <div className="bg-gradient-to-br from-yellow-400 to-orange-500 p-4 rounded-full inline-block">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+          
+          {/* Icon */}
+          <div className="mb-6 flex justify-center">
+            <div className="bg-gradient-to-br from-amber-400 to-orange-500 p-4 rounded-2xl shadow-lg">
               <Sparkles className="w-10 h-10 text-white" />
             </div>
           </div>
           
-          <h2 className="text-2xl md:text-3xl font-bold mb-2 text-gray-800">
-            ¡Tu resultado está listo! 🎉
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">¡Tu resultado está listo! 🎉</h2>
           
-          {/* PASO 1: Pedir teléfono primero */}
+          {/* PASO 1: Pedir teléfono + aceptar términos */}
           {!phoneCollected ? (
             <>
-              <p className="text-gray-600 mb-6">
-                Ingresa tu WhatsApp para enviarte tu resultado personalizado
+              <p className="text-gray-500 text-sm mb-6">
+                Ingresa tu WhatsApp para ver tu tarjeta ideal
               </p>
               
               <form onSubmit={handlePhoneSubmit} className="text-left">
-                <div className="mb-6">
-                  <label className="block text-gray-700 font-medium mb-2">
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
                     📱 Tu WhatsApp *
                   </label>
                   <input
@@ -316,14 +482,37 @@ function App() {
                     onChange={(e) => setPhoneInput(e.target.value)}
                     placeholder="Ej: 3001234567"
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none text-center text-lg"
+                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-violet-500 focus:outline-none text-center text-lg transition-colors"
                   />
+                </div>
+                
+                {/* Checkbox de autorización */}
+                <div className="mb-6">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                      className="mt-1 w-5 h-5 text-violet-600 rounded border-gray-300 focus:ring-violet-500"
+                    />
+                    <span className="text-xs text-gray-600">
+                      Autorizo el tratamiento de mis datos personales conforme a la{' '}
+                      <a href={LEGAL_URLS.privacy} className="text-violet-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                        Política de Privacidad
+                      </a>{' '}
+                      y acepto los{' '}
+                      <a href={LEGAL_URLS.terms} className="text-violet-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                        Términos y Condiciones
+                      </a>
+                      . Mis datos serán utilizados para enviarme resultados, recomendaciones y ofertas relacionadas con productos financieros.
+                    </span>
+                  </label>
                 </div>
                 
                 <button
                   type="submit"
-                  disabled={!phoneInput}
-                  className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={!phoneInput || !termsAccepted}
+                  className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
                 >
                   Continuar →
                 </button>
@@ -332,7 +521,7 @@ function App() {
           ) : !showEmailForm ? (
             /* PASO 2: Elegir método de login */
             <>
-              <p className="text-gray-600 mb-8">
+              <p className="text-gray-500 text-sm mb-6">
                 Ahora elige cómo quieres continuar
               </p>
               
@@ -376,14 +565,14 @@ function App() {
               </button>
             </>
           ) : (
-            /* PASO 3: Formulario de email (si no eligió Google) */
+            /* PASO 3: Formulario de email */
             <form onSubmit={handleEmailSubmit} className="text-left">
-              <p className="text-gray-600 mb-6 text-center">
+              <p className="text-gray-500 text-sm mb-6 text-center">
                 Completa tus datos para ver tu resultado
               </p>
               
               <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">
+                <label className="block text-gray-700 font-medium mb-2 text-sm">
                   <User className="w-4 h-4 inline mr-2" />
                   Tu nombre
                 </label>
@@ -392,12 +581,12 @@ function App() {
                   value={nameInput}
                   onChange={(e) => setNameInput(e.target.value)}
                   placeholder="Ej: Juan Pérez"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-violet-500 focus:outline-none"
                 />
               </div>
               
-              <div className="mb-6">
-                <label className="block text-gray-700 font-medium mb-2">
+              <div className="mb-4">
+                <label className="block text-gray-700 font-medium mb-2 text-sm">
                   <Mail className="w-4 h-4 inline mr-2" />
                   Tu email *
                 </label>
@@ -407,7 +596,7 @@ function App() {
                   onChange={(e) => setEmailInput(e.target.value)}
                   placeholder="tu@email.com"
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:outline-none"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-violet-500 focus:outline-none"
                 />
               </div>
               
@@ -420,7 +609,7 @@ function App() {
               <button
                 type="submit"
                 disabled={!emailInput}
-                className="w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
               >
                 Ver mi resultado →
               </button>
@@ -436,93 +625,113 @@ function App() {
           )}
           
           <p className="text-xs text-gray-400 mt-6">
-            🔒 Solo usaremos tu info para enviarte tu resultado y ofertas relevantes
+            🔒 Tus datos están protegidos
           </p>
         </div>
       </div>
     );
   }
 
+  // ============================================================
   // CALCULATING PAGE
+  // ============================================================
   if (step === 'calculating') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 flex items-center justify-center p-4">
-        <div className="text-center text-white">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
+        <div className="text-center">
           <div className="mb-6">
-            <Sparkles className="w-16 h-16 mx-auto animate-pulse" />
+            <div className="bg-gradient-to-br from-violet-600 to-cyan-500 p-4 rounded-2xl shadow-lg inline-block">
+              <Sparkles className="w-12 h-12 text-white animate-pulse" />
+            </div>
           </div>
-          <h2 className="text-2xl font-bold mb-2">Analizando tu perfil...</h2>
-          <p className="text-white/80">Encontrando tu tarjeta ideal</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Analizando tu perfil...</h2>
+          <p className="text-gray-500">Encontrando tu tarjeta ideal</p>
         </div>
       </div>
     );
   }
 
+  // ============================================================
   // RESULTS PAGE
+  // ============================================================
   if (step === 'results' && results) {
     const { topMatch, alternatives } = results;
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 p-4 py-8">
-        <div className="max-w-4xl mx-auto">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 p-4 py-8">
+        <div className="max-w-lg mx-auto">
+          
           {/* User greeting */}
           {user && (
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6 text-white text-center">
+            <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-2xl p-4 mb-6 text-white text-center shadow-lg">
               <p>👋 Hola, <strong>{user.user_metadata?.name || user.email}</strong></p>
             </div>
           )}
 
           {/* Header */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8 mb-6 text-center">
-            <Sparkles className="w-16 h-16 text-yellow-500 mx-auto mb-4 animate-pulse" />
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">
-              ¡Encontramos tu match perfecto!
+          <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-6" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+            <Sparkles className="w-12 h-12 text-amber-500 mx-auto mb-3" />
+            <h1 className="text-2xl font-bold text-gray-800 mb-1">
+              ¡Encontramos tu match!
             </h1>
-            <p className="text-gray-600">
-              Analizamos {cardsData.cards.length} tarjetas basado en tu perfil
+            <p className="text-gray-500 text-sm">
+              Analizamos {cardsData.cards.length} tarjetas para ti
             </p>
           </div>
 
           {/* Top Match */}
-          <div className="bg-white rounded-3xl shadow-2xl p-8 mb-6 border-4 border-yellow-400">
-            <div className="flex items-center justify-between mb-6">
-              <span className="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-sm font-bold">
-                🏆 TU MEJOR MATCH
+          <div className="bg-white rounded-2xl p-6 shadow-lg border-2 border-violet-400 mb-6" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+            
+            {/* Badge + Score */}
+            <div className="flex justify-between items-start mb-4">
+              <span className="bg-gradient-to-r from-violet-600 to-cyan-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                🏆 MEJOR MATCH
               </span>
               <div className="text-right">
-                <div className="text-5xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text">
+                <p className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
                   {matchScore}%
-                </div>
-                <div className="text-sm text-gray-500">Compatibilidad</div>
+                </p>
+                <p className="text-xs text-gray-400">Match</p>
               </div>
             </div>
 
-            <div className="flex items-center mb-6">
-              <div className="text-7xl mr-4">{topMatch.image}</div>
+            {/* Card Info */}
+            <div className="flex items-center mb-4">
+              <div className="text-5xl mr-4">{topMatch.image}</div>
               <div>
-                <h2 className="text-3xl font-bold text-gray-800">{topMatch.name}</h2>
-                <p className="text-gray-600 text-lg">{topMatch.bank}</p>
+                <h2 className="text-xl font-bold text-gray-800">{topMatch.name}</h2>
+                <p className="text-gray-500">{topMatch.bank}</p>
               </div>
             </div>
 
             {/* Savings */}
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl mb-6">
-              <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">💰 Ahorro anual estimado para TI</p>
-                <p className="text-5xl font-bold text-green-600 mb-2">
-                  ${topMatch.personalizedSavings?.toLocaleString() || 0}
-                </p>
+            <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 p-4 rounded-xl mb-4 border border-emerald-100">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">💰 Ahorro anual estimado</p>
+                  <p className="text-3xl font-bold text-emerald-600">
+                    ${topMatch.personalizedSavings?.toLocaleString() || 0}
+                  </p>
+                </div>
+                <button 
+                  onClick={() => setShowSavingsBreakdown(true)}
+                  className="text-emerald-600 hover:text-emerald-800 p-1"
+                  title="Ver desglose"
+                >
+                  <Info className="w-5 h-5" />
+                </button>
               </div>
+              <p className="text-xs text-gray-400 mt-2 italic">{LEGAL_TEXTS.savingsDisclaimer.substring(0, 100)}...</p>
             </div>
 
             {/* Pros */}
             {topMatch.pros && topMatch.pros.length > 0 && (
               <div className="space-y-2 mb-4">
-                <h3 className="font-bold text-gray-800 text-lg">✅ A FAVOR:</h3>
-                {topMatch.pros.map((pro, idx) => (
-                  <div key={idx} className="flex items-start bg-green-50 p-3 rounded-lg">
-                    <span className="text-xl mr-3">{pro.icon}</span>
-                    <span className="text-gray-700">{pro.text}</span>
+                <h3 className="font-semibold text-gray-800 text-sm">✅ A FAVOR:</h3>
+                {topMatch.pros.slice(0, 3).map((pro, idx) => (
+                  <div key={idx} className="flex items-center bg-green-50 p-2 rounded-lg">
+                    <span className="text-sm mr-2">{pro.icon}</span>
+                    <span className="text-sm text-gray-700">{pro.text}</span>
                   </div>
                 ))}
               </div>
@@ -531,80 +740,64 @@ function App() {
             {/* Cons */}
             {topMatch.cons && topMatch.cons.length > 0 && (
               <div className="space-y-2 mb-4">
-                <h3 className="font-bold text-gray-800 text-lg">⚠️ A CONSIDERAR:</h3>
-                {topMatch.cons.map((con, idx) => (
-                  <div key={idx} className="flex items-start bg-yellow-50 p-3 rounded-lg">
-                    <span className="text-xl mr-3">{con.icon}</span>
-                    <span className="text-gray-700">{con.text}</span>
+                <h3 className="font-semibold text-gray-800 text-sm">⚠️ A CONSIDERAR:</h3>
+                {topMatch.cons.slice(0, 2).map((con, idx) => (
+                  <div key={idx} className="flex items-center bg-amber-50 p-2 rounded-lg">
+                    <span className="text-sm mr-2">{con.icon}</span>
+                    <span className="text-sm text-gray-700">{con.text}</span>
                   </div>
                 ))}
               </div>
             )}
 
-            {/* Benefits */}
-            <div className="space-y-3 mb-6">
-              <h3 className="font-bold text-gray-800 text-lg">✨ BENEFICIOS:</h3>
-              {topMatch.benefits?.slice(0, 4).map((benefit, idx) => (
-                <div key={idx} className="flex items-start bg-purple-50 p-3 rounded-lg">
-                  <div className="bg-purple-600 rounded-full p-1 mr-3 mt-1">
-                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <span className="text-gray-700">{benefit}</span>
-                </div>
-              ))}
-            </div>
-
             {/* Fees */}
-            <div className="bg-gray-50 p-5 rounded-xl mb-6">
+            <div className="bg-gray-50 p-4 rounded-xl mb-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="text-gray-600 text-sm">Cuota de manejo</span>
-                  <p className="font-bold text-gray-800 text-lg">
+                  <span className="text-gray-500 text-xs">Cuota de manejo</span>
+                  <p className="font-bold text-gray-800">
                     {topMatch.fees?.annualFee === 0 
                       ? '✨ GRATIS' 
                       : `$${(topMatch.fees?.monthlyFee || 0).toLocaleString()}/mes`}
                   </p>
                 </div>
                 <div>
-                  <span className="text-gray-600 text-sm">Tasa de interés</span>
-                  <p className="font-bold text-gray-800 text-lg">{topMatch.rates?.interestRateEA}% EA</p>
+                  <span className="text-gray-500 text-xs">Tasa de interés</span>
+                  <p className="font-bold text-gray-800">{topMatch.rates?.interestRateEA || 'N/A'}% EA</p>
                 </div>
               </div>
             </div>
 
-            <a 
-              href={topMatch.applyUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="block w-full bg-gradient-to-r from-purple-600 to-cyan-600 text-white py-5 rounded-2xl font-bold text-xl text-center hover:shadow-2xl transition-all"
+            {/* CTA */}
+            <button 
+              onClick={() => handleApplyClick(topMatch)}
+              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-xl font-semibold text-lg transition-all hover:shadow-lg hover:scale-[1.02]"
             >
-              Aplicar Ahora →
-            </a>
+              Solicitar Ahora →
+            </button>
           </div>
 
           {/* Alternatives */}
           {alternatives?.length > 0 && (
-            <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
-              <h3 className="font-bold text-gray-800 mb-4 text-lg">💡 Otras opciones para ti:</h3>
-              <div className="space-y-4">
+            <div className="bg-white rounded-2xl p-6 shadow-lg mb-6">
+              <h3 className="font-bold text-gray-800 mb-4">💡 Otras opciones para ti:</h3>
+              <div className="space-y-3">
                 {alternatives.map((alt, idx) => (
-                  <div key={idx} className="border-2 border-gray-200 rounded-xl p-4 hover:border-purple-400 transition-all">
+                  <div key={idx} className="border border-gray-200 rounded-xl p-4 hover:border-violet-300 transition-all">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center flex-1">
-                        <div className="text-4xl mr-4">{alt.image}</div>
+                        <div className="text-3xl mr-3">{alt.image}</div>
                         <div>
-                          <h4 className="font-bold text-gray-800 text-lg">{alt.name}</h4>
-                          <p className="text-sm text-gray-500">{alt.bank}</p>
-                          <p className="text-sm text-green-600 font-semibold">
+                          <h4 className="font-bold text-gray-800">{alt.name}</h4>
+                          <p className="text-xs text-gray-500">{alt.bank}</p>
+                          <p className="text-xs text-green-600 font-semibold">
                             Ahorras ${alt.personalizedSavings?.toLocaleString() || 0}/año
                           </p>
                         </div>
                       </div>
-                      <div className="text-right ml-4">
-                        <div className="text-3xl font-bold text-purple-600">{alt.score}%</div>
-                        <div className="text-xs text-gray-500">Match</div>
+                      <div className="text-right ml-3">
+                        <p className="text-2xl font-bold text-violet-600">{alt.score}%</p>
+                        <p className="text-xs text-gray-400">Match</p>
                       </div>
                     </div>
                   </div>
@@ -613,52 +806,73 @@ function App() {
             </div>
           )}
 
-          <div className="text-center">
-            <button onClick={resetQuiz} className="text-white hover:underline font-medium">
+          <div className="text-center mb-6">
+            <button onClick={resetQuiz} className="text-violet-600 hover:text-violet-800 font-medium">
               ← Volver a empezar
             </button>
           </div>
+          
+          <LegalFooter />
         </div>
+
+        {/* Modales */}
+        {showSavingsBreakdown && (
+          <SavingsBreakdownModal 
+            card={topMatch} 
+            onClose={() => setShowSavingsBreakdown(false)} 
+          />
+        )}
+        
+        {showApplyPopup && (
+          <ApplyPopup 
+            card={selectedCardForApply}
+            onConfirm={confirmApply}
+            onClose={() => setShowApplyPopup(false)}
+          />
+        )}
       </div>
     );
   }
 
+  // ============================================================
   // QUIZ PAGE
+  // ============================================================
   if (!currentQ) return null;
 
   const IconComponent = iconMap[questionsData.sections.find(s => s.id === currentQ.section)?.icon] || CreditCard;
   const sectionName = questionsData.sections.find(s => s.id === currentQ.section)?.name || '';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-500 p-4 py-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 p-4 py-8">
+      <div className="max-w-lg mx-auto">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+          
           {/* Progress Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-cyan-600 p-6">
-            <div className="flex justify-between items-center mb-4">
+          <div className="bg-gradient-to-r from-violet-600 to-cyan-500 p-5">
+            <div className="flex justify-between items-center mb-3">
               <div className="flex items-center">
-                <IconComponent className="w-6 h-6 text-white mr-2" />
-                <h2 className="text-white font-bold text-lg">{sectionName}</h2>
+                <IconComponent className="w-5 h-5 text-white mr-2" />
+                <span className="text-white font-medium text-sm">{sectionName}</span>
               </div>
-              <span className="text-white text-sm font-semibold bg-white bg-opacity-20 px-3 py-1 rounded-full">
+              <span className="text-white/70 text-sm bg-white/20 px-3 py-1 rounded-full">
                 {currentQuestion + 1} / {visibleQuestions.length}
               </span>
             </div>
-            <div className="bg-white bg-opacity-30 rounded-full h-3">
+            <div className="bg-white/20 rounded-full h-2">
               <div
-                className="bg-white h-3 rounded-full transition-all duration-500"
+                className="bg-white h-2 rounded-full transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
 
           {/* Question Content */}
-          <div className="p-8">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
+          <div className="p-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
               {currentQ.question}
             </h3>
             {currentQ.subtitle && (
-              <p className="text-gray-600 mb-6 text-lg">{currentQ.subtitle}</p>
+              <p className="text-gray-500 text-sm mb-5">{currentQ.subtitle}</p>
             )}
 
             {/* Single Choice */}
@@ -668,25 +882,25 @@ function App() {
                   <button
                     key={option.value}
                     onClick={() => handleAnswer(currentQ.id, option.value)}
-                    className={`w-full p-5 rounded-xl border-2 text-left transition-all hover:border-purple-400 ${
+                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
                       answers[currentQ.id] === option.value
-                        ? 'border-purple-600 bg-purple-50 shadow-md'
-                        : 'border-gray-200 hover:bg-gray-50'
+                        ? 'border-violet-500 bg-gradient-to-r from-violet-50 to-cyan-50 shadow-md'
+                        : 'border-gray-100 hover:border-violet-300 hover:bg-violet-50/50'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center flex-1">
-                        {option.emoji && <span className="text-2xl mr-3">{option.emoji}</span>}
+                        {option.emoji && <span className="text-xl mr-3">{option.emoji}</span>}
                         <div>
-                          <span className="font-semibold text-gray-800 block">{option.label}</span>
+                          <span className="font-medium text-gray-700 block">{option.label}</span>
                           {option.tip && answers[currentQ.id] === option.value && (
-                            <span className="text-sm text-purple-600 mt-1 block">💡 {option.tip}</span>
+                            <span className="text-xs text-violet-600 mt-1 block">💡 {option.tip}</span>
                           )}
                         </div>
                       </div>
                       {answers[currentQ.id] === option.value && (
-                        <div className="bg-purple-600 rounded-full p-2 ml-3">
-                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                        <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full p-1 ml-3">
+                          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         </div>
@@ -716,20 +930,20 @@ function App() {
                         }
                       }}
                       disabled={!canSelect && !isSelected}
-                      className={`w-full p-5 rounded-xl border-2 text-left transition-all ${
+                      className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
                         isSelected
-                          ? 'border-purple-600 bg-purple-50 shadow-md'
-                          : 'border-gray-200 hover:bg-gray-50 hover:border-purple-300'
+                          ? 'border-violet-500 bg-gradient-to-r from-violet-50 to-cyan-50 shadow-md'
+                          : 'border-gray-100 hover:border-violet-300 hover:bg-violet-50/50'
                       } ${!canSelect && !isSelected ? 'opacity-40 cursor-not-allowed' : ''}`}
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <span className="text-2xl mr-3">{option.emoji}</span>
-                          <span className="font-semibold text-gray-800">{option.label}</span>
+                          <span className="text-xl mr-3">{option.emoji}</span>
+                          <span className="font-medium text-gray-700">{option.label}</span>
                         </div>
                         {isSelected && (
-                          <div className="bg-purple-600 rounded-full p-2">
-                            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full p-1">
+                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
                           </div>
@@ -738,19 +952,19 @@ function App() {
                     </button>
                   );
                 })}
-                <p className="text-sm text-gray-500 mt-4 text-center">
-                  Seleccionadas: <span className="font-bold text-purple-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
+                <p className="text-sm text-gray-400 text-center mt-3">
+                  Seleccionadas: <span className="font-semibold text-violet-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
                 </p>
               </div>
             )}
 
             {/* Multiple with Categories */}
             {currentQ.type === 'multiple' && currentQ.categories && (
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {currentQ.categories.map((category, catIdx) => (
                   <div key={catIdx}>
-                    <h4 className="font-bold text-gray-700 mb-3 text-sm uppercase">{category.name}</h4>
-                    <div className="grid grid-cols-2 gap-3">
+                    <h4 className="font-semibold text-gray-600 mb-2 text-sm">{category.name}</h4>
+                    <div className="grid grid-cols-2 gap-2">
                       {category.options.map((option) => {
                         const selected = answers[currentQ.id] || [];
                         const isSelected = selected.includes(option.value);
@@ -767,32 +981,32 @@ function App() {
                               }
                             }}
                             disabled={!canSelect && !isSelected}
-                            className={`p-4 rounded-lg border-2 text-center transition-all font-medium ${
+                            className={`p-3 rounded-lg border-2 text-center transition-all text-sm font-medium ${
                               isSelected
-                                ? 'border-purple-600 bg-purple-50'
-                                : 'border-gray-200 hover:border-purple-300'
+                                ? 'border-violet-500 bg-violet-50 text-violet-700'
+                                : 'border-gray-200 hover:border-violet-300 text-gray-600'
                             } ${!canSelect && !isSelected ? 'opacity-40' : ''}`}
                           >
                             {option.label}
-                            {isSelected && <span className="ml-2">✓</span>}
+                            {isSelected && <span className="ml-1">✓</span>}
                           </button>
                         );
                       })}
                     </div>
                   </div>
                 ))}
-                <p className="text-sm text-gray-500 text-center bg-purple-50 p-3 rounded-lg">
-                  Seleccionadas: <span className="font-bold text-purple-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
+                <p className="text-sm text-gray-400 text-center bg-violet-50 p-2 rounded-lg">
+                  Seleccionadas: <span className="font-semibold text-violet-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
                 </p>
               </div>
             )}
 
             {/* Slider */}
             {currentQ.type === 'slider' && (
-              <div className="space-y-6">
-                <div className="bg-gradient-to-r from-purple-50 to-cyan-50 p-6 rounded-2xl text-center">
-                  <p className="text-sm text-gray-600 mb-2">Tu gasto mensual</p>
-                  <p className="text-5xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-cyan-600 bg-clip-text">
+              <div className="space-y-5">
+                <div className="bg-gradient-to-r from-violet-50 to-cyan-50 p-5 rounded-xl text-center border border-violet-100">
+                  <p className="text-sm text-gray-500 mb-1">Tu gasto mensual</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
                     ${((answers[currentQ.id] || currentQ.defaultValue) / 1000000).toFixed(1)}M
                   </p>
                 </div>
@@ -805,10 +1019,10 @@ function App() {
                   onChange={(e) => handleAnswer(currentQ.id, parseInt(e.target.value))}
                   className="w-full h-3 rounded-lg appearance-none cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, rgb(147 51 234) 0%, rgb(6 182 212) ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) 100%)`
+                    background: `linear-gradient(to right, rgb(124 58 237) 0%, rgb(6 182 212) ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) 100%)`
                   }}
                 />
-                <div className="flex justify-between text-sm text-gray-500">
+                <div className="flex justify-between text-xs text-gray-400">
                   <span>$200K</span>
                   <span>$10M+</span>
                 </div>
@@ -817,14 +1031,14 @@ function App() {
           </div>
 
           {/* Navigation */}
-          <div className="p-6 bg-gray-50 flex justify-between items-center">
+          <div className="p-5 bg-gray-50 flex justify-between items-center">
             <button
               onClick={prevQuestion}
               disabled={currentQuestion === 0}
-              className={`flex items-center px-6 py-3 rounded-xl font-bold transition-all ${
+              className={`flex items-center px-4 py-2 rounded-lg font-medium transition-all ${
                 currentQuestion === 0
-                  ? 'text-gray-400 cursor-not-allowed'
-                  : 'text-purple-600 hover:bg-purple-100'
+                  ? 'text-gray-300 cursor-not-allowed'
+                  : 'text-gray-600 hover:bg-gray-200'
               }`}
             >
               <ChevronLeft className="w-5 h-5 mr-1" />
@@ -833,10 +1047,10 @@ function App() {
 
             <button
               onClick={nextQuestion}
-              className="flex items-center px-8 py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-purple-600 to-cyan-600 text-white hover:shadow-2xl transition-all transform hover:scale-105"
+              className="flex items-center px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-violet-600 to-cyan-500 text-white transition-all hover:shadow-lg hover:scale-[1.02]"
             >
               {currentQuestion === visibleQuestions.length - 1 ? '✨ Ver Resultados' : 'Siguiente'}
-              <ChevronRight className="w-6 h-6 ml-2" />
+              <ChevronRight className="w-5 h-5 ml-1" />
             </button>
           </div>
         </div>
