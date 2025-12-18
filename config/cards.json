@@ -69,23 +69,23 @@
       "fees": {
         "annualFee": 348000,
         "monthlyFee": 29000,
-        "feeWaiverCondition": "No hay exoneración - siempre cobra $29K/mes"
+        "feeWaiverCondition": "Cobra $29K/mes siempre (no hay exoneración)"
       },
       "rates": {
         "interestRateEA": 0,
         "interestRateMV": 0,
         "cashAdvanceFee": 0,
-        "rateDisclaimer": "0% no aplica para intereses de mora"
+        "rateDisclaimer": "0% solo en comercios aliados con Mercado Pago. Verificar condiciones."
       },
       "rewards": {
         "type": "none",
         "rate": null,
-        "description": "Beneficio es 0% interés en todas las compras"
+        "description": "0% interés en comercios aliados con Mercado Pago"
       },
       "benefits": [
-        "0% interés en TODAS las compras",
+        "0% interés en comercios aliados*",
         "1 avance gratis por mes",
-        "Ideal para compras grandes a cuotas"
+        "*Solo aplica en transacciones Mercado Pago"
       ],
       "requirements": {
         "minIncome": 2000000,
@@ -98,7 +98,7 @@
         "fullyDigital": true,
         "virtualCard": true
       },
-      "idealFor": ["Financiar compras grandes", "Pago en cuotas sin intereses"],
+      "idealFor": ["Compras en Mercado Pago", "Comercios aliados"],
       "applyUrl": "https://nu.com.co",
       "sourceUrl": "https://blog.nu.com.co/conoce-nu-control/",
       "matchFactors": {
@@ -126,20 +126,20 @@
         "interestRateEA": 28.0,
         "interestRateMV": 2.1,
         "cashAdvanceFee": 5900,
-        "rateDisclaimer": "Tasa variable mes a mes. Consulta rappicard.co/tasas-y-tarifas"
+        "rateDisclaimer": "⚠️ Tasa VARIABLE mes a mes. Consulta rappicard.co/tasas-y-tarifas"
       },
       "rewards": {
         "type": "cashback",
-        "rate": "1% general + 5% Travel",
-        "description": "1% cashback en todo. 5% solo en Travel de Rappi (tiquetes, hoteles, autos)",
-        "disclaimer": "5% solo aplica en botón Travel de Rappi, no en cualquier viaje"
+        "rate": "1% general",
+        "description": "1% cashback en todo. ⚠️ 5% SOLO en botón Travel de Rappi (no en cualquier viaje)",
+        "disclaimer": "5% solo aplica comprando en la sección Travel DENTRO de la app Rappi"
       },
       "benefits": [
         "Sin cuota de manejo (sin condiciones)",
         "1% cashback en todas las compras",
-        "5% cashback en Rappi Travel*",
-        "Rappi Pro Black incluido",
-        "0% interés en aliados seleccionados"
+        "5% cashback SOLO en Rappi Travel*",
+        "*No aplica en agencias externas",
+        "2.5% comisión compras internacionales"
       ],
       "requirements": {
         "minIncome": 1000000,
@@ -152,7 +152,7 @@
         "fullyDigital": true,
         "virtualCard": true
       },
-      "idealFor": ["Usuarios Rappi", "Cashback", "Delivery y apps"],
+      "idealFor": ["Usuarios Rappi", "Cashback 1%", "Sin cuota"],
       "applyUrl": "https://rappicard.co",
       "sourceUrl": "https://rappicard.co/tasas-y-tarifas/",
       "matchFactors": {
@@ -175,7 +175,7 @@
       "fees": {
         "annualFee": 294000,
         "monthlyFee": 24500,
-        "feeWaiverCondition": "$0 primer año. Después según monto de compras*"
+        "feeWaiverCondition": "$0 SOLO primer año. Después $24,500/mes"
       },
       "rates": {
         "interestRateEA": 24.89,
@@ -189,11 +189,11 @@
         "description": "Acumula puntos. Doble puntos en compras online."
       },
       "benefits": [
-        "$0 cuota primer año",
-        "CVV dinámico (cambia cada 5 min)",
-        "Sin datos impresos - máxima seguridad",
+        "$0 cuota SOLO primer año",
+        "CVV dinámico (máxima seguridad)",
+        "Sin datos impresos en tarjeta",
         "Doble puntos compras online",
-        "Apple Pay y Google Pay"
+        "Después año 1: $24,500/mes"
       ],
       "requirements": {
         "minIncome": 1000000,
@@ -206,7 +206,7 @@
         "fullyDigital": true,
         "virtualCard": true
       },
-      "idealFor": ["Compras online seguras", "Seguridad máxima", "Digital"],
+      "idealFor": ["Compras online seguras", "Primer año sin cuota"],
       "applyUrl": "https://www.bbva.com.co/personas/productos/tarjetas/credito/visa/aqua.html",
       "sourceUrl": "https://www.bbva.com.co/personas/productos/tarjetas/credito/visa/aqua.html",
       "matchFactors": {
@@ -227,7 +227,7 @@
       "fees": {
         "annualFee": 294000,
         "monthlyFee": 24500,
-        "feeWaiverCondition": "$0 primeros 6 meses. Después con nómina BBVA*"
+        "feeWaiverCondition": "$0 SOLO primeros 6 meses. Después $24,500/mes"
       },
       "rates": {
         "interestRateEA": 25.59,
@@ -241,10 +241,10 @@
         "description": "BBVA dona 0.66% de tu facturación a restaurar corales del Caribe"
       },
       "benefits": [
-        "BBVA dona 0.66% a restauración de corales",
-        "Tarjeta eco-friendly (plástico reciclado)",
-        "$0 primeros 6 meses",
-        "CVV dinámico"
+        "$0 cuota SOLO primeros 6 meses",
+        "BBVA dona 0.66% a corales",
+        "Tarjeta eco (plástico reciclado)",
+        "Después mes 7: $24,500/mes"
       ],
       "requirements": {
         "minIncome": 1000000,
@@ -257,7 +257,7 @@
         "fullyDigital": true,
         "virtualCard": true
       },
-      "idealFor": ["Consumidores conscientes", "Impacto ambiental"],
+      "idealFor": ["Impacto ambiental", "6 meses sin cuota"],
       "applyUrl": "https://www.bbva.com.co",
       "sourceUrl": "https://www.bbva.com/es/sostenibilidad/bbva-colombia-lanza-la-tarjeta-coral/",
       "matchFactors": {
@@ -330,7 +330,7 @@
       "fees": {
         "annualFee": 370800,
         "monthlyFee": 30900,
-        "feeWaiverCondition": "5-6 meses gratis por internet. Después según gasto mensual*"
+        "feeWaiverCondition": "5-6 meses gratis (internet). Después $0 SOLO si gastas >$695K/mes"
       },
       "rates": {
         "interestRateEA": 25.02,
@@ -344,11 +344,11 @@
         "description": "Puntos Colombia canjeables. Vencen en 12 meses."
       },
       "benefits": [
-        "Red más grande del país (540+ oficinas)",
+        "5-6 meses gratis por internet",
+        "$0 después SOLO con >$695K/mes gasto",
         "Puntos Colombia",
-        "0% interés a 1 cuota",
-        "Seguro protección compras $200 USD",
-        "Asistencia hogar y viajes"
+        "Red más grande (540+ oficinas)",
+        "Si no cumples: $30,900/mes"
       ],
       "requirements": {
         "minIncome": 1423500,
@@ -361,7 +361,7 @@
         "fullyDigital": false,
         "virtualCard": true
       },
-      "idealFor": ["Red amplia oficinas", "Puntos Colombia", "Banco tradicional"],
+      "idealFor": ["Red amplia oficinas", "Alto gasto mensual"],
       "applyUrl": "https://www.bancolombia.com/personas/tarjetas-de-credito",
       "sourceUrl": "https://www.bancolombia.com/personas/tarjetas-de-credito/mastercard/clasica",
       "matchFactors": {
@@ -382,7 +382,7 @@
       "fees": {
         "annualFee": 206000,
         "monthlyFee": 17167,
-        "feeWaiverCondition": "6 meses gratis. Después $0 con reto de facturación*"
+        "feeWaiverCondition": "6 meses gratis. Después $0 SOLO con reto de facturación del banco"
       },
       "rates": {
         "interestRateEA": 28.93,
@@ -396,10 +396,11 @@
         "description": "DaviPuntos para viajes y millas Avianca"
       },
       "benefits": [
-        "DaviPuntos redimibles por millas Avianca",
-        "Canje por millas Avianca",
-        "Asistencia internacional $60K USD",
-        "Ultrabox - casillero virtual USA"
+        "6 meses gratis",
+        "$0 después SOLO con reto de gasto",
+        "DaviPuntos → millas Avianca",
+        "Si no cumples: $17,167/mes",
+        "Asistencia internacional $60K USD"
       ],
       "requirements": {
         "minIncome": 1423500,
@@ -412,7 +413,7 @@
         "fullyDigital": false,
         "virtualCard": true
       },
-      "idealFor": ["Puntos para viajes", "Compras internacionales"],
+      "idealFor": ["Puntos para millas", "Alto gasto mensual"],
       "applyUrl": "https://www.davivienda.com/personas/tarjetas-de-credito",
       "sourceUrl": "https://www.davivienda.com/personas/tarjetas-de-credito",
       "matchFactors": {
