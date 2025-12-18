@@ -746,21 +746,30 @@ function App() {
               <div>
                 <p className="text-xs text-gray-500">Cuota*</p>
                 <p className="font-bold text-gray-800 text-sm">
-                  {card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0
-                    ? '✨ GRATIS*' 
-                    : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes*`}
+                  {/* Mostrar precio según condición - NUNCA "GRATIS" sin aclarar */}
+                  {card.fees?.feeWaiverCondition?.includes('Sin condiciones') 
+                    ? '✨ $0 siempre' 
+                    : card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0
+                      ? '$0 con condiciones*'
+                      : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes*`}
                 </p>
-                {/* Mostrar condición para $0 si existe */}
+                {/* SIEMPRE mostrar condición para $0 */}
                 {card.fees?.feeWaiverCondition && (
-                  <p className="text-[10px] text-amber-600 mt-1 leading-tight">
-                    {card.fees.feeWaiverCondition}
+                  <p className={`text-[10px] mt-1 leading-tight ${
+                    card.fees.feeWaiverCondition.includes('Sin condiciones') 
+                      ? 'text-emerald-600' 
+                      : 'text-amber-600 font-medium'
+                  }`}>
+                    ⚠️ {card.fees.feeWaiverCondition}
                   </p>
                 )}
               </div>
               <div>
                 <p className="text-xs text-gray-500">Tasa*</p>
-                <p className="font-bold text-gray-800 text-sm">{card.rates?.interestRateEA || 'N/A'}% EA*</p>
-                <p className="text-[10px] text-gray-400 mt-1">Puede variar</p>
+                <p className="font-bold text-gray-800 text-sm">
+                  {card.rates?.interestRateEA || 'N/A'}% EA*
+                </p>
+                <p className="text-[10px] text-gray-400 mt-1">Puede variar mensualmente</p>
               </div>
             </div>
             {card.requirements?.minIncome && card.requirements.minIncome > 0 && (
@@ -769,7 +778,7 @@ function App() {
                 <p className="font-semibold text-gray-700 text-sm">
                   ${(card.requirements.minIncome / 1000000).toFixed(1)}M
                 </p>
-                <p className="text-[10px] text-gray-400">Sujeto a estudio</p>
+                <p className="text-[10px] text-gray-400">Sujeto a estudio de crédito</p>
               </div>
             )}
           </div>
