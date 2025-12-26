@@ -21,6 +21,33 @@ import {
 // Importar constantes legales
 import { LEGAL_TEXTS, SAVINGS_CONFIG, LEGAL_URLS } from './constants/legal.js';
 
+// ============================================
+// LOGO COMPONENT - Banqueando
+// ============================================
+const BanqueandoLogo = ({ className = "w-16 h-16" }) => (
+  <svg className={className} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="logoGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#0891B2" />
+        <stop offset="100%" stopColor="#5B21B6" />
+      </linearGradient>
+      <linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#0891B2" />
+        <stop offset="100%" stopColor="#5B21B6" />
+      </linearGradient>
+    </defs>
+    {/* Barra vertical izquierda (la "I" del logo) */}
+    <rect x="30" y="20" width="35" height="160" rx="17.5" fill="url(#logoGradient)" />
+    {/* Parte superior de la B - semicírculo */}
+    <path d="M75 20 H130 C158 20 180 42 180 70 C180 98 158 100 130 100 H75 V20Z" fill="url(#logoGradient2)" opacity="0.9"/>
+    {/* Parte inferior de la B - semicírculo más grande */}
+    <path d="M75 100 H140 C172 100 195 125 195 155 C195 185 172 180 140 180 H75 V100Z" fill="url(#logoGradient)" opacity="0.85"/>
+    {/* Líneas horizontales que crean el efecto de "barras de comparación" */}
+    <rect x="75" y="55" width="60" height="12" rx="6" fill="white" opacity="0.95"/>
+    <rect x="75" y="133" width="70" height="12" rx="6" fill="white" opacity="0.95"/>
+  </svg>
+);
+
 // Mapeo de iconos
 const iconMap = {
   TrendingUp,
@@ -288,8 +315,8 @@ function App() {
         )}
         <p className="mt-3 font-medium">{LEGAL_TEXTS.generalFooter.copyright}</p>
         <div className="flex justify-center gap-4 mt-2">
-          <a href={LEGAL_URLS.privacy} className="text-violet-500 hover:text-violet-700">Política de Privacidad</a>
-          <a href={LEGAL_URLS.terms} className="text-violet-500 hover:text-violet-700">Términos y Condiciones</a>
+          <a href={LEGAL_URLS.privacy} className="text-cyan-600 hover:text-cyan-700">Política de Privacidad</a>
+          <a href={LEGAL_URLS.terms} className="text-cyan-600 hover:text-cyan-700">Términos y Condiciones</a>
         </div>
       </div>
     </div>
@@ -349,7 +376,7 @@ function App() {
         <div className="space-y-2 mb-6">
           {LEGAL_TEXTS.applyPopup.items.map((item, idx) => (
             <div key={idx} className="flex items-start">
-              <span className="text-violet-500 mr-2">•</span>
+              <span className="text-cyan-600 mr-2">•</span>
               <span className="text-sm text-gray-600">
                 {item.replace('{bankName}', card?.bank || 'la entidad')}
               </span>
@@ -366,7 +393,7 @@ function App() {
           </button>
           <button 
             onClick={onConfirm}
-            className="flex-1 bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-3 rounded-xl font-medium hover:shadow-lg transition-all"
+            className="flex-1 bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-3 rounded-xl font-medium hover:shadow-lg transition-all"
           >
             Continuar →
           </button>
@@ -381,7 +408,10 @@ function App() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center">
-        <div className="text-gray-600 text-xl">Cargando...</div>
+        <div className="text-center">
+          <BanqueandoLogo className="w-20 h-20 mx-auto mb-4 animate-pulse" />
+          <div className="text-gray-600 text-lg">Cargando...</div>
+        </div>
       </div>
     );
   }
@@ -393,17 +423,15 @@ function App() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
         <div className="max-w-md w-full">
-          <div className="bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+          <div className="bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
             
             {/* Logo */}
             <div className="mb-6 flex justify-center">
-              <div className="bg-gradient-to-br from-violet-600 to-cyan-500 p-4 rounded-2xl shadow-lg">
-                <CreditCard className="w-10 h-10 text-white" />
-              </div>
+              <BanqueandoLogo className="w-24 h-24" />
             </div>
             
             {/* Title */}
-            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-cyan-500 to-purple-700 bg-clip-text text-transparent">
               Banqueando
             </h1>
             <p className="text-gray-500 font-medium mb-1">Encuentra Tu Tarjeta Ideal</p>
@@ -413,13 +441,13 @@ function App() {
             
             {/* Features */}
             <div className="grid grid-cols-3 gap-3 mb-6">
-              <div className="bg-gradient-to-br from-violet-50 to-violet-100/50 p-3 rounded-xl border border-violet-100">
-                <Sparkles className="w-6 h-6 text-violet-600 mx-auto mb-1" />
+              <div className="bg-gradient-to-br from-cyan-50 to-cyan-100/50 p-3 rounded-xl border border-cyan-100">
+                <Sparkles className="w-6 h-6 text-cyan-600 mx-auto mb-1" />
                 <p className="text-xs font-semibold text-gray-700">Personal</p>
                 <p className="text-xs text-gray-400">Para ti</p>
               </div>
-              <div className="bg-gradient-to-br from-cyan-50 to-cyan-100/50 p-3 rounded-xl border border-cyan-100">
-                <TrendingUp className="w-6 h-6 text-cyan-600 mx-auto mb-1" />
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 p-3 rounded-xl border border-purple-100">
+                <TrendingUp className="w-6 h-6 text-purple-600 mx-auto mb-1" />
                 <p className="text-xs font-semibold text-gray-700">Ahorra</p>
                 <p className="text-xs text-gray-400">Dinero</p>
               </div>
@@ -433,7 +461,7 @@ function App() {
             {/* CTA */}
             <button
               onClick={startQuiz}
-              className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-2xl font-semibold text-base transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+              className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold text-base transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]"
             >
               Empezar Quiz →
             </button>
@@ -453,11 +481,11 @@ function App() {
   if (step === 'login') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+        <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
           
           {/* Icon */}
           <div className="mb-6 flex justify-center">
-            <div className="bg-gradient-to-br from-amber-400 to-orange-500 p-4 rounded-2xl shadow-lg">
+            <div className="bg-gradient-to-br from-amber-400 to-amber-500 p-4 rounded-2xl shadow-lg">
               <Sparkles className="w-10 h-10 text-white" />
             </div>
           </div>
@@ -482,7 +510,7 @@ function App() {
                     onChange={(e) => setPhoneInput(e.target.value)}
                     placeholder="Ej: 3001234567"
                     required
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-violet-500 focus:outline-none text-center text-lg transition-colors"
+                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-center text-lg transition-colors"
                   />
                 </div>
                 
@@ -493,15 +521,15 @@ function App() {
                       type="checkbox"
                       checked={termsAccepted}
                       onChange={(e) => setTermsAccepted(e.target.checked)}
-                      className="mt-1 w-5 h-5 text-violet-600 rounded border-gray-300 focus:ring-violet-500"
+                      className="mt-1 w-5 h-5 text-cyan-600 rounded border-gray-300 focus:ring-cyan-500"
                     />
                     <span className="text-xs text-gray-600">
                       Autorizo el tratamiento de mis datos personales conforme a la{' '}
-                      <a href={LEGAL_URLS.privacy} className="text-violet-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                      <a href={LEGAL_URLS.privacy} className="text-cyan-600 hover:underline" target="_blank" rel="noopener noreferrer">
                         Política de Privacidad
                       </a>{' '}
                       y acepto los{' '}
-                      <a href={LEGAL_URLS.terms} className="text-violet-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                      <a href={LEGAL_URLS.terms} className="text-cyan-600 hover:underline" target="_blank" rel="noopener noreferrer">
                         Términos y Condiciones
                       </a>
                       . Mis datos serán utilizados para enviarme resultados, recomendaciones y ofertas relacionadas con productos financieros.
@@ -512,7 +540,7 @@ function App() {
                 <button
                   type="submit"
                   disabled={!phoneInput || !termsAccepted}
-                  className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-cyan-500/25"
                 >
                   Continuar →
                 </button>
@@ -581,7 +609,7 @@ function App() {
                   value={nameInput}
                   onChange={(e) => setNameInput(e.target.value)}
                   placeholder="Ej: Juan Pérez"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-violet-500 focus:outline-none"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none"
                 />
               </div>
               
@@ -596,7 +624,7 @@ function App() {
                   onChange={(e) => setEmailInput(e.target.value)}
                   placeholder="tu@email.com"
                   required
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-violet-500 focus:outline-none"
+                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none"
                 />
               </div>
               
@@ -609,7 +637,7 @@ function App() {
               <button
                 type="submit"
                 disabled={!emailInput}
-                className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
+                className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-cyan-500/25"
               >
                 Ver mi resultado →
               </button>
@@ -640,7 +668,7 @@ function App() {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
         <div className="text-center">
           <div className="mb-6">
-            <div className="bg-gradient-to-br from-violet-600 to-cyan-500 p-4 rounded-2xl shadow-lg inline-block">
+            <div className="bg-gradient-to-br from-cyan-500 to-purple-600 p-4 rounded-2xl shadow-lg inline-block">
               <Sparkles className="w-12 h-12 text-white animate-pulse" />
             </div>
           </div>
@@ -664,7 +692,7 @@ function App() {
     const CardResult = ({ card, rank, isTop }) => {
       const rankLabels = ['🏆 MEJOR MATCH', '🥈 ALTERNATIVA', '🥉 OPCIÓN'];
       const rankColors = [
-        'border-violet-400 bg-gradient-to-br from-violet-50/50 to-cyan-50/50',
+        'border-cyan-400 bg-gradient-to-br from-cyan-50/50 to-purple-50/50',
         'border-gray-200 bg-white',
         'border-gray-200 bg-white'
       ];
@@ -676,13 +704,13 @@ function App() {
           <div className="flex justify-between items-start mb-3">
             <span className={`text-xs font-bold px-3 py-1 rounded-full ${
               isTop 
-                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white' 
+                ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white' 
                 : 'bg-gray-100 text-gray-600'
             }`}>
               {rankLabels[rank]}
             </span>
             <div className="text-right">
-              <p className={`text-2xl font-bold ${isTop ? 'bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent' : 'text-gray-700'}`}>
+              <p className={`text-2xl font-bold ${isTop ? 'bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent' : 'text-gray-700'}`}>
                 {Math.round(card.score)}%
               </p>
               <p className="text-xs text-gray-400">Match</p>
@@ -700,11 +728,11 @@ function App() {
 
           {/* Por qué es el MEJOR MATCH (solo para el ganador) */}
           {isTop && card.whyWinner && card.whyWinner.length > 0 && (
-            <div className="bg-gradient-to-r from-violet-100 to-cyan-100 rounded-xl p-3 mb-3 border border-violet-200">
-              <h4 className="font-semibold text-violet-800 text-sm mb-2">🏆 Le gana a las demás porque:</h4>
+            <div className="bg-gradient-to-r from-cyan-100 to-purple-100 rounded-xl p-3 mb-3 border border-cyan-200">
+              <h4 className="font-semibold text-cyan-800 text-sm mb-2">🏆 Le gana a las demás porque:</h4>
               <div className="space-y-1">
                 {card.whyWinner.map((reason, idx) => (
-                  <p key={idx} className="text-xs text-violet-700 flex items-start">
+                  <p key={idx} className="text-xs text-cyan-700 flex items-start">
                     <span className="mr-1 text-green-600">✓</span> {reason}
                   </p>
                 ))}
@@ -823,7 +851,7 @@ function App() {
             onClick={() => handleApplyClick(card)}
             className={`w-full py-3 rounded-xl font-semibold transition-all ${
               isTop 
-                ? 'bg-gradient-to-r from-violet-600 to-cyan-500 text-white hover:shadow-lg hover:scale-[1.02]' 
+                ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]' 
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
@@ -839,13 +867,13 @@ function App() {
           
           {/* User greeting */}
           {user && (
-            <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-2xl p-4 mb-6 text-white text-center shadow-lg max-w-md mx-auto">
+            <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl p-4 mb-6 text-white text-center shadow-lg max-w-md mx-auto">
               <p>👋 Hola, <strong>{user.user_metadata?.name || user.email}</strong></p>
             </div>
           )}
 
           {/* Header */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-8 max-w-md mx-auto" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+          <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-8 max-w-md mx-auto" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
             <Sparkles className="w-12 h-12 text-amber-500 mx-auto mb-3" />
             <h1 className="text-2xl font-bold text-gray-800 mb-1">
               ¡Encontramos tu match!
@@ -889,7 +917,7 @@ function App() {
           </div>
 
           <div className="text-center mb-6">
-            <button onClick={resetQuiz} className="text-violet-600 hover:text-violet-800 font-medium">
+            <button onClick={resetQuiz} className="text-cyan-600 hover:text-cyan-800 font-medium">
               ← Volver a empezar
             </button>
           </div>
@@ -927,10 +955,10 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 p-4 py-8">
       <div className="max-w-lg mx-auto">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden" style={{ boxShadow: '0 0 40px rgba(124, 58, 237, 0.1)' }}>
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
           
           {/* Progress Header */}
-          <div className="bg-gradient-to-r from-violet-600 to-cyan-500 p-5">
+          <div className="bg-gradient-to-r from-cyan-500 to-purple-600 p-5">
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center">
                 <IconComponent className="w-5 h-5 text-white mr-2" />
@@ -966,8 +994,8 @@ function App() {
                     onClick={() => handleAnswer(currentQ.id, option.value)}
                     className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
                       answers[currentQ.id] === option.value
-                        ? 'border-violet-500 bg-gradient-to-r from-violet-50 to-cyan-50 shadow-md'
-                        : 'border-gray-100 hover:border-violet-300 hover:bg-violet-50/50'
+                        ? 'border-cyan-500 bg-gradient-to-r from-cyan-50 to-purple-50 shadow-md'
+                        : 'border-gray-100 hover:border-cyan-300 hover:bg-cyan-50/50'
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -976,12 +1004,12 @@ function App() {
                         <div>
                           <span className="font-medium text-gray-700 block">{option.label}</span>
                           {option.tip && answers[currentQ.id] === option.value && (
-                            <span className="text-xs text-violet-600 mt-1 block">💡 {option.tip}</span>
+                            <span className="text-xs text-cyan-600 mt-1 block">💡 {option.tip}</span>
                           )}
                         </div>
                       </div>
                       {answers[currentQ.id] === option.value && (
-                        <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full p-1 ml-3">
+                        <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full p-1 ml-3">
                           <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
@@ -1014,8 +1042,8 @@ function App() {
                       disabled={!canSelect && !isSelected}
                       className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
                         isSelected
-                          ? 'border-violet-500 bg-gradient-to-r from-violet-50 to-cyan-50 shadow-md'
-                          : 'border-gray-100 hover:border-violet-300 hover:bg-violet-50/50'
+                          ? 'border-cyan-500 bg-gradient-to-r from-cyan-50 to-purple-50 shadow-md'
+                          : 'border-gray-100 hover:border-cyan-300 hover:bg-cyan-50/50'
                       } ${!canSelect && !isSelected ? 'opacity-40 cursor-not-allowed' : ''}`}
                     >
                       <div className="flex items-center justify-between">
@@ -1024,7 +1052,7 @@ function App() {
                           <span className="font-medium text-gray-700">{option.label}</span>
                         </div>
                         {isSelected && (
-                          <div className="bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full p-1">
+                          <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full p-1">
                             <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
@@ -1035,7 +1063,7 @@ function App() {
                   );
                 })}
                 <p className="text-sm text-gray-400 text-center mt-3">
-                  Seleccionadas: <span className="font-semibold text-violet-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
+                  Seleccionadas: <span className="font-semibold text-cyan-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
                 </p>
               </div>
             )}
@@ -1065,8 +1093,8 @@ function App() {
                             disabled={!canSelect && !isSelected}
                             className={`p-3 rounded-lg border-2 text-center transition-all text-sm font-medium ${
                               isSelected
-                                ? 'border-violet-500 bg-violet-50 text-violet-700'
-                                : 'border-gray-200 hover:border-violet-300 text-gray-600'
+                                ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
+                                : 'border-gray-200 hover:border-cyan-300 text-gray-600'
                             } ${!canSelect && !isSelected ? 'opacity-40' : ''}`}
                           >
                             {option.label}
@@ -1077,8 +1105,8 @@ function App() {
                     </div>
                   </div>
                 ))}
-                <p className="text-sm text-gray-400 text-center bg-violet-50 p-2 rounded-lg">
-                  Seleccionadas: <span className="font-semibold text-violet-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
+                <p className="text-sm text-gray-400 text-center bg-cyan-50 p-2 rounded-lg">
+                  Seleccionadas: <span className="font-semibold text-cyan-600">{(answers[currentQ.id] || []).length}</span> / {currentQ.max}
                 </p>
               </div>
             )}
@@ -1086,9 +1114,9 @@ function App() {
             {/* Slider */}
             {currentQ.type === 'slider' && (
               <div className="space-y-5">
-                <div className="bg-gradient-to-r from-violet-50 to-cyan-50 p-5 rounded-xl text-center border border-violet-100">
+                <div className="bg-gradient-to-r from-cyan-50 to-purple-50 p-5 rounded-xl text-center border border-cyan-100">
                   <p className="text-sm text-gray-500 mb-1">Tu gasto mensual</p>
-                  <p className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-cyan-500 bg-clip-text text-transparent">
+                  <p className="text-4xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
                     ${((answers[currentQ.id] || currentQ.defaultValue) / 1000000).toFixed(1)}M
                   </p>
                 </div>
@@ -1101,7 +1129,7 @@ function App() {
                   onChange={(e) => handleAnswer(currentQ.id, parseInt(e.target.value))}
                   className="w-full h-3 rounded-lg appearance-none cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, rgb(124 58 237) 0%, rgb(6 182 212) ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) 100%)`
+                    background: `linear-gradient(to right, #0891B2 0%, #5B21B6 ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) ${((answers[currentQ.id] || currentQ.defaultValue) - currentQ.min) / (currentQ.max - currentQ.min) * 100}%, rgb(229 231 235) 100%)`
                   }}
                 />
                 <div className="flex justify-between text-xs text-gray-400">
@@ -1129,7 +1157,7 @@ function App() {
 
             <button
               onClick={nextQuestion}
-              className="flex items-center px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-violet-600 to-cyan-500 text-white transition-all hover:shadow-lg hover:scale-[1.02]"
+              className="flex items-center px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white transition-all hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]"
             >
               {currentQuestion === visibleQuestions.length - 1 ? '✨ Ver Resultados' : 'Siguiente'}
               <ChevronRight className="w-5 h-5 ml-1" />
