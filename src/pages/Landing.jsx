@@ -53,8 +53,9 @@ const Landing = () => {
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 Nuestro algoritmo analiza <strong className="text-gray-900">tu forma de pagar</strong>, 
                 <strong className="text-gray-900"> tu estilo de vida</strong> y 
-                <strong className="text-gray-900"> tus prioridades</strong> 
-                 para encontrar tu match perfecto, <strong className="text-gray-900"> tu tarjeta ideal en 2 minutos.</strong>
+                <strong className="text-gray-900"> tus prioridades</strong>  
+                 para encontrar tu match perfecto, 
+                <strong className="text-gray-900"> tu tarjeta ideal en 2 minutos.</strong>
                 <br/>
                 <span className="text-cyan-600 font-semibold">No rankings genéricos. Recomendación 1-a-1.</span>
               </p>
@@ -498,4 +499,5 @@ const Landing = () => {
 };
 
 export default Landing;
+
 
