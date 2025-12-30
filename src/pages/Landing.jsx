@@ -11,7 +11,14 @@ import {
   ArrowRight,
   CreditCard,
   Zap,
-  Heart
+  Heart,
+  AlertCircle,
+  TrendingDown,
+  HelpCircle,
+  Award,
+  Lock,
+  Globe,
+  BarChart3
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -57,7 +64,7 @@ const Landing = () => {
                   to="/quiz"
                   className="group bg-gradient-to-r from-cyan-500 to-purple-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all inline-flex items-center justify-center transform hover:scale-105"
                 >
-                  Hacer Quiz Gratis →
+                  Hacer Quiz Gratis
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 
@@ -87,11 +94,14 @@ const Landing = () => {
 
             <div className="relative">
               <div className="relative z-10 bg-white rounded-3xl shadow-2xl p-8 transform hover:scale-105 transition-transform">
-                <div className="absolute -top-4 -right-4 bg-gradient-to-r from-amber-400 to-amber-500 text-white px-6 py-2 rounded-full font-bold shadow-lg">
+                <div className="absolute -top-4 -right-4 bg-gradient-to-r from-amber-400 to-amber-500 text-white px-6 py-2 rounded-full font-bold shadow-lg flex items-center">
+                  <Award className="w-5 h-5 mr-2" />
                   95% Match
                 </div>
                 <div className="flex items-center mb-6">
-                  <div className="text-5xl mr-4">💳</div>
+                  <div className="bg-gradient-to-br from-cyan-500 to-purple-600 p-3 rounded-xl mr-4">
+                    <CreditCard className="w-8 h-8 text-white" />
+                  </div>
                   <div>
                     <h3 className="font-bold text-xl text-gray-800">Tu Tarjeta Ideal</h3>
                     <p className="text-gray-600">Basado en tu perfil</p>
@@ -99,15 +109,15 @@ const Landing = () => {
                 </div>
                 <div className="space-y-4">
                   <div className="flex items-center bg-green-50 p-4 rounded-xl">
-                    <CheckCircle2 className="w-5 h-5 text-green-600 mr-3" />
+                    <CheckCircle2 className="w-5 h-5 text-green-600 mr-3 flex-shrink-0" />
                     <span className="text-gray-700 font-medium">Cashback 3% en supermercados</span>
                   </div>
                   <div className="flex items-center bg-blue-50 p-4 rounded-xl">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 mr-3" />
+                    <CheckCircle2 className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
                     <span className="text-gray-700 font-medium">Sin cuota de manejo primer año</span>
                   </div>
                   <div className="flex items-center bg-purple-50 p-4 rounded-xl">
-                    <CheckCircle2 className="w-5 h-5 text-purple-600 mr-3" />
+                    <CheckCircle2 className="w-5 h-5 text-purple-600 mr-3 flex-shrink-0" />
                     <span className="text-gray-700 font-medium">Acumula millas en tus viajes</span>
                   </div>
                 </div>
@@ -129,26 +139,38 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                2,847
+              <div className="flex items-center justify-center mb-2">
+                <Users className="w-6 h-6 text-cyan-600 mr-2" />
+                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
+                  2,847
+                </div>
               </div>
               <div className="text-gray-600 font-medium text-sm md:text-base">Usuarios este mes</div>
             </div>
             <div>
-              <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                68%
+              <div className="flex items-center justify-center mb-2">
+                <TrendingUp className="w-6 h-6 text-green-600 mr-2" />
+                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
+                  68%
+                </div>
               </div>
               <div className="text-gray-600 font-medium text-sm md:text-base">Ahorra $450K+/año</div>
             </div>
             <div>
-              <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                4.9/5
+              <div className="flex items-center justify-center mb-2">
+                <Award className="w-6 h-6 text-amber-600 mr-2" />
+                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
+                  4.9/5
+                </div>
               </div>
               <div className="text-gray-600 font-medium text-sm md:text-base">Satisfacción promedio</div>
             </div>
             <div>
-              <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent mb-2">
-                2 min
+              <div className="flex items-center justify-center mb-2">
+                <Clock className="w-6 h-6 text-purple-600 mr-2" />
+                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
+                  2 min
+                </div>
               </div>
               <div className="text-gray-600 font-medium text-sm md:text-base">Tiempo promedio</div>
             </div>
@@ -175,7 +197,9 @@ const Landing = () => {
             <div className="space-y-6">
               <div className="bg-white p-6 rounded-xl border-l-4 border-red-500 shadow-sm">
                 <div className="flex items-start">
-                  <div className="text-3xl mr-4">😰</div>
+                  <div className="bg-red-50 p-3 rounded-lg mr-4">
+                    <AlertCircle className="w-6 h-6 text-red-600" />
+                  </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-2">Pagas cuota de manejo innecesaria</h3>
                     <p className="text-gray-600">
@@ -188,7 +212,9 @@ const Landing = () => {
 
               <div className="bg-white p-6 rounded-xl border-l-4 border-orange-500 shadow-sm">
                 <div className="flex items-start">
-                  <div className="text-3xl mr-4">💸</div>
+                  <div className="bg-orange-50 p-3 rounded-lg mr-4">
+                    <TrendingDown className="w-6 h-6 text-orange-600" />
+                  </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-2">Pierdes dinero en cada compra</h3>
                     <p className="text-gray-600">
@@ -201,7 +227,9 @@ const Landing = () => {
 
               <div className="bg-white p-6 rounded-xl border-l-4 border-yellow-500 shadow-sm">
                 <div className="flex items-start">
-                  <div className="text-3xl mr-4">🤷</div>
+                  <div className="bg-yellow-50 p-3 rounded-lg mr-4">
+                    <HelpCircle className="w-6 h-6 text-yellow-600" />
+                  </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-2">Elegiste "porque sí"</h3>
                     <p className="text-gray-600">
@@ -214,7 +242,9 @@ const Landing = () => {
             </div>
 
             <div className="bg-gradient-to-br from-cyan-600 to-purple-600 p-8 md:p-12 rounded-2xl text-white shadow-2xl">
-              <div className="text-5xl mb-6">✨</div>
+              <div className="bg-white/10 backdrop-blur-sm p-4 rounded-xl mb-6 inline-block">
+                <Sparkles className="w-12 h-12 text-white" />
+              </div>
               <h3 className="text-3xl font-bold mb-6">La solución</h3>
               
               <div className="space-y-4 mb-8">
@@ -351,7 +381,7 @@ const Landing = () => {
 
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
               <div className="bg-amber-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
-                <Sparkles className="w-7 h-7 text-amber-600" />
+                <Zap className="w-7 h-7 text-amber-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Tecnología IA</h3>
               <p className="text-gray-600 leading-relaxed">
@@ -361,7 +391,7 @@ const Landing = () => {
 
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
               <div className="bg-blue-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
-                <Users className="w-7 h-7 text-blue-600" />
+                <BarChart3 className="w-7 h-7 text-blue-600" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">Independiente</h3>
               <p className="text-gray-600 leading-relaxed">
@@ -452,11 +482,12 @@ const Landing = () => {
             to="/quiz"
             className="inline-flex items-center bg-white text-cyan-600 px-10 py-5 rounded-full font-bold text-xl hover:shadow-2xl transition-all transform hover:scale-105"
           >
-            Hacer Quiz Gratis →
+            Hacer Quiz Gratis
             <ArrowRight className="ml-3 w-6 h-6" />
           </Link>
-          <p className="text-cyan-100 mt-6 text-sm">
-            🔒 Tus datos son privados y nunca se comparten con terceros
+          <p className="text-cyan-100 mt-6 text-sm flex items-center justify-center">
+            <Lock className="w-4 h-4 mr-2" />
+            Tus datos son privados y nunca se comparten con terceros
           </p>
         </div>
       </section>
