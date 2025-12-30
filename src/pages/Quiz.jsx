@@ -1,5 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronLeft, Sparkles, CreditCard, TrendingUp, Heart, DollarSign, Smartphone, Mail, User, Info, X } from 'lucide-react';
+import { 
+  ChevronRight, 
+  ChevronLeft, 
+  Sparkles, 
+  CreditCard, 
+  TrendingUp, 
+  Heart, 
+  DollarSign, 
+  Smartphone, 
+  Mail, 
+  User, 
+  Info, 
+  X,
+  Award,
+  Lock,
+  ShoppingBag,
+  Plane,
+  Globe,
+  BadgeDollarSign,
+  TrendingDown,
+  CheckCircle2,
+  AlertCircle
+} from 'lucide-react';
 
 // Importar configuraciones
 import cardsData from '../../config/cards.json';
@@ -36,13 +58,9 @@ const BanqueandoLogo = ({ className = "w-16 h-16" }) => (
         <stop offset="100%" stopColor="#5B21B6" />
       </linearGradient>
     </defs>
-    {/* Barra vertical izquierda (la "I" del logo) */}
     <rect x="30" y="20" width="35" height="160" rx="17.5" fill="url(#logoGradient)" />
-    {/* Parte superior de la B - semicírculo */}
     <path d="M75 20 H130 C158 20 180 42 180 70 C180 98 158 100 130 100 H75 V20Z" fill="url(#logoGradient2)" opacity="0.9"/>
-    {/* Parte inferior de la B - semicírculo más grande */}
     <path d="M75 100 H140 C172 100 195 125 195 155 C195 185 172 180 140 180 H75 V100Z" fill="url(#logoGradient)" opacity="0.85"/>
-    {/* Líneas horizontales que crean el efecto de "barras de comparación" */}
     <rect x="75" y="55" width="60" height="12" rx="6" fill="white" opacity="0.95"/>
     <rect x="75" y="133" width="70" height="12" rx="6" fill="white" opacity="0.95"/>
   </svg>
@@ -68,10 +86,8 @@ function Quiz() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Para tracking de tiempo
   const quizStartTime = useRef(null);
 
-  // Estados para formularios y modales
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [emailInput, setEmailInput] = useState('');
   const [nameInput, setNameInput] = useState('');
@@ -82,7 +98,6 @@ function Quiz() {
   const [showApplyPopup, setShowApplyPopup] = useState(false);
   const [selectedCardForApply, setSelectedCardForApply] = useState(null);
 
-  // Filtrar preguntas visibles según condiciones
   const visibleQuestions = questionsData.questions.filter(q => {
     if (!q.showIf) return true;
     const { question, includes } = q.showIf;
@@ -90,7 +105,6 @@ function Quiz() {
     return Array.isArray(answer) ? answer.includes(includes) : answer === includes;
   });
 
-  // Inicialización
   useEffect(() => {
     const init = async () => {
       const matchingEngine = createMatchingEngine(cardsData, matchingConfig);
@@ -241,12 +255,10 @@ function Quiz() {
     setShowApplyPopup(false);
   };
 
-  // Calcular desglose de ahorro
   const calculateSavingsBreakdown = (card) => {
     const monthlySpend = answers.monthly_spend || 1500000;
     const breakdown = [];
     
-    // Ahorro en cuota de manejo
     const cardFee = card.fees?.monthlyFee || 0;
     const feeSavings = (SAVINGS_CONFIG.averageMonthlyFee - cardFee) * 12;
     if (feeSavings > 0) {
@@ -256,7 +268,6 @@ function Quiz() {
       });
     }
     
-    // Cashback
     if (card.rewards?.cashbackPercent) {
       const cashback = monthlySpend * (card.rewards.cashbackPercent / 100) * 12;
       breakdown.push({
@@ -265,7 +276,6 @@ function Quiz() {
       });
     }
     
-    // Millas
     if (card.rewards?.milesPerCOP) {
       const milesPerMonth = monthlySpend / card.rewards.milesPerCOP;
       const milesPerYear = milesPerMonth * 12;
@@ -298,9 +308,6 @@ function Quiz() {
   const progress = ((currentQuestion + 1) / visibleQuestions.length) * 100;
   const currentQ = visibleQuestions[currentQuestion];
 
-  // ============================================================
-  // COMPONENTE: Footer Legal
-  // ============================================================
   const LegalFooter = ({ variant = 'general' }) => (
     <div className="mt-8 pt-6 border-t border-gray-200">
       <div className="text-xs text-gray-400 space-y-1 text-center">
@@ -322,9 +329,6 @@ function Quiz() {
     </div>
   );
 
-  // ============================================================
-  // COMPONENTE: Modal Desglose de Ahorro
-  // ============================================================
   const SavingsBreakdownModal = ({ card, onClose }) => {
     const breakdown = calculateSavingsBreakdown(card);
     const total = breakdown.reduce((sum, item) => sum + item.amount, 0);
@@ -365,9 +369,6 @@ function Quiz() {
     );
   };
 
-  // ============================================================
-  // COMPONENTE: Modal Confirmar Aplicación
-  // ============================================================
   const ApplyPopup = ({ card, onConfirm, onClose }) => (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
@@ -402,9 +403,6 @@ function Quiz() {
     </div>
   );
 
-  // ============================================================
-  // LOADING
-  // ============================================================
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center">
@@ -416,21 +414,16 @@ function Quiz() {
     );
   }
 
-  // ============================================================
-  // LANDING PAGE
-  // ============================================================
   if (step === 'landing') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
         <div className="max-w-md w-full">
           <div className="bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
             
-            {/* Logo */}
             <div className="mb-6 flex justify-center">
               <BanqueandoLogo className="w-24 h-24" />
             </div>
             
-            {/* Title */}
             <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-cyan-500 to-purple-700 bg-clip-text text-transparent">
               Banqueando
             </h1>
@@ -439,7 +432,6 @@ function Quiz() {
               En 2 minutos analizamos tu perfil y te recomendamos la tarjeta perfecta
             </p>
             
-            {/* Features */}
             <div className="grid grid-cols-3 gap-3 mb-6">
               <div className="bg-gradient-to-br from-cyan-50 to-cyan-100/50 p-3 rounded-xl border border-cyan-100">
                 <Sparkles className="w-6 h-6 text-cyan-600 mx-auto mb-1" />
@@ -458,7 +450,6 @@ function Quiz() {
               </div>
             </div>
             
-            {/* CTA */}
             <button
               onClick={startQuiz}
               className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold text-base transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]"
@@ -466,7 +457,10 @@ function Quiz() {
               Empezar Quiz →
             </button>
             
-            <p className="text-xs text-gray-400 mt-4">🔒 Tus datos son privados</p>
+            <p className="text-xs text-gray-400 mt-4 flex items-center justify-center">
+              <Lock className="w-3 h-3 mr-1" />
+              Tus datos son privados
+            </p>
           </div>
           
           <LegalFooter variant="landing" />
@@ -475,24 +469,22 @@ function Quiz() {
     );
   }
 
-  // ============================================================
-  // LOGIN PAGE
-  // ============================================================
   if (step === 'login') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
           
-          {/* Icon */}
           <div className="mb-6 flex justify-center">
             <div className="bg-gradient-to-br from-amber-400 to-amber-500 p-4 rounded-2xl shadow-lg">
               <Sparkles className="w-10 h-10 text-white" />
             </div>
           </div>
           
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">¡Tu resultado está listo! 🎉</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2 flex items-center justify-center">
+            <Award className="w-6 h-6 mr-2 text-amber-500" />
+            ¡Tu resultado está listo!
+          </h2>
           
-          {/* PASO 1: Pedir teléfono + aceptar términos */}
           {!phoneCollected ? (
             <>
               <p className="text-gray-500 text-sm mb-6">
@@ -501,8 +493,9 @@ function Quiz() {
               
               <form onSubmit={handlePhoneSubmit} className="text-left">
                 <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2 text-sm">
-                    📱 Tu WhatsApp *
+                  <label className="block text-gray-700 font-medium mb-2 text-sm flex items-center">
+                    <Smartphone className="w-4 h-4 mr-2" />
+                    Tu WhatsApp *
                   </label>
                   <input
                     type="tel"
@@ -514,7 +507,6 @@ function Quiz() {
                   />
                 </div>
                 
-                {/* Checkbox de autorización */}
                 <div className="mb-6">
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input
@@ -547,13 +539,11 @@ function Quiz() {
               </form>
             </>
           ) : !showEmailForm ? (
-            /* PASO 2: Elegir método de login */
             <>
               <p className="text-gray-500 text-sm mb-6">
                 Ahora elige cómo quieres continuar
               </p>
               
-              {/* Botón Google */}
               <button
                 onClick={handleGoogleLogin}
                 className="w-full bg-white border-2 border-gray-200 text-gray-700 px-6 py-4 rounded-xl font-semibold hover:border-gray-300 hover:shadow-lg transition-all flex items-center justify-center mb-4"
@@ -576,7 +566,6 @@ function Quiz() {
                 </div>
               </div>
               
-              {/* Opción email */}
               <button
                 onClick={() => setShowEmailForm(true)}
                 className="w-full bg-gray-100 text-gray-700 px-6 py-4 rounded-xl font-semibold hover:bg-gray-200 transition-all flex items-center justify-center"
@@ -593,7 +582,6 @@ function Quiz() {
               </button>
             </>
           ) : (
-            /* PASO 3: Formulario de email */
             <form onSubmit={handleEmailSubmit} className="text-left">
               <p className="text-gray-500 text-sm mb-6 text-center">
                 Completa tus datos para ver tu resultado
@@ -629,8 +617,9 @@ function Quiz() {
               </div>
               
               <div className="mb-6 bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm text-gray-600">
-                  📱 WhatsApp: <strong>{phoneInput}</strong>
+                <p className="text-sm text-gray-600 flex items-center">
+                  <Smartphone className="w-4 h-4 mr-2" />
+                  WhatsApp: <strong className="ml-1">{phoneInput}</strong>
                 </p>
               </div>
               
@@ -652,17 +641,15 @@ function Quiz() {
             </form>
           )}
           
-          <p className="text-xs text-gray-400 mt-6">
-            🔒 Tus datos están protegidos
+          <p className="text-xs text-gray-400 mt-6 flex items-center justify-center">
+            <Lock className="w-3 h-3 mr-1" />
+            Tus datos están protegidos
           </p>
         </div>
       </div>
     );
   }
 
-  // ============================================================
-  // CALCULATING PAGE
-  // ============================================================
   if (step === 'calculating') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
@@ -679,34 +666,30 @@ function Quiz() {
     );
   }
 
-  // ============================================================
-  // RESULTS PAGE
-  // ============================================================
   if (step === 'results' && results) {
     const { topMatch, alternatives } = results;
-    
-    // Combinar todas las tarjetas para mostrar
     const allCards = [topMatch, ...(alternatives || [])].slice(0, 3);
 
-    // Componente de tarjeta individual
     const CardResult = ({ card, rank, isTop }) => {
-      const rankLabels = ['🏆 MEJOR MATCH', '🥈 ALTERNATIVA', '🥉 OPCIÓN'];
+      const rankLabels = ['MEJOR MATCH', 'ALTERNATIVA', 'OPCIÓN'];
       const rankColors = [
         'border-cyan-400 bg-gradient-to-br from-cyan-50/50 to-purple-50/50',
         'border-gray-200 bg-white',
         'border-gray-200 bg-white'
       ];
       
+      const RankIcon = rank === 0 ? Award : rank === 1 ? BadgeDollarSign : CreditCard;
+      
       return (
         <div className={`rounded-2xl p-5 shadow-lg border-2 ${rankColors[rank]} flex flex-col h-full`}>
           
-          {/* Header: Badge + Score */}
           <div className="flex justify-between items-start mb-3">
-            <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+            <span className={`text-xs font-bold px-3 py-1 rounded-full flex items-center ${
               isTop 
                 ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white' 
                 : 'bg-gray-100 text-gray-600'
             }`}>
+              <RankIcon className="w-3 h-3 mr-1" />
               {rankLabels[rank]}
             </span>
             <div className="text-right">
@@ -717,33 +700,39 @@ function Quiz() {
             </div>
           </div>
 
-          {/* Card Info */}
           <div className="flex items-center mb-3">
-            <div className="text-4xl mr-3">{card.image}</div>
+            <div className="bg-gradient-to-br from-cyan-500 to-purple-600 p-2 rounded-xl mr-3">
+              <CreditCard className="w-6 h-6 text-white" />
+            </div>
             <div>
               <h3 className="font-bold text-gray-800 text-lg leading-tight">{card.name}</h3>
               <p className="text-gray-500 text-sm">{card.bank}</p>
             </div>
           </div>
 
-          {/* Por qué es el MEJOR MATCH (solo para el ganador) */}
           {isTop && card.whyWinner && card.whyWinner.length > 0 && (
             <div className="bg-gradient-to-r from-cyan-100 to-purple-100 rounded-xl p-3 mb-3 border border-cyan-200">
-              <h4 className="font-semibold text-cyan-800 text-sm mb-2">🏆 Le gana a las demás porque:</h4>
+              <h4 className="font-semibold text-cyan-800 text-sm mb-2 flex items-center">
+                <Award className="w-4 h-4 mr-1" />
+                Le gana a las demás porque:
+              </h4>
               <div className="space-y-1">
                 {card.whyWinner.map((reason, idx) => (
                   <p key={idx} className="text-xs text-cyan-700 flex items-start">
-                    <span className="mr-1 text-green-600">✓</span> {reason}
+                    <CheckCircle2 className="w-3 h-3 mr-1 mt-0.5 flex-shrink-0" />
+                    {reason}
                   </p>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Por qué considerar esta alternativa */}
           {!isTop && card.whyConsider && card.whyConsider.length > 0 && (
             <div className="bg-amber-50 rounded-xl p-3 mb-3 border border-amber-200">
-              <h4 className="font-semibold text-amber-800 text-sm mb-2">💡 Podría ser mejor si:</h4>
+              <h4 className="font-semibold text-amber-800 text-sm mb-2 flex items-center">
+                <Info className="w-4 h-4 mr-1" />
+                Podría ser mejor si:
+              </h4>
               <div className="space-y-1">
                 {card.whyConsider.map((reason, idx) => (
                   <p key={idx} className="text-xs text-amber-700 flex items-start">
@@ -754,13 +743,16 @@ function Quiz() {
             </div>
           )}
 
-          {/* Beneficios principales */}
           {card.benefits && card.benefits.length > 0 && (
             <div className="mb-3">
-              <h4 className="font-semibold text-gray-700 text-sm mb-2">✨ Beneficios</h4>
+              <h4 className="font-semibold text-gray-700 text-sm mb-2 flex items-center">
+                <Sparkles className="w-4 h-4 mr-1" />
+                Beneficios
+              </h4>
               <div className="space-y-1">
                 {card.benefits.slice(0, 3).map((benefit, idx) => (
                   <div key={idx} className="flex items-center bg-green-50 p-2 rounded-lg">
+                    <CheckCircle2 className="w-3 h-3 text-green-600 mr-2 flex-shrink-0" />
                     <span className="text-xs text-gray-700">{benefit}</span>
                   </div>
                 ))}
@@ -768,27 +760,25 @@ function Quiz() {
             </div>
           )}
 
-          {/* Aspectos principales */}
           <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
             <div className="grid grid-cols-2 gap-2 text-center">
               <div>
                 <p className="text-xs text-gray-500">Cuota*</p>
                 <p className="font-bold text-gray-800 text-sm">
-                  {/* Mostrar precio según condición - NUNCA "GRATIS" sin aclarar */}
                   {card.fees?.feeWaiverCondition?.includes('Sin condiciones') 
-                    ? '✨ $0 siempre' 
+                    ? '$0 siempre' 
                     : card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0
                       ? '$0 con condiciones*'
                       : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes*`}
                 </p>
-                {/* SIEMPRE mostrar condición para $0 */}
                 {card.fees?.feeWaiverCondition && (
-                  <p className={`text-[10px] mt-1 leading-tight ${
+                  <p className={`text-[10px] mt-1 leading-tight flex items-center justify-center ${
                     card.fees.feeWaiverCondition.includes('Sin condiciones') 
                       ? 'text-emerald-600' 
                       : 'text-amber-600 font-medium'
                   }`}>
-                    ⚠️ {card.fees.feeWaiverCondition}
+                    <AlertCircle className="w-3 h-3 mr-1 flex-shrink-0" />
+                    {card.fees.feeWaiverCondition}
                   </p>
                 )}
               </div>
@@ -811,11 +801,13 @@ function Quiz() {
             )}
           </div>
 
-          {/* Ahorro estimado */}
           <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 p-3 rounded-xl mb-3 border border-emerald-100">
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-xs text-gray-500">💰 Ahorro anual</p>
+                <p className="text-xs text-gray-500 flex items-center">
+                  <DollarSign className="w-3 h-3 mr-1" />
+                  Ahorro anual
+                </p>
                 <p className="text-xl font-bold text-emerald-600">
                   ${(card.personalizedSavings || 0).toLocaleString()}
                 </p>
@@ -832,10 +824,12 @@ function Quiz() {
             </div>
           </div>
 
-          {/* A considerar (solo si hay) */}
           {card.cons && card.cons.length > 0 && (
             <div className="mb-3">
-              <h4 className="font-semibold text-amber-700 text-sm mb-1">⚠️ A considerar</h4>
+              <h4 className="font-semibold text-amber-700 text-sm mb-1 flex items-center">
+                <AlertCircle className="w-4 h-4 mr-1" />
+                A considerar
+              </h4>
               <div className="space-y-1">
                 {card.cons.slice(0, 2).map((con, idx) => (
                   <p key={idx} className="text-xs text-amber-700 flex items-start">
@@ -846,7 +840,6 @@ function Quiz() {
             </div>
           )}
 
-          {/* CTA */}
           <button 
             onClick={() => handleApplyClick(card)}
             className={`w-full py-3 rounded-xl font-semibold transition-all ${
@@ -865,14 +858,13 @@ function Quiz() {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 p-4 py-8">
         <div className="max-w-6xl mx-auto">
           
-          {/* User greeting */}
           {user && (
-            <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl p-4 mb-6 text-white text-center shadow-lg max-w-md mx-auto">
-              <p>👋 Hola, <strong>{user.user_metadata?.name || user.email}</strong></p>
+            <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl p-4 mb-6 text-white text-center shadow-lg max-w-md mx-auto flex items-center justify-center">
+              <User className="w-5 h-5 mr-2" />
+              <p>Hola, <strong>{user.user_metadata?.name || user.email}</strong></p>
             </div>
           )}
 
-          {/* Header */}
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-8 max-w-md mx-auto" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
             <Sparkles className="w-12 h-12 text-amber-500 mx-auto mb-3" />
             <h1 className="text-2xl font-bold text-gray-800 mb-1">
@@ -883,7 +875,6 @@ function Quiz() {
             </p>
           </div>
 
-          {/* Cards Grid - 3 columnas en desktop, 1 en móvil */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {allCards.map((card, idx) => (
               <CardResult 
@@ -895,16 +886,17 @@ function Quiz() {
             ))}
           </div>
 
-          {/* Disclaimer */}
           <div className="bg-white rounded-xl p-4 shadow-md max-w-2xl mx-auto mb-6">
             <p className="text-xs text-gray-400 text-center italic">
               {LEGAL_TEXTS.savingsDisclaimer}
             </p>
           </div>
 
-          {/* Disclaimer de datos de bancos - AGRESIVO */}
           <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 max-w-2xl mx-auto mb-6">
-            <h4 className="font-bold text-amber-800 text-sm mb-2">⚠️ IMPORTANTE - Lee antes de solicitar:</h4>
+            <h4 className="font-bold text-amber-800 text-sm mb-2 flex items-center">
+              <AlertCircle className="w-4 h-4 mr-2" />
+              IMPORTANTE - Lee antes de solicitar:
+            </h4>
             <ul className="text-xs text-amber-700 space-y-1">
               <li>• <strong>Tasas de interés:</strong> Varían mensualmente. Consulta el tarifario vigente del banco.</li>
               <li>• <strong>Cuota de manejo $0:</strong> Casi siempre requiere cumplir condiciones (# de compras, monto mínimo, nómina, etc).</li>
@@ -925,7 +917,6 @@ function Quiz() {
           <LegalFooter />
         </div>
 
-        {/* Modales */}
         {showSavingsBreakdown && (
           <SavingsBreakdownModal 
             card={topMatch} 
@@ -944,9 +935,6 @@ function Quiz() {
     );
   }
 
-  // ============================================================
-  // QUIZ PAGE
-  // ============================================================
   if (!currentQ) return null;
 
   const IconComponent = iconMap[questionsData.sections.find(s => s.id === currentQ.section)?.icon] || CreditCard;
@@ -957,7 +945,6 @@ function Quiz() {
       <div className="max-w-lg mx-auto">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
           
-          {/* Progress Header */}
           <div className="bg-gradient-to-r from-cyan-500 to-purple-600 p-5">
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center">
@@ -976,7 +963,6 @@ function Quiz() {
             </div>
           </div>
 
-          {/* Question Content */}
           <div className="p-6">
             <h3 className="text-xl font-bold text-gray-800 mb-2">
               {currentQ.question}
@@ -985,43 +971,52 @@ function Quiz() {
               <p className="text-gray-500 text-sm mb-5">{currentQ.subtitle}</p>
             )}
 
-            {/* Single Choice */}
             {currentQ.type === 'single' && (
               <div className="space-y-3">
-                {currentQ.options.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleAnswer(currentQ.id, option.value)}
-                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
-                      answers[currentQ.id] === option.value
-                        ? 'border-cyan-500 bg-gradient-to-r from-cyan-50 to-purple-50 shadow-md'
-                        : 'border-gray-100 hover:border-cyan-300 hover:bg-cyan-50/50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center flex-1">
-                        {option.emoji && <span className="text-xl mr-3">{option.emoji}</span>}
-                        <div>
-                          <span className="font-medium text-gray-700 block">{option.label}</span>
-                          {option.tip && answers[currentQ.id] === option.value && (
-                            <span className="text-xs text-cyan-600 mt-1 block">💡 {option.tip}</span>
-                          )}
+                {currentQ.options.map((option) => {
+                  const optionIcon = option.value === 'digital' ? Smartphone : 
+                                    option.value === 'travel' ? Plane :
+                                    option.value === 'shopping' ? ShoppingBag :
+                                    option.value.includes('full') ? CheckCircle2 :
+                                    option.value.includes('finance') ? TrendingDown :
+                                    null;
+                  
+                  return (
+                    <button
+                      key={option.value}
+                      onClick={() => handleAnswer(currentQ.id, option.value)}
+                      className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                        answers[currentQ.id] === option.value
+                          ? 'border-cyan-500 bg-gradient-to-r from-cyan-50 to-purple-50 shadow-md'
+                          : 'border-gray-100 hover:border-cyan-300 hover:bg-cyan-50/50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center flex-1">
+                          {optionIcon && <optionIcon className="w-5 h-5 mr-3 text-gray-600" />}
+                          {!optionIcon && option.emoji && <span className="text-xl mr-3">{option.emoji}</span>}
+                          <div>
+                            <span className="font-medium text-gray-700 block">{option.label}</span>
+                            {option.tip && answers[currentQ.id] === option.value && (
+                              <span className="text-xs text-cyan-600 mt-1 block flex items-center">
+                                <Info className="w-3 h-3 mr-1" />
+                                {option.tip}
+                              </span>
+                            )}
+                          </div>
                         </div>
+                        {answers[currentQ.id] === option.value && (
+                          <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full p-1 ml-3">
+                            <CheckCircle2 className="w-4 h-4 text-white" />
+                          </div>
+                        )}
                       </div>
-                      {answers[currentQ.id] === option.value && (
-                        <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full p-1 ml-3">
-                          <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             )}
 
-            {/* Multiple Choice */}
             {currentQ.type === 'multiple' && !currentQ.categories && (
               <div className="space-y-3">
                 {currentQ.options.map((option) => {
@@ -1048,14 +1043,12 @@ function Quiz() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
-                          <span className="text-xl mr-3">{option.emoji}</span>
+                          <span className="text-xl mr-3">{option.emoji || option.icon}</span>
                           <span className="font-medium text-gray-700">{option.label}</span>
                         </div>
                         {isSelected && (
                           <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full p-1">
-                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
+                            <CheckCircle2 className="w-4 h-4 text-white" />
                           </div>
                         )}
                       </div>
@@ -1068,7 +1061,6 @@ function Quiz() {
               </div>
             )}
 
-            {/* Multiple with Categories */}
             {currentQ.type === 'multiple' && currentQ.categories && (
               <div className="space-y-5">
                 {currentQ.categories.map((category, catIdx) => (
@@ -1098,7 +1090,7 @@ function Quiz() {
                             } ${!canSelect && !isSelected ? 'opacity-40' : ''}`}
                           >
                             {option.label}
-                            {isSelected && <span className="ml-1">✓</span>}
+                            {isSelected && <CheckCircle2 className="w-3 h-3 inline ml-1" />}
                           </button>
                         );
                       })}
@@ -1111,7 +1103,6 @@ function Quiz() {
               </div>
             )}
 
-            {/* Slider */}
             {currentQ.type === 'slider' && (
               <div className="space-y-5">
                 <div className="bg-gradient-to-r from-cyan-50 to-purple-50 p-5 rounded-xl text-center border border-cyan-100">
@@ -1140,7 +1131,6 @@ function Quiz() {
             )}
           </div>
 
-          {/* Navigation */}
           <div className="p-5 bg-gray-50 flex justify-between items-center">
             <button
               onClick={prevQuestion}
@@ -1159,8 +1149,17 @@ function Quiz() {
               onClick={nextQuestion}
               className="flex items-center px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white transition-all hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]"
             >
-              {currentQuestion === visibleQuestions.length - 1 ? '✨ Ver Resultados' : 'Siguiente'}
-              <ChevronRight className="w-5 h-5 ml-1" />
+              {currentQuestion === visibleQuestions.length - 1 ? (
+                <>
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Ver Resultados
+                </>
+              ) : (
+                <>
+                  Siguiente
+                  <ChevronRight className="w-5 h-5 ml-1" />
+                </>
+              )}
             </button>
           </div>
         </div>
