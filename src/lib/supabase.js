@@ -107,7 +107,8 @@ export const supabase = new SupabaseClient(SUPABASE_URL, SUPABASE_ANON_KEY);
  */
 export async function signInWithGoogle() {
   try {
-    const redirectTo = `${REDIRECT_URL}?auth=callback`;
+    // Redirigir directamente al quiz después del login
+    const redirectTo = `${REDIRECT_URL}/quiz`;
     const authUrl = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectTo)}`;
     
     // Guardar estado del quiz antes de redirigir
@@ -136,10 +137,10 @@ export async function getSession() {
     const accessToken = hashParams.get('access_token');
     
     if (accessToken) {
-      // Limpiar URL
+      // Limpiar URL (quitar el hash con el token)
       window.history.replaceState({}, document.title, window.location.pathname);
       
-      // Obtener datos del usuario
+      // Obtener datos del usuario desde Supabase
       const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -150,22 +151,56 @@ export async function getSession() {
       if (response.ok) {
         const user = await response.json();
         
-        // Recuperar teléfono guardado antes del login
+        // Recuperar TODOS los datos guardados antes del login
         const savedPhone = sessionStorage.getItem('banqueando_phone');
+        const savedAge = sessionStorage.getItem('banqueando_age');
+        const savedGender = sessionStorage.getItem('banqueando_gender');
+        const savedCity = sessionStorage.getItem('banqueando_city');
+        const savedTermsAccepted = sessionStorage.getItem('banqueando_terms_accepted');
+        const savedTermsAcceptedAt = sessionStorage.getItem('banqueando_terms_accepted_at');
+        
+        // Inicializar user_metadata si no existe
+        user.user_metadata = user.user_metadata || {};
+        
+        // Agregar teléfono
         if (savedPhone) {
           user.phone = savedPhone;
-          user.user_metadata = user.user_metadata || {};
           user.user_metadata.phone = savedPhone;
         }
         
-        // Guardar en sessionStorage
+        // Agregar edad
+        if (savedAge) {
+          user.age = savedAge;
+          user.user_metadata.age = savedAge;
+        }
+        
+        // Agregar género
+        if (savedGender) {
+          user.gender = savedGender;
+          user.user_metadata.gender = savedGender;
+        }
+        
+        // Agregar ciudad
+        if (savedCity) {
+          user.city = savedCity;
+          user.user_metadata.city = savedCity;
+        }
+        
+        // Agregar aceptación de términos
+        if (savedTermsAccepted) {
+          user.termsAccepted = true;
+          user.termsAcceptedAt = savedTermsAcceptedAt;
+        }
+        
+        // Guardar usuario completo en sessionStorage
         sessionStorage.setItem('banqueando_user', JSON.stringify(user));
         sessionStorage.setItem('banqueando_token', accessToken);
+        
         return { user, accessToken };
       }
     }
     
-    // Buscar sesión guardada
+    // Buscar sesión guardada previamente
     const savedUser = sessionStorage.getItem('banqueando_user');
     const savedToken = sessionStorage.getItem('banqueando_token');
     
@@ -187,6 +222,13 @@ export function signOut() {
   sessionStorage.removeItem('banqueando_user');
   sessionStorage.removeItem('banqueando_token');
   sessionStorage.removeItem('banqueando_quiz_state');
+  sessionStorage.removeItem('banqueando_quiz_state_backup');
+  sessionStorage.removeItem('banqueando_phone');
+  sessionStorage.removeItem('banqueando_age');
+  sessionStorage.removeItem('banqueando_gender');
+  sessionStorage.removeItem('banqueando_city');
+  sessionStorage.removeItem('banqueando_terms_accepted');
+  sessionStorage.removeItem('banqueando_terms_accepted_at');
   return { success: true };
 }
 
@@ -204,7 +246,7 @@ export function getQuizState() {
   const state = sessionStorage.getItem('banqueando_quiz_state') 
     || sessionStorage.getItem('banqueando_quiz_state_backup');
   
-  // Limpiar backup
+  // Limpiar backup después de recuperar
   sessionStorage.removeItem('banqueando_quiz_state_backup');
   
   return state ? JSON.parse(state) : null;
