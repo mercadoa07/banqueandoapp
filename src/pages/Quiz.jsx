@@ -45,26 +45,14 @@ import {
 import { LEGAL_TEXTS, SAVINGS_CONFIG, LEGAL_URLS } from '../constants/legal.js';
 
 // ============================================
-// LOGO COMPONENT - Banqueando
+// LOGO COMPONENT - Usa la imagen logo.png
 // ============================================
 const BanqueandoLogo = ({ className = "w-16 h-16" }) => (
-  <svg className={className} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="logoGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" stopColor="#0891B2" />
-        <stop offset="100%" stopColor="#5B21B6" />
-      </linearGradient>
-      <linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#0891B2" />
-        <stop offset="100%" stopColor="#5B21B6" />
-      </linearGradient>
-    </defs>
-    <rect x="30" y="20" width="35" height="160" rx="17.5" fill="url(#logoGradient)" />
-    <path d="M75 20 H130 C158 20 180 42 180 70 C180 98 158 100 130 100 H75 V20Z" fill="url(#logoGradient2)" opacity="0.9"/>
-    <path d="M75 100 H140 C172 100 195 125 195 155 C195 185 172 180 140 180 H75 V100Z" fill="url(#logoGradient)" opacity="0.85"/>
-    <rect x="75" y="55" width="60" height="12" rx="6" fill="white" opacity="0.95"/>
-    <rect x="75" y="133" width="70" height="12" rx="6" fill="white" opacity="0.95"/>
-  </svg>
+  <img 
+    src="/logo.png" 
+    alt="Banqueando" 
+    className={`${className} object-contain`}
+  />
 );
 
 // Mapeo de iconos
