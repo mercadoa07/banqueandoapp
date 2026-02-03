@@ -25,11 +25,12 @@ import {
 
 // Importar configuraciones
 import cardsData from '../../config/cards.json';
+import creditProductsData from '../../config/creditProducts.json';
 import questionsData from '../../config/questions.json';
 import matchingConfig from '../../config/matchingConfig.json';
 
-// Importar engine
-import { createMatchingEngine } from '../engine/matchingEngine.js';
+// Importar engines
+import { createMatchingEngine, createCreditMatchingEngine } from '../engine/matchingEngine.js';
 
 // Importar auth y analytics
 import { 
@@ -78,11 +79,14 @@ const iconMap = {
 
 function Quiz() {
   const [step, setStep] = useState('landing');
+  const [vertical, setVertical] = useState(null); // 'cards' o 'credit'
+  const [productType, setProductType] = useState(null); // 'nueva_tarjeta', 'cambiar_tarjeta', 'credito_negocio'
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState(null);
   const [matchScore, setMatchScore] = useState(0);
   const [engine, setEngine] = useState(null);
+  const [creditEngine, setCreditEngine] = useState(null);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -92,23 +96,46 @@ function Quiz() {
   const [emailInput, setEmailInput] = useState('');
   const [nameInput, setNameInput] = useState('');
   const [phoneInput, setPhoneInput] = useState('');
+  const [ageInput, setAgeInput] = useState('');
+  const [genderInput, setGenderInput] = useState('');
+  const [cityInput, setCityInput] = useState('');
   const [phoneCollected, setPhoneCollected] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [showSavingsBreakdown, setShowSavingsBreakdown] = useState(false);
   const [showApplyPopup, setShowApplyPopup] = useState(false);
   const [selectedCardForApply, setSelectedCardForApply] = useState(null);
 
-  const visibleQuestions = questionsData.questions.filter(q => {
-    if (!q.showIf) return true;
-    const { question, includes } = q.showIf;
-    const answer = answers[question];
-    return Array.isArray(answer) ? answer.includes(includes) : answer === includes;
-  });
+  // Obtener preguntas segun vertical
+  const getQuestionsForVertical = () => {
+    if (!vertical) return [];
+    
+    // Nueva estructura: questions.cards o questions.credit
+    const verticalQuestions = questionsData.questions?.[vertical] || questionsData.questions || [];
+    
+    return verticalQuestions.filter(q => {
+      if (!q.showIf) return true;
+      const { field, equals, notEquals, includes } = q.showIf;
+      const answer = answers[field];
+      
+      if (equals !== undefined) return answer === equals;
+      if (notEquals !== undefined) return answer !== notEquals;
+      if (includes !== undefined) {
+        return Array.isArray(answer) ? answer.includes(includes) : answer === includes;
+      }
+      return true;
+    });
+  };
+
+  const visibleQuestions = getQuestionsForVertical();
 
   useEffect(() => {
     const init = async () => {
       const matchingEngine = createMatchingEngine(cardsData, matchingConfig);
       setEngine(matchingEngine);
+      
+      // Crear engine para creditos (unificado)
+      const creditMatchingEngine = createCreditMatchingEngine(creditProductsData, matchingConfig);
+      setCreditEngine(creditMatchingEngine);
       
       const { user: currentUser } = await getSession();
       if (currentUser) {
@@ -141,9 +168,17 @@ function Quiz() {
     setAnswers(prev => ({ ...prev, [questionId]: value }));
   };
 
-  const startQuiz = () => {
+  const handlePreQuizSelection = (option) => {
+    setProductType(option.value);
+    setVertical(option.vertical);
+    setAnswers({ product_selection: option.value });
     quizStartTime.current = Date.now();
     setStep('quiz');
+  };
+
+  const startQuiz = () => {
+    quizStartTime.current = Date.now();
+    setStep('prequiz');
   };
 
   const nextQuestion = () => {
@@ -172,12 +207,15 @@ function Quiz() {
 
   const handlePhoneSubmit = (e) => {
     e.preventDefault();
-    if (!phoneInput || !termsAccepted) return;
+    if (!phoneInput || !ageInput || !genderInput || !cityInput || !termsAccepted) return;
     setPhoneCollected(true);
   };
 
   const handleGoogleLogin = async () => {
     sessionStorage.setItem('banqueando_phone', phoneInput);
+    sessionStorage.setItem('banqueando_age', ageInput);
+    sessionStorage.setItem('banqueando_gender', genderInput);
+    sessionStorage.setItem('banqueando_city', cityInput);
     sessionStorage.setItem('banqueando_terms_accepted', 'true');
     sessionStorage.setItem('banqueando_terms_accepted_at', new Date().toISOString());
     setIsLoading(true);
@@ -192,7 +230,10 @@ function Quiz() {
       id: null,
       email: emailInput,
       phone: phoneInput,
-      user_metadata: { name: nameInput, phone: phoneInput },
+      age: ageInput,
+      gender: genderInput,
+      city: cityInput,
+      user_metadata: { name: nameInput, phone: phoneInput, age: ageInput, gender: genderInput, city: cityInput },
       termsAccepted: true,
       termsAcceptedAt: new Date().toISOString()
     };
@@ -206,11 +247,39 @@ function Quiz() {
   };
 
   const calculateResultsWithUser = async (quizAnswers, currentUser, matchingEngine) => {
-    const engineToUse = matchingEngine || engine;
-    if (!engineToUse) return;
+    let engineToUse;
+    let matchResults;
+    
+    console.log('[Quiz] Calculando resultados, vertical:', vertical);
+    
+    // Usar el engine correcto segun la vertical
+    if (vertical === 'credit' && creditEngine) {
+      console.log('[Quiz] Usando creditEngine');
+      engineToUse = creditEngine;
+      matchResults = engineToUse.getTopResults(quizAnswers);
+    } else {
+      console.log('[Quiz] Usando cardsEngine');
+      engineToUse = matchingEngine || engine;
+      if (!engineToUse) {
+        console.error('[Quiz] No hay engine disponible');
+        setResults({ topMatch: null, alternatives: [] });
+        setStep('results');
+        return;
+      }
+      matchResults = engineToUse.getTopResults(quizAnswers);
+    }
+    
+    console.log('[Quiz] Resultados:', matchResults);
+    
+    // Verificar que hay resultados - si no hay, igual ir a results para mostrar mensaje
+    if (!matchResults || !matchResults.topMatch) {
+      console.warn('[Quiz] No se encontraron resultados');
+      setResults({ topMatch: null, alternatives: [] });
+      setStep('results');
+      return;
+    }
     
     const answersToUse = quizAnswers || answers;
-    const matchResults = engineToUse.getTopResults(answersToUse);
     setResults(matchResults);
     setStep('results');
     
@@ -218,7 +287,7 @@ function Quiz() {
       ? Math.round((Date.now() - quizStartTime.current) / 1000)
       : null;
     
-    const targetScore = matchResults.topMatch.score;
+    const targetScore = matchResults.topMatch?.score || 75;
     let count = 0;
     const interval = setInterval(() => {
       count += 2;
@@ -232,6 +301,7 @@ function Quiz() {
         topMatch: matchResults.topMatch,
         alternatives: matchResults.alternatives,
         timeToComplete,
+        vertical: vertical,
         user: {
           ...currentUser,
           termsAccepted: true,
@@ -296,6 +366,8 @@ function Quiz() {
     setAnswers({});
     setResults(null);
     setMatchScore(0);
+    setVertical(null);
+    setProductType(null);
     quizStartTime.current = null;
     setShowEmailForm(false);
     setEmailInput('');
@@ -469,6 +541,68 @@ function Quiz() {
     );
   }
 
+  // ============================================
+  // PRE-QUIZ - SELECTOR DE VERTICAL
+  // ============================================
+  if (step === 'prequiz') {
+    const preQuizOptions = questionsData.preQuiz?.options || [
+      { value: 'nueva_tarjeta', label: 'Nueva tarjeta de credito', description: 'Quiero mi primera tarjeta o una adicional', emoji: '💳', vertical: 'cards' },
+      { value: 'cambiar_tarjeta', label: 'Cambiar mi tarjeta actual', description: 'Tengo una tarjeta pero no estoy satisfecho', emoji: '🔄', vertical: 'cards' },
+      { value: 'necesito_credito', label: 'Necesito dinero / Crédito', description: 'Busco financiamiento personal o para mi negocio', emoji: '💰', vertical: 'credit' }
+    ];
+    
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
+        <div className="max-w-lg w-full">
+          <div className="bg-white rounded-3xl shadow-xl p-8" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
+            
+            <div className="text-center mb-8">
+              <BanqueandoLogo className="w-16 h-16 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                {questionsData.preQuiz?.question || 'Que estas buscando hoy?'}
+              </h2>
+              <p className="text-gray-500 text-sm">
+                {questionsData.preQuiz?.subtitle || 'Selecciona una opcion para personalizar tu experiencia'}
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              {preQuizOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handlePreQuizSelection(option)}
+                  className="w-full p-5 rounded-2xl border-2 border-gray-100 text-left transition-all hover:border-cyan-400 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-purple-50 hover:shadow-lg group"
+                >
+                  <div className="flex items-center">
+                    <div className="bg-gradient-to-br from-cyan-100 to-purple-100 p-3 rounded-xl mr-4 group-hover:from-cyan-200 group-hover:to-purple-200 transition-colors">
+                      <span className="text-2xl">{option.emoji}</span>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-gray-800 text-lg mb-1">
+                        {option.label}
+                      </h3>
+                      <p className="text-gray-500 text-sm">
+                        {option.description}
+                      </p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-cyan-500 transition-colors" />
+                  </div>
+                </button>
+              ))}
+            </div>
+            
+            <button
+              onClick={() => setStep('landing')}
+              className="w-full mt-6 text-gray-400 hover:text-gray-600 text-sm"
+            >
+              ← Volver
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (step === 'login') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
@@ -488,7 +622,9 @@ function Quiz() {
           {!phoneCollected ? (
             <>
               <p className="text-gray-500 text-sm mb-6">
-                Ingresa tu WhatsApp para ver tu tarjeta ideal
+                {vertical === 'credit' 
+                  ? 'Completa tus datos para ver tus opciones de crédito' 
+                  : 'Completa tus datos para ver tu tarjeta ideal'}
               </p>
               
               <form onSubmit={handlePhoneSubmit} className="text-left">
@@ -503,8 +639,74 @@ function Quiz() {
                     onChange={(e) => setPhoneInput(e.target.value)}
                     placeholder="Ej: 3001234567"
                     required
-                    className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-center text-lg transition-colors"
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-center text-lg transition-colors"
                   />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-2 text-sm">
+                      Edad *
+                    </label>
+                    <select
+                      value={ageInput}
+                      onChange={(e) => setAgeInput(e.target.value)}
+                      required
+                      className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors text-gray-700"
+                    >
+                      <option value="">Selecciona</option>
+                      <option value="18-25">18-25 años</option>
+                      <option value="26-35">26-35 años</option>
+                      <option value="36-45">36-45 años</option>
+                      <option value="46-55">46-55 años</option>
+                      <option value="56+">56+ años</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-2 text-sm">
+                      Género *
+                    </label>
+                    <select
+                      value={genderInput}
+                      onChange={(e) => setGenderInput(e.target.value)}
+                      required
+                      className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors text-gray-700"
+                    >
+                      <option value="">Selecciona</option>
+                      <option value="masculino">Masculino</option>
+                      <option value="femenino">Femenino</option>
+                      <option value="otro">Otro</option>
+                      <option value="no_responde">Prefiero no decir</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-medium mb-2 text-sm">
+                    Ciudad *
+                  </label>
+                  <select
+                    value={cityInput}
+                    onChange={(e) => setCityInput(e.target.value)}
+                    required
+                    className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors text-gray-700"
+                  >
+                    <option value="">Selecciona tu ciudad</option>
+                    <option value="bogota">Bogotá</option>
+                    <option value="medellin">Medellín</option>
+                    <option value="cali">Cali</option>
+                    <option value="barranquilla">Barranquilla</option>
+                    <option value="cartagena">Cartagena</option>
+                    <option value="bucaramanga">Bucaramanga</option>
+                    <option value="pereira">Pereira</option>
+                    <option value="manizales">Manizales</option>
+                    <option value="santa_marta">Santa Marta</option>
+                    <option value="cucuta">Cúcuta</option>
+                    <option value="ibague">Ibagué</option>
+                    <option value="villavicencio">Villavicencio</option>
+                    <option value="otra">Otra ciudad</option>
+                  </select>
                 </div>
                 
                 <div className="mb-6">
@@ -531,7 +733,7 @@ function Quiz() {
                 
                 <button
                   type="submit"
-                  disabled={!phoneInput || !termsAccepted}
+                  disabled={!phoneInput || !ageInput || !genderInput || !cityInput || !termsAccepted}
                   className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-cyan-500/25"
                 >
                   Continuar →
@@ -660,7 +862,9 @@ function Quiz() {
             </div>
           </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Analizando tu perfil...</h2>
-          <p className="text-gray-500">Encontrando tu tarjeta ideal</p>
+          <p className="text-gray-500">
+            {vertical === 'credit' ? 'Encontrando tu crédito ideal' : 'Encontrando tu tarjeta ideal'}
+          </p>
         </div>
       </div>
     );
@@ -668,7 +872,29 @@ function Quiz() {
 
   if (step === 'results' && results) {
     const { topMatch, alternatives } = results;
-    const allCards = [topMatch, ...(alternatives || [])].slice(0, 3);
+    
+    // Validar que hay resultados
+    if (!topMatch) {
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
+          <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-8 text-center">
+            <AlertCircle className="w-16 h-16 text-amber-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">No encontramos resultados</h2>
+            <p className="text-gray-500 mb-6">
+              No pudimos encontrar productos que coincidan con tu perfil. Intenta ajustar tus respuestas.
+            </p>
+            <button
+              onClick={resetQuiz}
+              className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold"
+            >
+              Volver a intentar
+            </button>
+          </div>
+        </div>
+      );
+    }
+    
+    const allCards = [topMatch, ...(alternatives || [])].filter(Boolean).slice(0, 3);
 
     const CardResult = ({ card, rank, isTop }) => {
       const rankLabels = ['MEJOR MATCH', 'ALTERNATIVA', 'OPCIÓN'];
@@ -760,69 +986,120 @@ function Quiz() {
             </div>
           )}
 
-          <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
-            <div className="grid grid-cols-2 gap-2 text-center">
-              <div>
-                <p className="text-xs text-gray-500">Cuota*</p>
-                <p className="font-bold text-gray-800 text-sm">
-                  {card.fees?.feeWaiverCondition?.includes('Sin condiciones') 
-                    ? '$0 siempre' 
-                    : card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0
-                      ? '$0 con condiciones*'
-                      : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes*`}
+          {/* Sección de información - diferente para crédito vs tarjetas */}
+          {vertical === 'credit' ? (
+            // Vista para CRÉDITO
+            <>
+              <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
+                <div className="grid grid-cols-2 gap-2 text-center">
+                  <div>
+                    <p className="text-xs text-gray-500">Tasa desde</p>
+                    <p className="font-bold text-gray-800 text-sm">
+                      {card.loanDetails?.interestRateEA?.min || 'Variable'}% EA
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">Desembolso</p>
+                    <p className="font-bold text-gray-800 text-sm">
+                      {card.loanDetails?.disbursementTimeHours 
+                        ? card.loanDetails.disbursementTimeHours <= 24 
+                          ? '< 24 horas'
+                          : card.loanDetails.disbursementTimeHours <= 72 
+                            ? '1-3 días'
+                            : '3+ días'
+                        : 'Variable'}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-2 pt-2 border-t border-gray-200 text-center">
+                  <p className="text-xs text-gray-500">Monto</p>
+                  <p className="font-semibold text-gray-700 text-sm">
+                    ${card.loanDetails?.minAmountMillions || 0}M - ${card.loanDetails?.maxAmountMillions || '?'}M
+                  </p>
+                </div>
+              </div>
+
+              {/* Tipo de crédito / Descripción */}
+              <div className="bg-purple-50 rounded-xl p-3 mb-3 border border-purple-100">
+                <p className="text-xs text-gray-500 mb-1">Tipo de crédito</p>
+                <p className="text-sm font-medium text-purple-800">
+                  {card.productType || card.category?.join(', ') || 'Crédito digital'}
                 </p>
-                {card.fees?.feeWaiverCondition && (
-                  <p className={`text-[10px] mt-1 leading-tight flex items-center justify-center ${
-                    card.fees.feeWaiverCondition.includes('Sin condiciones') 
-                      ? 'text-emerald-600' 
-                      : 'text-amber-600 font-medium'
-                  }`}>
-                    <AlertCircle className="w-3 h-3 mr-1 flex-shrink-0" />
-                    {card.fees.feeWaiverCondition}
+                {card.observations && (
+                  <p className="text-[10px] text-gray-500 mt-1 line-clamp-2">
+                    {card.observations}
                   </p>
                 )}
               </div>
-              <div>
-                <p className="text-xs text-gray-500">Tasa*</p>
-                <p className="font-bold text-gray-800 text-sm">
-                  {card.rates?.interestRateEA || 'N/A'}% EA*
-                </p>
-                <p className="text-[10px] text-gray-400 mt-1">Puede variar mensualmente</p>
+            </>
+          ) : (
+            // Vista para TARJETAS (original)
+            <>
+              <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
+                <div className="grid grid-cols-2 gap-2 text-center">
+                  <div>
+                    <p className="text-xs text-gray-500">Cuota*</p>
+                    <p className="font-bold text-gray-800 text-sm">
+                      {card.fees?.feeWaiverCondition?.includes('Sin condiciones') 
+                        ? '$0 siempre' 
+                        : card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0
+                          ? '$0 con condiciones*'
+                          : `$${(card.fees?.monthlyFee || 0).toLocaleString()}/mes*`}
+                    </p>
+                    {card.fees?.feeWaiverCondition && (
+                      <p className={`text-[10px] mt-1 leading-tight flex items-center justify-center ${
+                        card.fees.feeWaiverCondition.includes('Sin condiciones') 
+                          ? 'text-emerald-600' 
+                          : 'text-amber-600 font-medium'
+                      }`}>
+                        <AlertCircle className="w-3 h-3 mr-1 flex-shrink-0" />
+                        {card.fees.feeWaiverCondition}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">Tasa*</p>
+                    <p className="font-bold text-gray-800 text-sm">
+                      {card.rates?.interestRateEA || 'N/A'}% EA*
+                    </p>
+                    <p className="text-[10px] text-gray-400 mt-1">Puede variar mensualmente</p>
+                  </div>
+                </div>
+                {card.requirements?.minIncome && card.requirements.minIncome > 0 && (
+                  <div className="mt-2 pt-2 border-t border-gray-200 text-center">
+                    <p className="text-xs text-gray-500">Ingreso mínimo*</p>
+                    <p className="font-semibold text-gray-700 text-sm">
+                      ${(card.requirements.minIncome / 1000000).toFixed(1)}M
+                    </p>
+                    <p className="text-[10px] text-gray-400">Sujeto a estudio de crédito</p>
+                  </div>
+                )}
               </div>
-            </div>
-            {card.requirements?.minIncome && card.requirements.minIncome > 0 && (
-              <div className="mt-2 pt-2 border-t border-gray-200 text-center">
-                <p className="text-xs text-gray-500">Ingreso mínimo*</p>
-                <p className="font-semibold text-gray-700 text-sm">
-                  ${(card.requirements.minIncome / 1000000).toFixed(1)}M
-                </p>
-                <p className="text-[10px] text-gray-400">Sujeto a estudio de crédito</p>
-              </div>
-            )}
-          </div>
 
-          <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 p-3 rounded-xl mb-3 border border-emerald-100">
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-xs text-gray-500 flex items-center">
-                  <DollarSign className="w-3 h-3 mr-1" />
-                  Ahorro anual
-                </p>
-                <p className="text-xl font-bold text-emerald-600">
-                  ${(card.personalizedSavings || 0).toLocaleString()}
-                </p>
+              <div className="bg-gradient-to-r from-emerald-50 to-cyan-50 p-3 rounded-xl mb-3 border border-emerald-100">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-xs text-gray-500 flex items-center">
+                      <DollarSign className="w-3 h-3 mr-1" />
+                      Ahorro anual
+                    </p>
+                    <p className="text-xl font-bold text-emerald-600">
+                      ${(card.personalizedSavings || 0).toLocaleString()}
+                    </p>
+                  </div>
+                  {isTop && (
+                    <button 
+                      onClick={() => setShowSavingsBreakdown(true)}
+                      className="text-emerald-600 hover:text-emerald-800 p-1"
+                      title="Ver desglose"
+                    >
+                      <Info className="w-5 h-5" />
+                    </button>
+                  )}
+                </div>
               </div>
-              {isTop && (
-                <button 
-                  onClick={() => setShowSavingsBreakdown(true)}
-                  className="text-emerald-600 hover:text-emerald-800 p-1"
-                  title="Ver desglose"
-                >
-                  <Info className="w-5 h-5" />
-                </button>
-              )}
-            </div>
-          </div>
+            </>
+          )}
 
           {card.cons && card.cons.length > 0 && (
             <div className="mb-3">
@@ -871,7 +1148,10 @@ function Quiz() {
               ¡Encontramos tu match!
             </h1>
             <p className="text-gray-500 text-sm">
-              Analizamos {cardsData.cards.length} tarjetas para ti
+              {vertical === 'credit' 
+                ? `Analizamos ${creditProductsData.creditProducts?.length || 53} opciones de crédito para ti`
+                : `Analizamos ${cardsData.cards.length} tarjetas para ti`
+              }
             </p>
           </div>
 
@@ -886,27 +1166,47 @@ function Quiz() {
             ))}
           </div>
 
-          <div className="bg-white rounded-xl p-4 shadow-md max-w-2xl mx-auto mb-6">
-            <p className="text-xs text-gray-400 text-center italic">
-              {LEGAL_TEXTS.savingsDisclaimer}
-            </p>
-          </div>
+          {vertical !== 'credit' && (
+            <div className="bg-white rounded-xl p-4 shadow-md max-w-2xl mx-auto mb-6">
+              <p className="text-xs text-gray-400 text-center italic">
+                {LEGAL_TEXTS.savingsDisclaimer}
+              </p>
+            </div>
+          )}
 
-          <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 max-w-2xl mx-auto mb-6">
-            <h4 className="font-bold text-amber-800 text-sm mb-2 flex items-center">
-              <AlertCircle className="w-4 h-4 mr-2" />
-              IMPORTANTE - Lee antes de solicitar:
-            </h4>
-            <ul className="text-xs text-amber-700 space-y-1">
-              <li>• <strong>Tasas de interés:</strong> Varían mensualmente. Consulta el tarifario vigente del banco.</li>
-              <li>• <strong>Cuota de manejo $0:</strong> Casi siempre requiere cumplir condiciones (# de compras, monto mínimo, nómina, etc).</li>
-              <li>• <strong>Beneficios:</strong> Pueden cambiar sin previo aviso. Verifica términos y condiciones.</li>
-              <li>• <strong>Aprobación:</strong> Sujeta a estudio de crédito del banco.</li>
-            </ul>
-            <p className="text-[10px] text-amber-600 mt-2 italic">
-              Datos obtenidos de sitios web oficiales (Dic 2025). Banqueando no es responsable de cambios en las condiciones de los bancos.
-            </p>
-          </div>
+          {vertical === 'credit' ? (
+            <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 max-w-2xl mx-auto mb-6">
+              <h4 className="font-bold text-amber-800 text-sm mb-2 flex items-center">
+                <AlertCircle className="w-4 h-4 mr-2" />
+                IMPORTANTE - Lee antes de solicitar:
+              </h4>
+              <ul className="text-xs text-amber-700 space-y-1">
+                <li>• <strong>Tasas de interés:</strong> Son referenciales y pueden variar según tu perfil crediticio.</li>
+                <li>• <strong>Aprobación:</strong> Sujeta a estudio de crédito de cada entidad.</li>
+                <li>• <strong>Tiempos de desembolso:</strong> Pueden variar según documentación y verificación.</li>
+                <li>• <strong>Costos adicionales:</strong> Algunas entidades cobran seguros, comisiones u otros cargos.</li>
+              </ul>
+              <p className="text-[10px] text-amber-600 mt-2 italic">
+                Información actualizada a Enero 2025. Banqueando no es una entidad financiera ni otorga créditos. Verifica condiciones directamente con cada entidad.
+              </p>
+            </div>
+          ) : (
+            <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 max-w-2xl mx-auto mb-6">
+              <h4 className="font-bold text-amber-800 text-sm mb-2 flex items-center">
+                <AlertCircle className="w-4 h-4 mr-2" />
+                IMPORTANTE - Lee antes de solicitar:
+              </h4>
+              <ul className="text-xs text-amber-700 space-y-1">
+                <li>• <strong>Tasas de interés:</strong> Varían mensualmente. Consulta el tarifario vigente del banco.</li>
+                <li>• <strong>Cuota de manejo $0:</strong> Casi siempre requiere cumplir condiciones (# de compras, monto mínimo, nómina, etc).</li>
+                <li>• <strong>Beneficios:</strong> Pueden cambiar sin previo aviso. Verifica términos y condiciones.</li>
+                <li>• <strong>Aprobación:</strong> Sujeta a estudio de crédito del banco.</li>
+              </ul>
+              <p className="text-[10px] text-amber-600 mt-2 italic">
+                Datos obtenidos de sitios web oficiales (Dic 2025). Banqueando no es responsable de cambios en las condiciones de los bancos.
+              </p>
+            </div>
+          )}
 
           <div className="text-center mb-6">
             <button onClick={resetQuiz} className="text-cyan-600 hover:text-cyan-800 font-medium">
@@ -935,10 +1235,23 @@ function Quiz() {
     );
   }
 
-  if (!currentQ) return null;
+  // Si no hay pregunta actual, mostrar mensaje de carga
+  if (!currentQ) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
+        <div className="text-center">
+          <BanqueandoLogo className="w-16 h-16 mx-auto mb-4 animate-pulse" />
+          <p className="text-gray-500">Cargando preguntas...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const IconComponent = iconMap[questionsData.sections.find(s => s.id === currentQ.section)?.icon] || CreditCard;
-  const sectionName = questionsData.sections.find(s => s.id === currentQ.section)?.name || '';
+  // Obtener seccion segun la vertical actual
+  const currentSections = questionsData.sections?.[vertical] || [];
+  const currentSection = currentSections.find(s => s.id === currentQ.section);
+  const IconComponent = iconMap[currentSection?.icon] || CreditCard;
+  const sectionName = currentSection?.name || 'Quiz';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 p-4 py-8">
@@ -1106,7 +1419,9 @@ function Quiz() {
             {currentQ.type === 'slider' && (
               <div className="space-y-5">
                 <div className="bg-gradient-to-r from-cyan-50 to-purple-50 p-5 rounded-xl text-center border border-cyan-100">
-                  <p className="text-sm text-gray-500 mb-1">Tu gasto mensual</p>
+                  <p className="text-sm text-gray-500 mb-1">
+                    {currentQ.id === 'monthly_debt_payment' ? 'Tu pago mensual en deudas' : 'Tu gasto mensual'}
+                  </p>
                   <p className="text-4xl font-bold bg-gradient-to-r from-cyan-500 to-purple-600 bg-clip-text text-transparent">
                     ${((answers[currentQ.id] || currentQ.defaultValue) / 1000000).toFixed(1)}M
                   </p>
@@ -1124,8 +1439,25 @@ function Quiz() {
                   }}
                 />
                 <div className="flex justify-between text-xs text-gray-400">
-                  <span>$200K</span>
-                  <span>$10M+</span>
+                  <span>{currentQ.labels?.min || '$0'}</span>
+                  <span>{currentQ.labels?.max || '$10M+'}</span>
+                </div>
+              </div>
+            )}
+
+            {currentQ.type === 'text' && (
+              <div className="space-y-3">
+                <textarea
+                  value={answers[currentQ.id] || ''}
+                  onChange={(e) => handleAnswer(currentQ.id, e.target.value)}
+                  placeholder={currentQ.placeholder || 'Escribe tu respuesta aquí...'}
+                  maxLength={currentQ.maxLength || 500}
+                  rows={4}
+                  className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200 outline-none transition-all resize-none text-gray-700 placeholder-gray-400"
+                />
+                <div className="flex justify-between text-xs text-gray-400">
+                  <span>{currentQ.required ? 'Requerido' : 'Opcional'}</span>
+                  <span>{(answers[currentQ.id] || '').length} / {currentQ.maxLength || 500}</span>
                 </div>
               </div>
             )}
