@@ -1,272 +1,209 @@
 {
   "version": "2.0",
-  "lastUpdated": "2025-01-13",
-  "description": "Configuración del algoritmo de matching Banqueando v2",
-
-  "weights": {
-    "interests": 10,
-    "feeSensitivity": 9,
-    "digitalPreference": 7,
-    "income": 7,
-    "paymentBehavior": 3,
-    "shoppingPlaces": 6,
-    "travelFreq": 5,
-    "values": 4,
-    "creditHistory": 5,
-    "cardUsage": 5
-  },
-
-  "scoring": {
-    "baseScore": 30,
-    "maxScore": 100,
-    "exactMatchPoints": 10,
-    "partialMatchPoints": 5
-  },
-
-  "filters": {
-    "enableIncomeFilter": true,
-    "enableCreditHistoryFilter": true,
-    "strictMode": false
-  },
-
-  "incomeRanges": {
-    "0-2": { "min": 0, "max": 2000000, "label": "Menos de $2M" },
-    "2-4": { "min": 2000000, "max": 4000000, "label": "$2M - $4M" },
-    "4-6": { "min": 4000000, "max": 6000000, "label": "$4M - $6M" },
-    "6-10": { "min": 6000000, "max": 10000000, "label": "$6M - $10M" },
-    "10+": { "min": 10000000, "max": 999999999, "label": "Más de $10M" }
-  },
-
-  "bonusRules": [
-    {
-      "id": "perfect_digital_match",
-      "name": "Match digital perfecto",
-      "description": "Usuario 100% digital + tarjeta 100% digital",
-      "conditions": {
-        "userFactor": "digitalPreference",
-        "userValue": "digital",
-        "cardField": "digitalExperience.fullyDigital",
-        "cardValue": true
-      },
-      "bonus": 12
+  "lastUpdated": "2024-12-29",
+  
+  "cardsMatching": {
+    "baseScore": 40,
+    
+    "weights": {
+      "paymentBehavior": 25,
+      "feeSensitivity": 20,
+      "incomeMatch": 15,
+      "digitalPreference": 10,
+      "interests": 10,
+      "cardUsage": 10,
+      "painPointsSolved": 15,
+      "travelPreference": 10,
+      "values": 5
     },
-    {
-      "id": "frequent_traveler_miles",
-      "name": "Viajero frecuente + millas",
-      "description": "Viaja 3+ veces al año y tarjeta acumula millas",
-      "conditions": {
-        "userFactor": "travelFreq",
-        "userValueIn": ["3-5", "6+"],
-        "cardField": "rewards.type",
-        "cardValue": "miles"
-      },
-      "bonus": 15
+    
+    "bonuses": {
+      "perfectPaymentMatch": 10,
+      "multipleInterestMatch": 5,
+      "painPointDirectSolve": 15,
+      "shoppingPlaceMatch": 8,
+      "teamAffinity": 5
     },
-    {
-      "id": "no_fee_seeker_match",
-      "name": "Buscador de $0 cuota satisfecho",
-      "description": "Quiere $0 cuota y tarjeta no tiene cuota",
-      "conditions": {
-        "userFactor": "feeSensitivity",
-        "userValue": "no_fee",
-        "cardField": "fees.annualFee",
-        "cardValue": 0
-      },
-      "bonus": 18
+    
+    "penalties": {
+      "incomeBelowMinimum": -50,
+      "creditHistoryMismatch": -20,
+      "reportedNoOptions": -30
     },
-    {
-      "id": "cashback_daily_spender",
-      "name": "Gastador diario + cashback",
-      "description": "Usa tarjeta para compras diarias y tarjeta da cashback",
-      "conditions": {
-        "userFactor": "cardUsage",
-        "userValueIncludes": "daily",
-        "cardField": "rewards.type",
-        "cardValue": "cashback"
+    
+    "rules": {
+      "nueva_tarjeta": {
+        "excludeCurrentBank": false,
+        "prioritize": ["benefits", "approval_ease"]
       },
-      "bonus": 10
-    },
-    {
-      "id": "financier_low_rate",
-      "name": "Financiador + tasa baja",
-      "description": "Financia compras y tarjeta tiene tasa < 25%",
-      "conditions": {
-        "userFactor": "paymentBehavior",
-        "userValueIn": ["finance", "minimum"],
-        "cardField": "rates.interestRateEA",
-        "cardValueLessThan": 25
-      },
-      "bonus": 12
-    },
-    {
-      "id": "rappi_user_rappicard",
-      "name": "Usuario Rappi + RappiCard",
-      "description": "Usa Rappi frecuentemente",
-      "conditions": {
-        "userFactor": "shoppingPlaces",
-        "userValueIncludes": "rappi",
-        "cardField": "id",
-        "cardValue": "rappicard"
-      },
-      "bonus": 20
-    },
-    {
-      "id": "first_card_easy_approval",
-      "name": "Primera tarjeta + fácil aprobación",
-      "description": "Está construyendo historial y tarjeta es fácil de obtener",
-      "conditions": {
-        "userFactor": "creditHistory",
-        "userValueIn": ["building", "unsure"],
-        "cardField": "requirements.creditHistory",
-        "cardValueIn": ["none", "flexible"]
-      },
-      "bonus": 15
-    },
-    {
-      "id": "eco_conscious_match",
-      "name": "Consciente ambiental + tarjeta eco",
-      "description": "Le importa el medio ambiente",
-      "conditions": {
-        "userFactor": "values",
-        "userValueIncludes": "environment",
-        "cardField": "category",
-        "cardValue": "eco"
-      },
-      "bonus": 12
-    }
-  ],
-
-  "penaltyRules": [
-    {
-      "id": "no_fee_but_expensive_card",
-      "name": "Quiere $0 pero tarjeta es cara",
-      "description": "Usuario sensible a cuota pero tarjeta tiene cuota alta",
-      "conditions": {
-        "userFactor": "feeSensitivity",
-        "userValue": "no_fee",
-        "cardField": "fees.annualFee",
-        "cardValueGreaterThan": 100000
-      },
-      "penalty": -25
-    },
-    {
-      "id": "low_income_premium_card",
-      "name": "Ingresos bajos + tarjeta premium",
-      "description": "No cumple requisitos de ingreso mínimo",
-      "conditions": {
-        "type": "income_check"
-      },
-      "penalty": -40
-    },
-    {
-      "id": "wants_digital_but_traditional",
-      "name": "Quiere digital pero tarjeta tradicional",
-      "description": "Prefiere 100% digital pero tarjeta requiere sucursal",
-      "conditions": {
-        "userFactor": "digitalPreference",
-        "userValue": "digital",
-        "cardField": "digitalExperience.fullyDigital",
-        "cardValue": false
-      },
-      "penalty": -15
-    },
-    {
-      "id": "finances_but_high_rate",
-      "name": "Financia pero tasa alta",
-      "description": "Paga en cuotas pero tarjeta tiene tasa > 27%",
-      "conditions": {
-        "userFactor": "paymentBehavior",
-        "userValueIn": ["finance", "minimum"],
-        "cardField": "rates.interestRateEA",
-        "cardValueGreaterThan": 27
-      },
-      "penalty": -12
-    }
-  ],
-
-  "prosConsRules": {
-    "pros": [
-      {
-        "id": "zero_fee",
-        "condition": { "field": "fees.annualFee", "equals": 0 },
-        "text": "Sin cuota de manejo",
-        "icon": "💰"
-      },
-      {
-        "id": "low_rate",
-        "condition": { "field": "rates.interestRateEA", "lessThan": 25 },
-        "text": "Tasa de interés baja ({value}% EA)",
-        "icon": "📉"
-      },
-      {
-        "id": "high_cashback",
-        "condition": { "field": "rewards.type", "equals": "cashback" },
-        "text": "Cashback en compras",
-        "icon": "💵"
-      },
-      {
-        "id": "miles_program",
-        "condition": { "field": "rewards.type", "equals": "miles" },
-        "text": "Acumula millas para vuelos",
-        "icon": "✈️"
-      },
-      {
-        "id": "fully_digital",
-        "condition": { "field": "digitalExperience.fullyDigital", "equals": true },
-        "text": "100% digital, sin filas",
-        "icon": "📱"
-      },
-      {
-        "id": "easy_approval",
-        "condition": { "field": "requirements.creditHistory", "in": ["none", "flexible"] },
-        "text": "Fácil aprobación",
-        "icon": "✅"
-      },
-      {
-        "id": "good_app",
-        "condition": { "field": "digitalExperience.appRating", "greaterThan": 4.5 },
-        "text": "App excelente ({value}⭐)",
-        "icon": "⭐"
+      "cambiar_tarjeta": {
+        "excludeCurrentBank": true,
+        "prioritize": ["painPointsSolved", "improvement"]
       }
-    ],
-    "cons": [
-      {
-        "id": "has_annual_fee",
-        "condition": { "field": "fees.annualFee", "greaterThan": 100000 },
-        "text": "Tiene cuota de manejo (${value}/año)",
-        "icon": "💸"
+    },
+    
+    "painPointMapping": {
+      "cuota_alta": {
+        "prioritize": ["sin_cuota"],
+        "idealCards": ["nu_classic", "rappi_card", "falabella_cmr", "bbva_aqua"]
       },
-      {
-        "id": "high_rate",
-        "condition": { "field": "rates.interestRateEA", "greaterThan": 27 },
-        "text": "Tasa de interés alta ({value}% EA)",
-        "icon": "📈"
+      "tasa_alta": {
+        "prioritize": ["tasa_baja"],
+        "idealCards": ["scotiabank_platinum", "bbva_aqua"]
       },
-      {
-        "id": "high_income_required",
-        "condition": { "field": "requirements.minIncome", "greaterThan": 4000000 },
-        "text": "Requiere ingresos altos",
-        "icon": "💼"
+      "pocos_beneficios": {
+        "prioritize": ["rewards", "cashback", "millas"],
+        "idealCards": ["rappi_card", "avianca_lifemiles_gold", "latam_pass_platinum"]
       },
-      {
-        "id": "not_fully_digital",
-        "condition": { "field": "digitalExperience.fullyDigital", "equals": false },
-        "text": "Puede requerir trámites presenciales",
-        "icon": "🏦"
+      "app_mala": {
+        "prioritize": ["digital"],
+        "idealCards": ["nu_classic", "rappi_card", "bbva_aqua"]
       },
-      {
-        "id": "no_rewards",
-        "condition": { "field": "rewards.type", "equals": "none" },
-        "text": "Sin programa de recompensas",
-        "icon": "➖"
+      "sin_millas": {
+        "prioritize": ["millas"],
+        "idealCards": ["avianca_lifemiles_gold", "latam_pass_platinum"]
+      },
+      "comision_internacional": {
+        "prioritize": ["sin_comision_internacional"],
+        "idealCards": ["bbva_aqua", "latam_pass_platinum", "amex_green"]
       }
-    ]
+    }
   },
-
-  "display": {
-    "showTopResults": 3,
-    "showProsConsPerCard": 4,
-    "minScoreToShow": 20,
-    "showMatchExplanation": true
+  
+  "businessMatching": {
+    "baseScore": 40,
+    
+    "weights": {
+      "businessStageMatch": 25,
+      "legalStatusMatch": 20,
+      "amountFit": 15,
+      "urgencyMatch": 15,
+      "purposeMatch": 10,
+      "processPreference": 10,
+      "rateVsSpeedPreference": 5
+    },
+    
+    "bonuses": {
+      "perfectStageMatch": 10,
+      "hasBoldForBoldCapital": 20,
+      "formalForBankLoans": 10,
+      "highRevenueForBetterRates": 8
+    },
+    
+    "penalties": {
+      "informalForBankLoans": -50,
+      "lowRevenueForHighAmount": -30,
+      "noHistoryForLargeLoans": -20,
+      "urgentForSlowProcess": -15
+    },
+    
+    "eligibilityRules": {
+      "informal": {
+        "eligible": ["bold_capital", "aflore_microcredito", "monet_prestamo"],
+        "ineligible": ["bancolombia_pyme", "davivienda_emprendedor", "bbva_pyme", "bancoldex_mipyme", "sempli_credito", "finaktiva_credito"]
+      },
+      "rut_only": {
+        "eligible": ["bold_capital", "aflore_microcredito", "monet_prestamo", "davivienda_emprendedor"],
+        "conditionalEligible": ["sempli_credito"]
+      },
+      "persona_natural": {
+        "eligible": ["bold_capital", "aflore_microcredito", "monet_prestamo", "davivienda_emprendedor", "sempli_credito", "finaktiva_credito"],
+        "conditionalEligible": ["bancolombia_pyme"]
+      },
+      "sas": {
+        "eligible": "all"
+      }
+    },
+    
+    "urgencyMapping": {
+      "muy_urgente": {
+        "prioritize": ["bold_capital", "monet_prestamo", "aflore_microcredito"],
+        "avoid": ["bancoldex_mipyme", "bancolombia_pyme"]
+      },
+      "urgente": {
+        "prioritize": ["bold_capital", "sempli_credito", "finaktiva_credito"],
+        "avoid": ["bancoldex_mipyme"]
+      },
+      "normal": {
+        "prioritize": ["sempli_credito", "finaktiva_credito", "davivienda_emprendedor"],
+        "neutral": "all"
+      },
+      "flexible": {
+        "prioritize": ["bancoldex_mipyme", "bancolombia_pyme", "bbva_pyme"],
+        "note": "Best rates available"
+      }
+    },
+    
+    "amountMapping": {
+      "0-5": {
+        "ideal": ["aflore_microcredito", "monet_prestamo", "bold_capital"]
+      },
+      "5-20": {
+        "ideal": ["bold_capital", "aflore_microcredito", "sempli_credito"]
+      },
+      "20-50": {
+        "ideal": ["sempli_credito", "finaktiva_credito", "davivienda_emprendedor"]
+      },
+      "50-100": {
+        "ideal": ["sempli_credito", "finaktiva_credito", "davivienda_emprendedor", "bancolombia_pyme"]
+      },
+      "100-200": {
+        "ideal": ["finaktiva_credito", "bancolombia_pyme", "bbva_pyme"]
+      },
+      "200+": {
+        "ideal": ["bancolombia_pyme", "bbva_pyme", "bancoldex_mipyme", "finaktiva_credito"]
+      }
+    }
+  },
+  
+  "savingsCalculation": {
+    "cards": {
+      "method": "annual_savings",
+      "factors": [
+        {
+          "type": "fee_savings",
+          "description": "Ahorro en cuota de manejo",
+          "calculation": "(current_fee - new_fee) * 12"
+        },
+        {
+          "type": "cashback_earnings",
+          "description": "Cashback ganado",
+          "calculation": "monthly_spend * cashback_percent * 12"
+        },
+        {
+          "type": "miles_value",
+          "description": "Valor de millas acumuladas",
+          "calculation": "monthly_spend * miles_per_million * 12 * 35",
+          "note": "35 COP per mile average value"
+        },
+        {
+          "type": "interest_savings",
+          "description": "Ahorro en intereses (si financia)",
+          "calculation": "average_balance * (old_rate - new_rate)",
+          "applies_if": "payment_behavior in [sometimes, finance, minimum]"
+        }
+      ]
+    },
+    "business": {
+      "method": "comparison",
+      "displayAs": "Costo total estimado",
+      "factors": [
+        {
+          "type": "total_interest",
+          "description": "Intereses totales",
+          "calculation": "amount * rate * term"
+        },
+        {
+          "type": "fees",
+          "description": "Comisiones",
+          "calculation": "amount * origination_fee"
+        },
+        {
+          "type": "speed_value",
+          "description": "Valor del tiempo (informal)",
+          "note": "Faster = premium acceptable"
+        }
+      ]
+    }
   }
 }
