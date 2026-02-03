@@ -1,0 +1,2072 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2025-01-09",
+  "source": "Research 53 Fintechs Colombia",
+  "creditProducts": [
+    {
+      "id": "addi_1",
+      "name": "ADDI",
+      "provider": "ADDI",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "bnpl"
+      ],
+      "productType": "BNPL (Compra a Cuotas)",
+      "loanDetails": {
+        "minAmountMillions": 0.05,
+        "maxAmountMillions": 5.2,
+        "interestRateEA": {
+          "min": 20,
+          "max": 68.75
+        },
+        "disbursementTimeHours": 1,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://preapproval.addi.com/",
+      "observations": "Solo para compras en comercios aliados. 26K+ tiendas. Cupo rotativo. 2M+ usuarios. SFC Resolución 2036/2024."
+    },
+    {
+      "id": "sistecrédito_2",
+      "name": "Sistecrédito",
+      "provider": "Sistecrédito",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "rotativo"
+      ],
+      "productType": "Crédito Rotativo (Solo Compras)",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 3.0,
+        "interestRateEA": {
+          "min": 23.86,
+          "max": 23.86
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://sistecredito.com/",
+      "observations": "Solo para compras en comercios aliados. Cupo rotativo. Solo cédula. Pago Efecty (112901), Gana (441)."
+    },
+    {
+      "id": "juancho_te_presta_3",
+      "name": "Juancho Te Presta",
+      "provider": "Juancho Te Presta",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "libre_inversion"
+      ],
+      "productType": "Crédito Consumo Libre Inversión",
+      "loanDetails": {
+        "minAmountMillions": 0.9,
+        "maxAmountMillions": 5.0,
+        "interestRateEA": {
+          "min": 24.3,
+          "max": 26.19
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 65.0
+      },
+      "benefits": [
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://juanchotepresta.com/",
+      "observations": "Cuota menor para mujeres. 100% digital. Débito automático. Open Banking (Belvo). 28K+ créditos, $52K millones."
+    },
+    {
+      "id": "lineru_4",
+      "name": "Lineru",
+      "provider": "Lineru",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "corto_plazo",
+        "rotativo"
+      ],
+      "productType": "Crédito Rotativo Corto Plazo",
+      "loanDetails": {
+        "minAmountMillions": 0.15,
+        "maxAmountMillions": 1.2,
+        "interestRateEA": {
+          "min": 25.0,
+          "max": 30.0
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 65.0
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://www.lineru.com/",
+      "observations": "50% descuento si paga <10 días. Cupo rotativo 6 meses. Puntos Lineru. Zinobe S.A.S. 200K+ usuarios."
+    },
+    {
+      "id": "rapicredit_5",
+      "name": "RapiCredit",
+      "provider": "RapiCredit",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "corto_plazo"
+      ],
+      "productType": "Crédito Consumo Corto Plazo",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 23.0,
+          "max": 23.0
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://www.rapicredit.com/",
+      "observations": "Aval y firma electrónica opcionales. RapiFlex (1 cuota) y RapiPlazo (3-4 cuotas). Ampliar plazo hasta 150 días."
+    },
+    {
+      "id": "nequi_propulsor_6",
+      "name": "Nequi Propulsor",
+      "provider": "Nequi Propulsor",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "libre_inversion"
+      ],
+      "productType": "Crédito Consumo Libre Inversión",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 25.0,
+        "interestRateEA": {
+          "min": 19.42,
+          "max": 27.87
+        },
+        "disbursementTimeHours": 1,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "No requiere historial crediticio",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata",
+        "Tasa competitiva desde 19.42% EA"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://www.nequi.com.co/prestamo-propulsor",
+      "observations": "Requiere ser usuario Nequi activo. 12M+ usuarios Nequi. Seguro vida obligatorio. También Salvavidas $100K-$500K."
+    },
+    {
+      "id": "monet_7",
+      "name": "Monet",
+      "provider": "Monet",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Adelanto de Nómina",
+      "loanDetails": {
+        "minAmountMillions": 0.05,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 48,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://www.monet.com.co/",
+      "observations": "0% interés 65 días. Solo empleados/pensionados. Open Banking. Y Combinator. 800K+ usuarios. $38M USD desembolsados."
+    },
+    {
+      "id": "kredicity_8",
+      "name": "Kredicity",
+      "provider": "Kredicity",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "corto_plazo"
+      ],
+      "productType": "Crédito Consumo Corto Plazo",
+      "loanDetails": {
+        "minAmountMillions": 0.11,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 24.87,
+          "max": 24.87
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://www.kredicity.com/",
+      "observations": "Kredipuntos (1 punto = $1 COP). Cuenta Gold para clientes frecuentes. SoloViVE S.A.S."
+    },
+    {
+      "id": "solventa_9",
+      "name": "Solventa",
+      "provider": "Solventa",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "rotativo"
+      ],
+      "productType": "Crédito Rotativo",
+      "loanDetails": {
+        "minAmountMillions": 0.15,
+        "maxAmountMillions": 5.0,
+        "interestRateEA": {
+          "min": 25.0,
+          "max": 28.85
+        },
+        "disbursementTimeHours": 1,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://solventa.co/",
+      "observations": "Cupo rotativo 180 días. Presencia en Colombia, Perú, Argentina, USA. 200+ empleados."
+    },
+    {
+      "id": "moni_10",
+      "name": "Moni",
+      "provider": "Moni",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Microcrédito",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 25.0,
+          "max": 25.0
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://moni.com.co/",
+      "observations": "Incluye Monicard. Origen Argentina (2013). Para sub-bancarizados. Pago servicios, recargas."
+    },
+    {
+      "id": "credissimo_11",
+      "name": "Credissimo",
+      "provider": "Credissimo",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Crédito Consumo",
+      "loanDetails": {
+        "minAmountMillions": 0.2,
+        "maxAmountMillions": 2.0,
+        "interestRateEA": {
+          "min": 14.0,
+          "max": 23.0
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Tasa competitiva desde 14.0% EA"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://credissimo.co/",
+      "observations": "Origen Bulgaria (2007). Código ético. Credissimo Plus (3-12m) y Credissimo Salario (30d). Premios Europeos FinTech."
+    },
+    {
+      "id": "yadinero_12",
+      "name": "YaDinero",
+      "provider": "YaDinero",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "corto_plazo"
+      ],
+      "productType": "Crédito Consumo Corto Plazo",
+      "loanDetails": {
+        "minAmountMillions": 0.12,
+        "maxAmountMillions": 1.5,
+        "interestRateEA": {
+          "min": 25.0,
+          "max": 25.0
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://yadinero.co/",
+      "observations": "El amigo que sí te presta. ON OFF Soluciones. Pereira. Mora 31.53% EA."
+    },
+    {
+      "id": "quipu_13",
+      "name": "Quipu",
+      "provider": "Quipu",
+      "providerType": "fintech",
+      "category": [
+        "micro",
+        "emprendedor"
+      ],
+      "productType": "Microcrédito Negocios",
+      "loanDetails": {
+        "minAmountMillions": 0.3,
+        "maxAmountMillions": 5.0,
+        "interestRateEA": {
+          "min": 28.71,
+          "max": 59.34
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales"
+      ],
+      "useCase": [
+        "Capital inicial",
+        "Emprendimiento",
+        "Micronegocios"
+      ],
+      "applyUrl": "https://quipu.com.co/",
+      "observations": "Evalúa trabajo real (fotos/videos). Acepta migrantes venezolanos. 20K+ beneficiados. Alianza Bogotá gota a gota."
+    },
+    {
+      "id": "d'una_14",
+      "name": "D'Una",
+      "provider": "D'Una",
+      "providerType": "fintech",
+      "category": [
+        "micro",
+        "emprendedor"
+      ],
+      "productType": "Microcrédito",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 22.52,
+          "max": 25.0
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Capital inicial",
+        "Emprendimiento",
+        "Micronegocios"
+      ],
+      "applyUrl": "https://duna.com.co/",
+      "observations": "Emergencias pequeñas. Colombia Fintech."
+    },
+    {
+      "id": "avista_15",
+      "name": "Avista",
+      "provider": "Avista",
+      "providerType": "fintech",
+      "category": [
+        "libranza"
+      ],
+      "productType": "Crédito por Libranza",
+      "loanDetails": {
+        "minAmountMillions": 1.0,
+        "maxAmountMillions": 140.0,
+        "interestRateEA": {
+          "min": 20.98,
+          "max": 20.98
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio"
+      ],
+      "useCase": [
+        "Consolidar deudas",
+        "Proyectos personales",
+        "Viajes"
+      ],
+      "applyUrl": "https://avista.co/",
+      "observations": "SOLO pensionados/docentes/policías con convenio Avista. 25+ oficinas, 32 departamentos. Período gracia 2 meses."
+    },
+    {
+      "id": "prestagente_16",
+      "name": "PrestaGente",
+      "provider": "PrestaGente",
+      "providerType": "fintech",
+      "category": [
+        "libranza"
+      ],
+      "productType": "Crédito de Libranza",
+      "loanDetails": {
+        "minAmountMillions": 0.5,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 19.56,
+          "max": 23.87
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Tasa competitiva desde 19.56% EA"
+      ],
+      "useCase": [
+        "Consolidar deudas",
+        "Proyectos personales",
+        "Viajes"
+      ],
+      "applyUrl": "https://prestagente.com/",
+      "observations": "SOLO empleados con convenio libranza. Sin filas. Plan referidos. Compañía de Inversiones y Libranzas S.A.S. NIT 900.902.511."
+    },
+    {
+      "id": "excelcredit_17",
+      "name": "ExcelCredit",
+      "provider": "ExcelCredit",
+      "providerType": "fintech",
+      "category": [
+        "libranza",
+        "libre_inversion"
+      ],
+      "productType": "Crédito Libranza Libre Inversión",
+      "loanDetails": {
+        "minAmountMillions": 2.0,
+        "maxAmountMillions": 80.0,
+        "interestRateEA": {
+          "min": 17.0,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 48
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Tasa competitiva desde 17.0% EA"
+      ],
+      "useCase": [
+        "Consolidar deudas",
+        "Proyectos personales",
+        "Viajes"
+      ],
+      "applyUrl": "https://excelcredit.co/",
+      "observations": "SOLO pensionados/docentes/empleados públicos. Especialista en reportados. 65K+ clientes. $600K millones. App CrediAsesor. Bonos BVC $100K millones AA+."
+    },
+    {
+      "id": "mesfix_18",
+      "name": "Mesfix",
+      "provider": "Mesfix",
+      "providerType": "fintech",
+      "category": [
+        "factoring"
+      ],
+      "productType": "Crowdfactoring (Venta Facturas)",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://www.mesfix.com/",
+      "observations": "SOLO empresas. No genera endeudamiento. Vinculada Skandia. Felipe Tascón (fundador PayU). 5,700+ inversionistas. $10K millones rentabilidad."
+    },
+    {
+      "id": "liquitech_19",
+      "name": "Liquitech",
+      "provider": "Liquitech",
+      "providerType": "fintech",
+      "category": [
+        "factoring"
+      ],
+      "productType": "Factoring Digital",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://liquitech.co/",
+      "observations": "SOLO empresas. Liquidez mediante venta facturas. Colombia Fintech."
+    },
+    {
+      "id": "credifamilia_20",
+      "name": "Credifamilia",
+      "provider": "Credifamilia",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Crédito Hipotecario VIS/VIP",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 21.5,
+          "max": 21.5
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://credifamilia.com/",
+      "observations": "SOLO crédito vivienda VIS/VIP. Subsidios Mi Casa Ya. CDT desde $1M. SFC, Fogafín. Tasa más alta sector según Superfinanciera."
+    },
+    {
+      "id": "valcredito_21",
+      "name": "Valcredito",
+      "provider": "Valcredito",
+      "providerType": "fintech",
+      "category": [
+        "personal",
+        "corto_plazo"
+      ],
+      "productType": "Crédito Consumo Corto Plazo",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 25.0,
+          "max": 28.0
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://valcredito.com/",
+      "observations": "Emergencias corto plazo."
+    },
+    {
+      "id": "plurall_22",
+      "name": "Plurall",
+      "provider": "Plurall",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Crédito Personal/Empresarial",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://plurall.co/",
+      "observations": "Por investigar en detalle."
+    },
+    {
+      "id": "wolet_23",
+      "name": "Wolet",
+      "provider": "Wolet",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Billetera Digital con Crédito",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://wolet.co/",
+      "observations": "Billetera digital con crédito integrado. Usuarios wallet digital."
+    },
+    {
+      "id": "guama_24",
+      "name": "Guama",
+      "provider": "Guama",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Microcrédito",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "",
+      "observations": "Microcrédito. Emergencias."
+    },
+    {
+      "id": "sempli_25",
+      "name": "Sempli",
+      "provider": "Sempli",
+      "providerType": "fintech",
+      "category": [
+        "empresarial"
+      ],
+      "productType": "Crédito Digital Pymes",
+      "loanDetails": {
+        "minAmountMillions": 20.0,
+        "maxAmountMillions": 350.0,
+        "interestRateEA": {
+          "min": 9.0,
+          "max": 13.4
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 48
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": "N/A (Empresa)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "Tasa competitiva desde 9.0% EA"
+      ],
+      "useCase": [
+        "Capital de trabajo",
+        "Inventario",
+        "Expansión"
+      ],
+      "applyUrl": "https://sempli.co/",
+      "observations": "Líder en crédito B2B digital. Requiere facturación formal. Alianza Comfama."
+    },
+    {
+      "id": "finaktiva_26",
+      "name": "Finaktiva",
+      "provider": "Finaktiva",
+      "providerType": "fintech",
+      "category": [
+        "empresarial"
+      ],
+      "productType": "Crédito Flexible / Factoring",
+      "loanDetails": {
+        "minAmountMillions": 20.0,
+        "maxAmountMillions": 500.0,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": "N/A (Empresa)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Capital de trabajo",
+        "Inventario",
+        "Expansión"
+      ],
+      "applyUrl": "https://finaktiva.com/",
+      "observations": "Enfoque en empresas de alto crecimiento. Beneficios para empresas lideradas por mujeres."
+    },
+    {
+      "id": "omni_27",
+      "name": "Omni",
+      "provider": "Omni",
+      "providerType": "fintech",
+      "category": [
+        "factoring"
+      ],
+      "productType": "Adelanto de Facturas",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 1,
+        "approvalTimeHours": 24
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": "N/A (Empresa)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://omni.lat/",
+      "observations": "Factoring 100% digital. Se enfoca en la calidad del pagador de la factura."
+    },
+    {
+      "id": "treinta_28",
+      "name": "Treinta",
+      "provider": "Treinta",
+      "providerType": "fintech",
+      "category": [
+        "micro"
+      ],
+      "productType": "Crédito Micronegocios",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 15.0,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Capital inicial",
+        "Emprendimiento",
+        "Micronegocios"
+      ],
+      "applyUrl": "https://www.treinta.co/",
+      "observations": "Usa los datos de ventas registrados en la App para perfilar. Alianzas con bancos."
+    },
+    {
+      "id": "finko_29",
+      "name": "Finko",
+      "provider": "Finko",
+      "providerType": "fintech",
+      "category": [
+        "micro"
+      ],
+      "productType": "Anticipo Producción",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Capital inicial",
+        "Emprendimiento",
+        "Micronegocios"
+      ],
+      "applyUrl": "https://agrofinko.com/",
+      "observations": "Operación 100% por WhatsApp. Sin papeleo. Anticipo sobre producción futura."
+    },
+    {
+      "id": "ualá_30",
+      "name": "Ualá",
+      "provider": "Ualá",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Tarjeta/Crédito Consumo",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 0.25,
+          "max": 30
+        },
+        "disbursementTimeHours": 1,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata",
+        "Tasa competitiva desde 0.25% EA"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://www.uala.com.co/",
+      "observations": "Acepta PPT (Migrantes Venezolanos) y Cédula de Extranjería. Tarjeta Débito gratis."
+    },
+    {
+      "id": "multiprestamo_31",
+      "name": "Multiprestamo",
+      "provider": "Multiprestamo",
+      "providerType": "fintech",
+      "category": [
+        "personal"
+      ],
+      "productType": "Nanocrédito Inclusión",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 1.4,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Emergencias",
+        "Gastos personales",
+        "Libre inversión"
+      ],
+      "applyUrl": "https://multiprestamo.com/",
+      "observations": "Enfoque en migrantes venezolanos y población excluida. Nanocréditos para historial."
+    },
+    {
+      "id": "r5_32",
+      "name": "R5",
+      "provider": "R5",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Crédito sobre Vehículo",
+      "loanDetails": {
+        "minAmountMillions": 2.0,
+        "maxAmountMillions": 100.0,
+        "interestRateEA": {
+          "min": 0.22,
+          "max": 0.35
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 24
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70.0
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Tasa competitiva desde 0.22% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://www.grupor5.com/",
+      "observations": "Usan el carro como garantía para bajar la tasa. Todo digital (SOAT + Crédito)."
+    },
+    {
+      "id": "bold_33",
+      "name": "Bold",
+      "provider": "Bold",
+      "providerType": "fintech",
+      "category": [
+        "micro"
+      ],
+      "productType": "Crédito por Datáfono",
+      "loanDetails": {
+        "minAmountMillions": 0.5,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Capital inicial",
+        "Emprendimiento",
+        "Micronegocios"
+      ],
+      "applyUrl": "https://bold.co/",
+      "observations": "Descuentan cuotas automáticamente de las ventas diarias del datáfono."
+    },
+    {
+      "id": "lumni_34",
+      "name": "Lumni",
+      "provider": "Lumni",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Financiación Educación (ISA)",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 17,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://lumni.net/",
+      "observations": "Modelo ISA: No pagas mientras estudias, pagas % de tu salario cuando consigues empleo."
+    },
+    {
+      "id": "lucas_35",
+      "name": "Lucas",
+      "provider": "Lucas",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Arriendo con opción compra",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 48
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://www.lucas.co/",
+      "observations": "Compran la casa por ti, pagas arriendo y \"ahorras\" para la cuota inicial."
+    },
+    {
+      "id": "adelanta_tu_pago_36",
+      "name": "Adelanta tu pago",
+      "provider": "Adelanta tu pago",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Salario bajo demanda (B2B)",
+      "loanDetails": {
+        "minAmountMillions": 0.05,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 1,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://www.adelantatupago.com/",
+      "observations": "Competencia directa de Monet pero enfocado 100% en convenios con empresas grandes."
+    },
+    {
+      "id": "exponencial_confirming_37",
+      "name": "Exponencial Confirming",
+      "provider": "Exponencial Confirming",
+      "providerType": "fintech",
+      "category": [
+        "factoring"
+      ],
+      "productType": "Factoring",
+      "loanDetails": {
+        "minAmountMillions": 1.0,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "www.mente.co",
+      "observations": "Plataforma gigante de factoring (Affirming). Conecta tesorerías de grandes empresas con Pymes."
+    },
+    {
+      "id": "exponencial_confirming_38",
+      "name": "Exponencial Confirming",
+      "provider": "Exponencial Confirming",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Confirming",
+      "loanDetails": {
+        "minAmountMillions": 1.0,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Desembolso en menos de 24 horas"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "www.mente.co",
+      "observations": "Plataforma gigante de factoring (Affirming). Conecta tesorerías de grandes empresas con Pymes."
+    },
+    {
+      "id": "finkargo_39",
+      "name": "Finkargo",
+      "provider": "Finkargo",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Paga a tus proveedores internacionales",
+      "loanDetails": {
+        "minAmountMillions": 1.0,
+        "maxAmountMillions": 2000.0,
+        "interestRateEA": {
+          "min": 1.5,
+          "max": 2.5
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 48
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": "N/A (Empresa)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "Tasa competitiva desde 1.5% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://finkargo.com/",
+      "observations": "Pagan directamente a tu proveedor en China/USA. Analizan tu historial de importación."
+    },
+    {
+      "id": "a2censo_40",
+      "name": "A2censo",
+      "provider": "A2censo",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Financiación Colaborativa",
+      "loanDetails": {
+        "minAmountMillions": 100.0,
+        "maxAmountMillions": 3000.0,
+        "interestRateEA": {
+          "min": 0.1,
+          "max": 0.18
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": "N/A (Empresa)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "Tasa competitiva desde 0.1% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://a2censo.com/",
+      "observations": "Plataforma de la Bolsa de Valores (BVC). Personas comunes prestan a tu Pyme."
+    },
+    {
+      "id": "tul_41",
+      "name": "Tul",
+      "provider": "Tul",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Crédito para Ferreteros",
+      "loanDetails": {
+        "minAmountMillions": 0.5,
+        "maxAmountMillions": 20.0,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://tul.com.co/",
+      "observations": "No te dan dinero, te dan materiales de construcción para vender. Vital para ferreterías."
+    },
+    {
+      "id": "gulungo_42",
+      "name": "Gulungo",
+      "provider": "Gulungo",
+      "providerType": "fintech",
+      "category": [
+        "empresarial",
+        "micro"
+      ],
+      "productType": "Crédito Chatbot",
+      "loanDetails": {
+        "minAmountMillions": 2.0,
+        "maxAmountMillions": 20.0,
+        "interestRateEA": {
+          "min": 0.25,
+          "max": 30
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 24
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Tasa competitiva desde 0.25% EA"
+      ],
+      "useCase": [
+        "Capital de trabajo",
+        "Inventario",
+        "Expansión"
+      ],
+      "applyUrl": "https://gulungo.com/",
+      "observations": "\"Se enfocan en la \"\"economía del rebusque\"\" formalizada. Proceso asistido por chat.\""
+    },
+    {
+      "id": "crediorbe_43",
+      "name": "CrediOrbe",
+      "provider": "CrediOrbe",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Financiación Motos, motos electricas",
+      "loanDetails": {
+        "minAmountMillions": 3.0,
+        "maxAmountMillions": 20.0,
+        "interestRateEA": {
+          "min": 0.22,
+          "max": 0.35
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70.0
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Tasa competitiva desde 0.22% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://crediorbe.com/",
+      "observations": "Clave para repartidores (Rappi/Uber). Financian la moto como herramienta de trabajo."
+    },
+    {
+      "id": "crediorbe_44",
+      "name": "CrediOrbe",
+      "provider": "CrediOrbe",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Financiación Motos, motos electricas",
+      "loanDetails": {
+        "minAmountMillions": 3.0,
+        "maxAmountMillions": 20.0,
+        "interestRateEA": {
+          "min": 0.22,
+          "max": 0.35
+        },
+        "disbursementTimeHours": 24,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70.0
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Tasa competitiva desde 0.22% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://crediorbe.com/",
+      "observations": "Clave para repartidores (Rappi/Uber). Financian la moto como herramienta de trabajo."
+    },
+    {
+      "id": "kupi_45",
+      "name": "Kupi",
+      "provider": "Kupi",
+      "providerType": "fintech",
+      "category": [
+        "bnpl"
+      ],
+      "productType": "BNPL Servicios/Empleados",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 1.0,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Aprobación inmediata"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://kupi.com.co/",
+      "observations": "Cupo Rotativo para empleados. Compra almuerzos o servicios a cuotas."
+    },
+    {
+      "id": "ledn_46",
+      "name": "Ledn",
+      "provider": "Ledn",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Préstamo sobre Bitcoin",
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 11.9,
+          "max": 30
+        },
+        "disbursementTimeHours": 1,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Desembolso en menos de 24 horas",
+        "Aprobación inmediata",
+        "Tasa competitiva desde 11.9% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://ledn.io/",
+      "observations": "Préstamos respaldados en Bitcoin. Sin estudio de crédito. Ideal para holders."
+    },
+    {
+      "id": "sosty_47",
+      "name": "Sosty",
+      "provider": "Sosty",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Ganadería Colaborativa",
+      "loanDetails": {
+        "minAmountMillions": 10.0,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://www.sosty.co/",
+      "observations": "Conectan inversores de ciudad con ganaderos. El ganadero recibe vacas/capital."
+    },
+    {
+      "id": "unergy_48",
+      "name": "Unergy",
+      "provider": "Unergy",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Financiación Solar",
+      "loanDetails": {
+        "minAmountMillions": 50.0,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": false,
+        "acceptsInformal": false,
+        "minAge": "N/A (Empresa)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "Proceso 100% digital"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://unergy.io/",
+      "observations": "Financiación de proyectos solares mediante crowdfunding. Vendes energía, no deuda."
+    },
+    {
+      "id": "finmaq_49",
+      "name": "FinMaq",
+      "provider": "FinMaq",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Financiación Maquinaria",
+      "loanDetails": {
+        "minAmountMillions": 50.0,
+        "maxAmountMillions": 2000.0,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": "N/A (Empresa)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://finmaq.com/",
+      "observations": "La máquina es la garantía. Financian a quienes los bancos rechazan pero tienen contratos."
+    },
+    {
+      "id": "welli_50",
+      "name": "Welli",
+      "provider": "Welli",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Crédito Procedimientos Médicos",
+      "loanDetails": {
+        "minAmountMillions": 1.0,
+        "maxAmountMillions": 20.0,
+        "interestRateEA": {
+          "min": 1.5,
+          "max": 2.2
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 1
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": 18,
+        "maxAge": 75.0
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Aprobación inmediata",
+        "Tasa competitiva desde 1.5% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://welli.com.co/",
+      "observations": "Financian cirugías estéticas y tratamientos no POS directamente en la clínica. Aliado de los médicos."
+    },
+    {
+      "id": "mattilda_51",
+      "name": "Mattilda",
+      "provider": "Mattilda",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Factoring Colegios",
+      "loanDetails": {
+        "minAmountMillions": 10.0,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 20,
+          "max": 30
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": false,
+        "acceptsNoHistory": true,
+        "acceptsInformal": false,
+        "minAge": "N/A (Colegio)",
+        "maxAge": 70
+      },
+      "benefits": [
+        "No requiere historial crediticio"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://mattilda.io/co",
+      "observations": "Adelantan el flujo de caja de las pensiones a los colegios privados. Cobranza automatizada."
+    },
+    {
+      "id": "terrenta_52",
+      "name": "Terrenta",
+      "provider": "Terrenta",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Inversión en Proyectos",
+      "loanDetails": {
+        "minAmountMillions": 1.0,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 14.0,
+          "max": 20.0
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Tasa competitiva desde 14.0% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://terrenta.com/",
+      "observations": "Crowdfunding regulado. Inviertes en m2 de proyectos inmobiliarios desde montos bajos."
+    },
+    {
+      "id": "agroune_53",
+      "name": "Agroune",
+      "provider": "Agroune",
+      "providerType": "fintech",
+      "category": [
+        "general"
+      ],
+      "productType": "Inversión Cultivos",
+      "loanDetails": {
+        "minAmountMillions": 1.0,
+        "maxAmountMillions": 5,
+        "interestRateEA": {
+          "min": 15.0,
+          "max": 25.0
+        },
+        "disbursementTimeHours": 72,
+        "approvalTimeHours": 72
+      },
+      "requirements": {
+        "acceptsReported": true,
+        "acceptsNoHistory": true,
+        "acceptsInformal": true,
+        "minAge": 18,
+        "maxAge": 70
+      },
+      "benefits": [
+        "Acepta reportados en DataCrédito",
+        "No requiere historial crediticio",
+        "Acepta trabajadores informales",
+        "Tasa competitiva desde 15.0% EA"
+      ],
+      "useCase": [
+        "Libre inversión",
+        "Emergencias"
+      ],
+      "applyUrl": "https://agroune.com/",
+      "observations": "Conectan inversores con cultivos de exportación (ej. Gulupa, Aguacate)."
+    }
+  ]
+}

@@ -1,0 +1,833 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2024-12-29",
+  "businessLoans": [
+    {
+      "id": "sempli_credito",
+      "name": "Crédito Empresarial Sempli",
+      "provider": "Sempli",
+      "providerType": "fintech",
+      "providerLogo": "/logos/sempli.svg",
+      "image": "💼",
+      "category": ["pyme", "capital_trabajo", "digital"],
+      
+      "loanDetails": {
+        "minAmountMillions": 5,
+        "maxAmountMillions": 200,
+        "minTermMonths": 6,
+        "maxTermMonths": 36,
+        "interestRateEA": {
+          "min": 14,
+          "max": 21,
+          "note": "Según perfil de riesgo"
+        },
+        "disbursementTimeHours": 48,
+        "originationFeePercent": 0,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 12,
+        "minAnnualRevenueMillions": 200,
+        "legalStructure": ["SAS", "SA", "LTDA"],
+        "requiresBankAccount": true,
+        "acceptsInformal": false,
+        "creditCheckRequired": true,
+        "collateralRequired": false,
+        "personalGuarantee": true
+      },
+      
+      "process": {
+        "applicationMethod": "100% online",
+        "documentsRequired": [
+          "Cámara de Comercio vigente",
+          "RUT actualizado",
+          "Estados financieros último año",
+          "Extractos bancarios 6 meses",
+          "Cédula representante legal"
+        ],
+        "approvalTimeHours": 24,
+        "disbursementMethod": "Transferencia bancaria"
+      },
+      
+      "benefits": [
+        "100% digital - Sin papeleos ni filas",
+        "Aprobación en 24-48 horas",
+        "Sin cuotas ocultas ni costos de plataforma",
+        "Prepago sin penalización",
+        "Acceso a comunidad empresarial Sempli"
+      ],
+      
+      "cons": [
+        { "text": "Requiere mínimo 12 meses operando", "severity": "medium" },
+        { "text": "Solo empresas formalmente constituidas", "severity": "high" },
+        { "text": "Ingresos mínimos $200M/año", "severity": "medium" }
+      ],
+      
+      "useCase": [
+        "Capital de trabajo",
+        "Compra de inventario",
+        "Pago de nómina",
+        "Expansión",
+        "Compra de activos"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["growth", "established"],
+        "legalStatus": ["formal"],
+        "urgency": ["normal", "flexible"],
+        "loanPurpose": ["capital_trabajo", "inventario", "expansion", "activos"],
+        "annualRevenue": ["200-500", "500-1000", "1000+"],
+        "preferredProcess": ["digital"]
+      },
+      
+      "applyUrl": "https://www.sempli.co/credito-empresarial",
+      "moreInfoUrl": "https://www.sempli.co/"
+    },
+    
+    {
+      "id": "finaktiva_credito",
+      "name": "Crédito Finaktiva",
+      "provider": "Finaktiva",
+      "providerType": "fintech",
+      "providerLogo": "/logos/finaktiva.svg",
+      "image": "🚀",
+      "category": ["pyme", "digital", "flexible"],
+      
+      "loanDetails": {
+        "minAmountMillions": 1,
+        "maxAmountMillions": 500,
+        "minTermMonths": 6,
+        "maxTermMonths": 60,
+        "interestRateEA": {
+          "min": 14,
+          "max": 21,
+          "note": "Según perfil - backed by Bancolombia"
+        },
+        "disbursementTimeHours": 48,
+        "originationFeePercent": 0,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 12,
+        "minAnnualRevenueMillions": 200,
+        "legalStructure": ["SAS", "SA", "LTDA"],
+        "requiresBankAccount": true,
+        "acceptsInformal": false,
+        "creditCheckRequired": true,
+        "collateralRequired": false,
+        "personalGuarantee": true
+      },
+      
+      "process": {
+        "applicationMethod": "100% online",
+        "documentsRequired": [
+          "Cámara de Comercio",
+          "RUT",
+          "Estados financieros",
+          "Extractos bancarios",
+          "Declaración de renta"
+        ],
+        "approvalTimeHours": 24,
+        "disbursementMethod": "Transferencia bancaria"
+      },
+      
+      "benefits": [
+        "Montos hasta $500 millones",
+        "Plazos hasta 60 meses",
+        "Respaldado por Bancolombia",
+        "Score inteligente basado en gestión",
+        "Acceso a red de empresarios",
+        "También ofrecen factoring y confirming"
+      ],
+      
+      "cons": [
+        { "text": "Solo empresas formales con 12+ meses", "severity": "medium" },
+        { "text": "Requiere declaración de renta", "severity": "low" }
+      ],
+      
+      "useCase": [
+        "Capital de trabajo",
+        "Compra de inventario",
+        "Pago de nómina",
+        "Expansión",
+        "Activos fijos",
+        "Leasing"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["growth", "established"],
+        "legalStatus": ["formal"],
+        "urgency": ["normal", "flexible"],
+        "loanPurpose": ["capital_trabajo", "inventario", "expansion", "activos", "nomina"],
+        "annualRevenue": ["200-500", "500-1000", "1000+"],
+        "preferredProcess": ["digital"]
+      },
+      
+      "applyUrl": "https://www.finaktiva.com/credito-empresarial",
+      "moreInfoUrl": "https://www.finaktiva.com/"
+    },
+    
+    {
+      "id": "bold_capital",
+      "name": "Bold Capital",
+      "provider": "Bold",
+      "providerType": "fintech",
+      "providerLogo": "/logos/bold.svg",
+      "image": "⚡",
+      "category": ["adelanto_ventas", "micro", "rapido"],
+      
+      "loanDetails": {
+        "minAmountMillions": 0.5,
+        "maxAmountMillions": 50,
+        "minTermMonths": 1,
+        "maxTermMonths": 12,
+        "interestRateEA": {
+          "min": 18,
+          "max": 30,
+          "note": "Basado en historial de ventas Bold"
+        },
+        "disbursementTimeHours": 24,
+        "originationFeePercent": 0,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 6,
+        "minAnnualRevenueMillions": 0,
+        "legalStructure": ["SAS", "SA", "LTDA", "persona_natural"],
+        "requiresBankAccount": false,
+        "requiresBoldDatafono": true,
+        "acceptsInformal": true,
+        "creditCheckRequired": false,
+        "collateralRequired": false,
+        "personalGuarantee": false
+      },
+      
+      "process": {
+        "applicationMethod": "Desde app Bold",
+        "documentsRequired": [
+          "Historial de ventas Bold (automático)",
+          "Cédula"
+        ],
+        "approvalTimeHours": 4,
+        "disbursementMethod": "Cuenta Bold"
+      },
+      
+      "benefits": [
+        "Aprobación en horas, no días",
+        "Sin papeleos - basado en tus ventas",
+        "No requiere historial crediticio",
+        "Pago automático desde ventas",
+        "Acepta informales",
+        "Sin garantías personales"
+      ],
+      
+      "cons": [
+        { "text": "Solo para clientes Bold con datáfono", "severity": "high" },
+        { "text": "Montos limitados por ventas", "severity": "medium" },
+        { "text": "Tasa puede ser alta", "severity": "medium" }
+      ],
+      
+      "useCase": [
+        "Emergencias",
+        "Capital de trabajo urgente",
+        "Compra de inventario rápida",
+        "Aprovechar oportunidades"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["early", "growth"],
+        "legalStatus": ["formal", "informal"],
+        "urgency": ["urgente", "muy_urgente"],
+        "loanPurpose": ["capital_trabajo", "inventario", "emergencia"],
+        "annualRevenue": ["0-100", "100-200", "200-500"],
+        "preferredProcess": ["digital"],
+        "hasBoldDatafono": true
+      },
+      
+      "applyUrl": "https://bold.co/credito",
+      "moreInfoUrl": "https://bold.co/"
+    },
+    
+    {
+      "id": "bancolombia_pyme",
+      "name": "Crédito PyME Bancolombia",
+      "provider": "Bancolombia",
+      "providerType": "banco",
+      "providerLogo": "/logos/bancolombia.svg",
+      "image": "💚",
+      "category": ["pyme", "tradicional", "amplio"],
+      
+      "loanDetails": {
+        "minAmountMillions": 10,
+        "maxAmountMillions": 1000,
+        "minTermMonths": 12,
+        "maxTermMonths": 84,
+        "interestRateEA": {
+          "min": 12,
+          "max": 18,
+          "note": "Según perfil y garantías"
+        },
+        "disbursementTimeHours": 120,
+        "originationFeePercent": 1,
+        "prepaymentPenalty": true
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 24,
+        "minAnnualRevenueMillions": 500,
+        "legalStructure": ["SAS", "SA", "LTDA"],
+        "requiresBankAccount": true,
+        "acceptsInformal": false,
+        "creditCheckRequired": true,
+        "collateralRequired": "Según monto",
+        "personalGuarantee": true
+      },
+      
+      "process": {
+        "applicationMethod": "Presencial o semi-digital",
+        "documentsRequired": [
+          "Cámara de Comercio",
+          "RUT",
+          "Estados financieros 2 años",
+          "Declaración de renta 2 años",
+          "Extractos bancarios 12 meses",
+          "Plan de negocio (montos altos)",
+          "Avalúo de garantías (si aplica)"
+        ],
+        "approvalTimeHours": 120,
+        "disbursementMethod": "Cuenta Bancolombia"
+      },
+      
+      "benefits": [
+        "Tasas más bajas del mercado",
+        "Montos hasta $1.000 millones",
+        "Plazos hasta 7 años",
+        "Asesoría empresarial incluida",
+        "Posibilidad de garantía FNG",
+        "Red de oficinas nacional"
+      ],
+      
+      "cons": [
+        { "text": "Proceso largo (5-10 días hábiles)", "severity": "high" },
+        { "text": "Muchos documentos requeridos", "severity": "medium" },
+        { "text": "Requiere 2+ años operando", "severity": "medium" },
+        { "text": "Comisión de originación 1%", "severity": "low" }
+      ],
+      
+      "useCase": [
+        "Expansión grande",
+        "Compra de activos fijos",
+        "Inversión en infraestructura",
+        "Proyectos a largo plazo",
+        "Refinanciación"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["established", "scaling"],
+        "legalStatus": ["formal"],
+        "urgency": ["flexible", "planificado"],
+        "loanPurpose": ["expansion", "activos", "infraestructura"],
+        "annualRevenue": ["500-1000", "1000+"],
+        "preferredProcess": ["hybrid", "traditional"]
+      },
+      
+      "applyUrl": "https://www.bancolombia.com/negocios/creditos",
+      "moreInfoUrl": "https://www.bancolombia.com/negocios"
+    },
+    
+    {
+      "id": "davivienda_emprendedor",
+      "name": "Crédito Emprendedor",
+      "provider": "Davivienda",
+      "providerType": "banco",
+      "providerLogo": "/logos/davivienda.svg",
+      "image": "🔴",
+      "category": ["emprendedor", "tradicional", "fng"],
+      
+      "loanDetails": {
+        "minAmountMillions": 5,
+        "maxAmountMillions": 500,
+        "minTermMonths": 12,
+        "maxTermMonths": 60,
+        "interestRateEA": {
+          "min": 14,
+          "max": 20,
+          "note": "Con respaldo FNG"
+        },
+        "disbursementTimeHours": 96,
+        "originationFeePercent": 0.5,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 12,
+        "minAnnualRevenueMillions": 100,
+        "legalStructure": ["SAS", "SA", "LTDA", "persona_natural"],
+        "requiresBankAccount": true,
+        "acceptsInformal": false,
+        "creditCheckRequired": true,
+        "collateralRequired": false,
+        "personalGuarantee": true
+      },
+      
+      "process": {
+        "applicationMethod": "Presencial o app",
+        "documentsRequired": [
+          "Cámara de Comercio",
+          "RUT",
+          "Estados financieros",
+          "Extractos bancarios 6 meses",
+          "Declaración de renta"
+        ],
+        "approvalTimeHours": 72,
+        "disbursementMethod": "Cuenta Davivienda"
+      },
+      
+      "benefits": [
+        "Respaldo del Fondo Nacional de Garantías",
+        "Tasas competitivas",
+        "Acepta persona natural con negocio",
+        "Red amplia de oficinas",
+        "Sin penalización por prepago"
+      ],
+      
+      "cons": [
+        { "text": "Requiere cuenta Davivienda", "severity": "low" },
+        { "text": "Proceso semi-presencial", "severity": "medium" }
+      ],
+      
+      "useCase": [
+        "Capital de trabajo",
+        "Compra de inventario",
+        "Activos fijos",
+        "Remodelación"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["early", "growth"],
+        "legalStatus": ["formal"],
+        "urgency": ["normal"],
+        "loanPurpose": ["capital_trabajo", "inventario", "activos"],
+        "annualRevenue": ["100-200", "200-500", "500-1000"],
+        "preferredProcess": ["hybrid", "traditional"]
+      },
+      
+      "applyUrl": "https://www.davivienda.com/empresas/creditos",
+      "moreInfoUrl": "https://www.davivienda.com/empresas"
+    },
+    
+    {
+      "id": "bancoldex_mipyme",
+      "name": "Líneas Bancóldex",
+      "provider": "Bancóldex",
+      "providerType": "banca_desarrollo",
+      "providerLogo": "/logos/bancoldex.svg",
+      "image": "🏛️",
+      "category": ["gobierno", "tasa_baja", "desarrollo"],
+      
+      "loanDetails": {
+        "minAmountMillions": 10,
+        "maxAmountMillions": 2000,
+        "minTermMonths": 12,
+        "maxTermMonths": 120,
+        "interestRateEA": {
+          "min": 10,
+          "max": 16,
+          "note": "Tasas subsidiadas según línea"
+        },
+        "disbursementTimeHours": 240,
+        "originationFeePercent": 0,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 24,
+        "minAnnualRevenueMillions": 200,
+        "legalStructure": ["SAS", "SA", "LTDA"],
+        "requiresBankAccount": true,
+        "acceptsInformal": false,
+        "creditCheckRequired": true,
+        "collateralRequired": "Según línea",
+        "personalGuarantee": true
+      },
+      
+      "process": {
+        "applicationMethod": "A través de banco intermediario",
+        "documentsRequired": [
+          "Cámara de Comercio",
+          "RUT",
+          "Estados financieros 2 años",
+          "Plan de negocio/proyecto",
+          "Documentos según línea específica"
+        ],
+        "approvalTimeHours": 240,
+        "disbursementMethod": "Cuenta bancaria"
+      },
+      
+      "benefits": [
+        "Las tasas más bajas del mercado",
+        "Plazos hasta 10 años",
+        "Líneas especiales: digitalización, exportación, sostenibilidad",
+        "Respaldo gubernamental",
+        "Posibilidad de garantía FNG",
+        "Períodos de gracia"
+      ],
+      
+      "cons": [
+        { "text": "Proceso muy largo (2-4 semanas)", "severity": "high" },
+        { "text": "Requiere intermediario bancario", "severity": "medium" },
+        { "text": "Documentación extensa", "severity": "medium" },
+        { "text": "Solo algunas líneas disponibles", "severity": "low" }
+      ],
+      
+      "useCase": [
+        "Proyectos de inversión grandes",
+        "Exportación",
+        "Transformación digital",
+        "Sostenibilidad ambiental",
+        "Innovación"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["established", "scaling"],
+        "legalStatus": ["formal"],
+        "urgency": ["flexible", "planificado"],
+        "loanPurpose": ["expansion", "activos", "infraestructura", "exportacion", "innovacion"],
+        "annualRevenue": ["500-1000", "1000+"],
+        "preferredProcess": ["traditional"]
+      },
+      
+      "applyUrl": "https://www.bancoldex.com/soluciones-financieras",
+      "moreInfoUrl": "https://www.bancoldex.com/"
+    },
+    
+    {
+      "id": "aflore_microcredito",
+      "name": "Microcrédito Aflore",
+      "provider": "Aflore",
+      "providerType": "fintech",
+      "providerLogo": "/logos/aflore.svg",
+      "image": "🌱",
+      "category": ["micro", "informal", "inclusion"],
+      
+      "loanDetails": {
+        "minAmountMillions": 0.3,
+        "maxAmountMillions": 5,
+        "minTermMonths": 3,
+        "maxTermMonths": 24,
+        "interestRateEA": {
+          "min": 25,
+          "max": 35,
+          "note": "Microcrédito - tasa regulada"
+        },
+        "disbursementTimeHours": 24,
+        "originationFeePercent": 0,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 3,
+        "minAnnualRevenueMillions": 0,
+        "legalStructure": ["persona_natural", "informal"],
+        "requiresBankAccount": false,
+        "acceptsInformal": true,
+        "creditCheckRequired": false,
+        "collateralRequired": false,
+        "personalGuarantee": false
+      },
+      
+      "process": {
+        "applicationMethod": "App o asesor",
+        "documentsRequired": [
+          "Cédula",
+          "Evidencia de negocio (fotos, facturas informales)",
+          "Referencia personal"
+        ],
+        "approvalTimeHours": 24,
+        "disbursementMethod": "Nequi, Daviplata o efectivo"
+      },
+      
+      "benefits": [
+        "Acepta negocios informales",
+        "No requiere historial crediticio",
+        "Sin extractos bancarios",
+        "Desembolso rápido",
+        "Acompañamiento de asesor",
+        "Construye historial crediticio"
+      ],
+      
+      "cons": [
+        { "text": "Montos pequeños (máx $5M)", "severity": "medium" },
+        { "text": "Tasa alta (es microcrédito)", "severity": "medium" },
+        { "text": "Plazos cortos", "severity": "low" }
+      ],
+      
+      "useCase": [
+        "Capital inicial",
+        "Compra de mercancía",
+        "Emergencias del negocio",
+        "Primer crédito para construir historial"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["idea", "early"],
+        "legalStatus": ["informal", "formal"],
+        "urgency": ["urgente", "normal"],
+        "loanPurpose": ["capital_trabajo", "inventario", "emergencia"],
+        "annualRevenue": ["0-100"],
+        "preferredProcess": ["digital"]
+      },
+      
+      "applyUrl": "https://www.aflore.co/",
+      "moreInfoUrl": "https://www.aflore.co/"
+    },
+    
+    {
+      "id": "monet_prestamo",
+      "name": "Préstamo Monet",
+      "provider": "Monet",
+      "providerType": "fintech",
+      "providerLogo": "/logos/monet.svg",
+      "image": "💰",
+      "category": ["micro", "rapido", "simple"],
+      
+      "loanDetails": {
+        "minAmountMillions": 0.1,
+        "maxAmountMillions": 3,
+        "minTermMonths": 1,
+        "maxTermMonths": 12,
+        "interestRateEA": {
+          "min": 28,
+          "max": 40,
+          "note": "Crédito de libre inversión"
+        },
+        "disbursementTimeHours": 1,
+        "originationFeePercent": 0,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 0,
+        "minAnnualRevenueMillions": 0,
+        "legalStructure": ["persona_natural"],
+        "requiresBankAccount": false,
+        "acceptsInformal": true,
+        "creditCheckRequired": false,
+        "collateralRequired": false,
+        "personalGuarantee": false
+      },
+      
+      "process": {
+        "applicationMethod": "100% app",
+        "documentsRequired": [
+          "Cédula",
+          "Selfie"
+        ],
+        "approvalTimeHours": 0.5,
+        "disbursementMethod": "Nequi, Daviplata o transferencia"
+      },
+      
+      "benefits": [
+        "Aprobación en minutos",
+        "Sin papeleos",
+        "No requiere historial crediticio",
+        "Primer préstamo fácil",
+        "Desembolso inmediato"
+      ],
+      
+      "cons": [
+        { "text": "Montos muy pequeños", "severity": "medium" },
+        { "text": "Tasa alta", "severity": "high" },
+        { "text": "No es específico para negocios", "severity": "low" }
+      ],
+      
+      "useCase": [
+        "Emergencias urgentes",
+        "Capital inicial muy pequeño",
+        "Cubrir flujo de caja temporal"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["idea", "early"],
+        "legalStatus": ["informal"],
+        "urgency": ["muy_urgente", "urgente"],
+        "loanPurpose": ["emergencia", "capital_trabajo"],
+        "annualRevenue": ["0-100"],
+        "preferredProcess": ["digital"]
+      },
+      
+      "applyUrl": "https://www.monet.com.co/",
+      "moreInfoUrl": "https://www.monet.com.co/"
+    },
+    
+    {
+      "id": "factoring_mesfix",
+      "name": "Factoring Mesfix",
+      "provider": "Mesfix",
+      "providerType": "fintech",
+      "providerLogo": "/logos/mesfix.svg",
+      "image": "📄",
+      "category": ["factoring", "liquidez", "b2b"],
+      
+      "loanDetails": {
+        "minAmountMillions": 5,
+        "maxAmountMillions": 500,
+        "minTermMonths": 0,
+        "maxTermMonths": 0,
+        "interestRateEA": {
+          "min": 1.5,
+          "max": 3.5,
+          "note": "% mensual sobre factura (no es deuda)"
+        },
+        "disbursementTimeHours": 24,
+        "originationFeePercent": 0,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 6,
+        "minAnnualRevenueMillions": 100,
+        "legalStructure": ["SAS", "SA", "LTDA"],
+        "requiresBankAccount": true,
+        "requiresElectronicInvoice": true,
+        "acceptsInformal": false,
+        "creditCheckRequired": false,
+        "collateralRequired": false,
+        "personalGuarantee": false
+      },
+      
+      "process": {
+        "applicationMethod": "Plataforma online",
+        "documentsRequired": [
+          "Registro RADIAN",
+          "Facturas electrónicas por cobrar",
+          "Cámara de Comercio",
+          "RUT"
+        ],
+        "approvalTimeHours": 12,
+        "disbursementMethod": "Transferencia bancaria"
+      },
+      
+      "benefits": [
+        "No es deuda - es venta de facturas",
+        "No afecta capacidad crediticia",
+        "Liquidez inmediata",
+        "Sin garantías personales",
+        "Tú decides qué facturas vender",
+        "Ideal para empresas B2B"
+      ],
+      
+      "cons": [
+        { "text": "Solo para facturas B2B con buenos pagadores", "severity": "medium" },
+        { "text": "Requiere facturación electrónica", "severity": "low" },
+        { "text": "Costo sobre cada factura", "severity": "low" }
+      ],
+      
+      "useCase": [
+        "Liquidez sin endeudarse",
+        "Clientes que pagan a 30-90 días",
+        "Capital de trabajo recurrente",
+        "Mantener flujo de caja"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["growth", "established"],
+        "legalStatus": ["formal"],
+        "urgency": ["normal", "urgente"],
+        "loanPurpose": ["capital_trabajo", "liquidez"],
+        "annualRevenue": ["200-500", "500-1000", "1000+"],
+        "preferredProcess": ["digital"],
+        "hasB2BClients": true
+      },
+      
+      "applyUrl": "https://www.mesfix.com/",
+      "moreInfoUrl": "https://www.mesfix.com/"
+    },
+    
+    {
+      "id": "bbva_pyme",
+      "name": "Crédito PyME BBVA",
+      "provider": "BBVA Colombia",
+      "providerType": "banco",
+      "providerLogo": "/logos/bbva.svg",
+      "image": "🔵",
+      "category": ["pyme", "tradicional", "tasa_competitiva"],
+      
+      "loanDetails": {
+        "minAmountMillions": 10,
+        "maxAmountMillions": 500,
+        "minTermMonths": 12,
+        "maxTermMonths": 60,
+        "interestRateEA": {
+          "min": 12,
+          "max": 17.4,
+          "note": "De las más bajas en banca tradicional"
+        },
+        "disbursementTimeHours": 96,
+        "originationFeePercent": 0.5,
+        "prepaymentPenalty": false
+      },
+      
+      "requirements": {
+        "minOperatingMonths": 24,
+        "minAnnualRevenueMillions": 300,
+        "legalStructure": ["SAS", "SA", "LTDA"],
+        "requiresBankAccount": true,
+        "acceptsInformal": false,
+        "creditCheckRequired": true,
+        "collateralRequired": "Según monto",
+        "personalGuarantee": true
+      },
+      
+      "process": {
+        "applicationMethod": "Presencial o semi-digital",
+        "documentsRequired": [
+          "Cámara de Comercio",
+          "RUT",
+          "Estados financieros 2 años",
+          "Declaración de renta",
+          "Extractos bancarios",
+          "Plan de negocio"
+        ],
+        "approvalTimeHours": 72,
+        "disbursementMethod": "Cuenta BBVA"
+      },
+      
+      "benefits": [
+        "Tasas muy competitivas (desde 12% EA)",
+        "Asesoría especializada PyME",
+        "App empresarial moderna",
+        "Red internacional BBVA",
+        "Sin penalización prepago"
+      ],
+      
+      "cons": [
+        { "text": "Proceso tradicional (3-5 días)", "severity": "medium" },
+        { "text": "Requiere 2 años operando", "severity": "medium" },
+        { "text": "Documentación extensa", "severity": "low" }
+      ],
+      
+      "useCase": [
+        "Inversión a mediano plazo",
+        "Activos fijos",
+        "Expansión planificada",
+        "Capital de trabajo estructurado"
+      ],
+      
+      "matchFactors": {
+        "businessStage": ["established", "scaling"],
+        "legalStatus": ["formal"],
+        "urgency": ["normal", "flexible"],
+        "loanPurpose": ["expansion", "activos", "capital_trabajo"],
+        "annualRevenue": ["500-1000", "1000+"],
+        "preferredProcess": ["hybrid", "traditional"]
+      },
+      
+      "applyUrl": "https://www.bbva.com.co/empresas/creditos",
+      "moreInfoUrl": "https://www.bbva.com.co/empresas"
+    }
+  ]
+}
