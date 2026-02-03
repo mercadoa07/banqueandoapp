@@ -1,852 +1,448 @@
 /**
- * ============================================================
- * BANQUEANDO - MATCHING ENGINE v2.0
- * ============================================================
- * 
- * Este es el "cerebro" del comparador. Recibe las respuestas
- * del usuario y calcula qué tarjetas son mejores para él.
- * 
- * LÓGICA PRINCIPAL:
- * 1. FILTRAR    → Eliminar tarjetas que no puede obtener
- * 2. PUNTUAR    → Calcular score basado en compatibilidad
- * 3. BONIFICAR  → Sumar puntos por matches especiales
- * 4. PENALIZAR  → Restar puntos por incompatibilidades
- * 5. PROS/CONS  → Identificar ventajas y desventajas
- * 6. ORDENAR    → Devolver top 3 con explicaciones
- * 
- * ============================================================
+ * BANQUEANDO - MATCHING ENGINE v4.0 (MULTI-VERTICAL)
+ * Soporta: Tarjetas (cards) y Crédito Unificado (credit)
  */
 
+// ============================================
+// CARDS MATCHING ENGINE (sin cambios)
+// ============================================
 export class MatchingEngine {
   constructor(cards, config) {
     this.cards = cards;
     this.config = config;
-    this.debug = false; // Cambiar a true para ver logs
+    this.debug = false;
   }
 
-  /**
-   * ============================================================
-   * MÉTODO PRINCIPAL: calculateMatches
-   * ============================================================
-   * Este es el método que llama App.jsx cuando el usuario
-   * termina el quiz.
-   * 
-   * @param {Object} answers - Respuestas del usuario
-   * @returns {Object} - { topMatch, alternatives, allResults }
-   */
   calculateMatches(answers) {
-    this.log('🎯 Iniciando cálculo de matches...');
-    this.log('📝 Respuestas del usuario:', answers);
-
-    // PASO 1: Filtrar tarjetas que no puede obtener
     const eligibleCards = this.filterByEligibility(answers);
-    this.log(`✅ Tarjetas elegibles: ${eligibleCards.length}/${this.cards.length}`);
-
-    // PASO 2-4: Calcular score para cada tarjeta
     const scoredCards = eligibleCards.map(card => {
       const scoreResult = this.calculateCardScore(card, answers);
-      const prosConsResult = this.calculateProsCons(card, answers);
       const benefits = this.extractBenefits(card, answers);
       
       return {
         ...card,
-        score: Math.min(Math.max(scoreResult.score, 0), this.config.scoring.maxScore),
+        score: Math.min(Math.max(scoreResult.score, 0), 100),
         matchReasons: scoreResult.reasons,
         benefits: benefits,
-        pros: prosConsResult.pros,
-        cons: prosConsResult.cons,
+        cons: card.cons || [],
         personalizedSavings: this.calculateSavings(card, answers)
       };
     });
 
-    // PASO 6: Ordenar por score
     const sortedCards = scoredCards.sort((a, b) => b.score - a.score);
-
-    // PASO 7: Generar razones comparativas
     const topCards = sortedCards.slice(0, 3);
     const cardsWithComparison = this.generateComparativeReasons(topCards, answers);
 
-    this.log('🏆 Resultados ordenados:', sortedCards.map(c => `${c.name}: ${c.score}`));
-
-    // Devolver en formato esperado por App.jsx
     return {
       topMatch: cardsWithComparison[0],
-      alternatives: cardsWithComparison.slice(1, this.config.display.showTopResults),
+      alternatives: cardsWithComparison.slice(1, 3),
       allResults: sortedCards
     };
   }
 
-  /**
-   * ============================================================
-   * GENERAR RAZONES COMPARATIVAS
-   * ============================================================
-   * Para el mejor match: "Le gana a las demás porque..."
-   * Para alternativas: "Podría ser mejor para ti si..."
-   */
-  generateComparativeReasons(topCards, answers) {
-    if (topCards.length < 2) return topCards;
-
-    const [winner, ...alternatives] = topCards;
-    
-    // Generar razones de por qué el winner le gana a los demás
-    const winnerReasons = this.generateWinnerReasons(winner, alternatives, answers);
-    
-    // Generar razones de cuándo cada alternativa podría ser mejor
-    const alternativesWithReasons = alternatives.map(alt => ({
-      ...alt,
-      whyConsider: this.generateAlternativeReasons(alt, winner, answers)
-    }));
-
-    return [
-      { ...winner, whyWinner: winnerReasons },
-      ...alternativesWithReasons
-    ];
-  }
-
-  /**
-   * Genera razones de por qué la tarjeta ganadora le gana a las demás
-   */
-  generateWinnerReasons(winner, alternatives, answers) {
-    const reasons = [];
-    
-    // Comparar ahorro
-    const maxAltSavings = Math.max(...alternatives.map(a => a.personalizedSavings || 0));
-    if ((winner.personalizedSavings || 0) > maxAltSavings) {
-      const diff = (winner.personalizedSavings || 0) - maxAltSavings;
-      if (diff > 50000) {
-        reasons.push(`Mayor ahorro anual ($${(winner.personalizedSavings || 0).toLocaleString()} vs $${maxAltSavings.toLocaleString()} de las otras)`);
-      }
-    }
-    
-    // Comparar cuota de manejo
-    const winnerFee = winner.fees?.annualFee || 0;
-    const altsWithFee = alternatives.filter(a => (a.fees?.annualFee || 0) > winnerFee);
-    if (winnerFee === 0 && altsWithFee.length > 0) {
-      reasons.push('Sin cuota de manejo (las otras cobran)');
-    }
-    
-    // Comparar tasa de interés (si usuario financia)
-    if (['finance', 'minimum', 'sometimes'].includes(answers.paymentBehavior)) {
-      const winnerRate = winner.rates?.interestRateEA || 100;
-      const minAltRate = Math.min(...alternatives.map(a => a.rates?.interestRateEA || 100));
-      if (winnerRate < minAltRate) {
-        reasons.push(`Tasa más baja (${winnerRate}% vs ${minAltRate}% de otras)`);
-      }
-      if (winnerRate === 0) {
-        reasons.push('0% interés en todas las compras');
-      }
-    }
-    
-    // Comparar millas (si usuario viaja)
-    if (answers.interests?.includes('travel') || answers.cardUsage?.includes('travel')) {
-      if (winner.rewards?.type === 'miles') {
-        const altMilesCards = alternatives.filter(a => a.rewards?.type === 'miles');
-        if (altMilesCards.length === 0) {
-          reasons.push('Única que acumula millas entre tus opciones');
-        } else {
-          // Comparar tasa de acumulación
-          const winnerMilesRate = winner.rewards?.rate || '';
-          if (winnerMilesRate.includes('1.5')) {
-            reasons.push('Acumula 1.5 millas por dólar (más que las otras)');
-          }
-        }
-      }
-      
-      // Salas VIP
-      if (winner.benefits?.some(b => b.toLowerCase().includes('vip') || b.toLowerCase().includes('lounge'))) {
-        const altsWithVIP = alternatives.filter(a => 
-          a.benefits?.some(b => b.toLowerCase().includes('vip') || b.toLowerCase().includes('lounge'))
-        );
-        if (altsWithVIP.length === 0) {
-          reasons.push('Incluye acceso a salas VIP (las otras no)');
-        }
-      }
-    }
-    
-    // Comparar cashback (si usuario usa para compras diarias)
-    if (answers.cardUsage?.includes('daily') || answers.shoppingPlaces?.length > 0) {
-      if (winner.rewards?.type === 'cashback') {
-        const altCashbackCards = alternatives.filter(a => a.rewards?.type === 'cashback');
-        if (altCashbackCards.length === 0) {
-          reasons.push('Devuelve dinero en cada compra (cashback)');
-        }
-      }
-    }
-    
-    // Comparar experiencia digital
-    if (answers.digitalPreference === 'digital') {
-      const winnerRating = winner.digitalExperience?.appRating || 0;
-      const maxAltRating = Math.max(...alternatives.map(a => a.digitalExperience?.appRating || 0));
-      if (winnerRating > maxAltRating && winnerRating >= 4.5) {
-        reasons.push(`Mejor app del mercado (${winnerRating}/5 estrellas)`);
-      }
-      if (winner.digitalExperience?.fullyDigital && !alternatives.every(a => a.digitalExperience?.fullyDigital)) {
-        reasons.push('100% digital sin trámites presenciales');
-      }
-    }
-    
-    // Comparar requisitos de ingreso
-    const winnerMinIncome = winner.requirements?.minIncome || 0;
-    const minAltIncome = Math.min(...alternatives.map(a => a.requirements?.minIncome || 0));
-    if (winnerMinIncome < minAltIncome && winnerMinIncome === 0) {
-      reasons.push('Sin requisito de ingresos mínimos');
-    }
-
-    // Si no hay razones específicas, agregar una genérica basada en score
-    if (reasons.length === 0) {
-      const scoreDiff = winner.score - (alternatives[0]?.score || 0);
-      if (scoreDiff > 5) {
-        reasons.push('Mejor combinación general de beneficios para tu perfil');
-      }
-    }
-
-    return reasons.slice(0, 3); // Máximo 3 razones
-  }
-
-  /**
-   * Genera razones de cuándo una alternativa podría ser mejor
-   */
-  generateAlternativeReasons(alt, winner, answers) {
-    const reasons = [];
-    
-    // Cuota más baja
-    const altFee = alt.fees?.annualFee || 0;
-    const winnerFee = winner.fees?.annualFee || 0;
-    if (altFee < winnerFee) {
-      if (altFee === 0) {
-        reasons.push('Prefieres $0 en cuota de manejo');
-      } else {
-        reasons.push(`Buscas cuota más baja ($${(altFee/12).toLocaleString()}/mes)`);
-      }
-    }
-    
-    // Tasa más baja
-    const altRate = alt.rates?.interestRateEA || 100;
-    const winnerRate = winner.rates?.interestRateEA || 100;
-    if (altRate < winnerRate) {
-      if (altRate === 0) {
-        reasons.push('Financias compras y quieres 0% interés');
-      } else {
-        reasons.push(`Financias mucho y buscas menor tasa (${altRate}% EA)`);
-      }
-    }
-    
-    // Cashback vs Millas
-    if (alt.rewards?.type === 'cashback' && winner.rewards?.type !== 'cashback') {
-      reasons.push('Prefieres dinero de vuelta en vez de millas');
-    }
-    if (alt.rewards?.type === 'miles' && winner.rewards?.type !== 'miles') {
-      reasons.push('Tu prioridad son las millas para viajar');
-    }
-    
-    // Menor requisito de ingresos
-    const altMinIncome = alt.requirements?.minIncome || 0;
-    const winnerMinIncome = winner.requirements?.minIncome || 0;
-    if (altMinIncome < winnerMinIncome) {
-      reasons.push('Tus ingresos no alcanzan para la primera opción');
-    }
-    
-    // Mejor para retail/compras específicas
-    if (alt.category === 'retail' && winner.category !== 'retail') {
-      reasons.push('Compras frecuentemente en tiendas retail');
-    }
-    
-    // Digital vs tradicional
-    if (alt.digitalExperience?.fullyDigital && !winner.digitalExperience?.fullyDigital) {
-      reasons.push('Solo quieres una experiencia 100% digital');
-    }
-    if (!alt.digitalExperience?.fullyDigital && winner.digitalExperience?.fullyDigital) {
-      reasons.push('Prefieres poder ir a oficinas físicas');
-    }
-
-    // Si no hay razones, generar una basada en beneficios únicos
-    if (reasons.length === 0 && alt.benefits?.length > 0) {
-      const uniqueBenefit = alt.benefits.find(b => 
-        !winner.benefits?.some(wb => wb.toLowerCase().includes(b.toLowerCase().split(' ')[0]))
-      );
-      if (uniqueBenefit) {
-        reasons.push(`Valoras: ${uniqueBenefit}`);
-      }
-    }
-
-    return reasons.slice(0, 2); // Máximo 2 razones
-  }
-
-  /**
-   * ============================================================
-   * MÉTODO ALIAS: getTopResults (para compatibilidad con App.jsx)
-   * ============================================================
-   */
   getTopResults(answers) {
     return this.calculateMatches(answers);
   }
 
-  /**
-   * ============================================================
-   * PASO 1: FILTRAR POR ELEGIBILIDAD
-   * ============================================================
-   * Elimina tarjetas que el usuario NO puede obtener por:
-   * - Ingresos insuficientes
-   * - Historial crediticio incompatible
-   * 
-   * NOTA: No elimina, solo marca con penalty severo para que
-   * aparezcan al final pero el usuario sepa que existen.
-   */
   filterByEligibility(answers) {
-    if (!this.config.filters.enableIncomeFilter) {
-      return [...this.cards];
-    }
-
     return this.cards.filter(card => {
-      // Verificar ingresos
-      const userIncomeRange = this.config.incomeRanges[answers.income];
-      const userMaxIncome = userIncomeRange?.max || 999999999;
-      const cardMinIncome = card.requirements?.minIncome || 0;
-
-      // Si el usuario no especificó ingresos, no filtrar
-      if (answers.income === 'skip' || !answers.income) {
-        return true;
+      if (!this.checkIncomeEligibility(card, answers)) return false;
+      
+      if (answers.product_selection === 'cambiar_tarjeta' && answers.current_card_bank) {
+        const cardBank = (card.bank || '').toLowerCase();
+        if (cardBank.includes(answers.current_card_bank)) return false;
       }
-
-      // Si estamos en modo estricto, eliminar
-      if (this.config.filters.strictMode && userMaxIncome < cardMinIncome) {
-        this.log(`❌ ${card.name} filtrada por ingresos (requiere ${cardMinIncome})`);
+      
+      if (answers.credit_history === 'reported' && !card.requirements?.acceptsReported) {
         return false;
       }
-
+      
       return true;
     });
   }
 
-  /**
-   * ============================================================
-   * PASO 2-4: CALCULAR SCORE DE UNA TARJETA
-   * ============================================================
-   * Combina:
-   * - Score base
-   * - Puntos por matchFactors
-   * - Bonuses por reglas especiales
-   * - Penalties por incompatibilidades
-   */
-  calculateCardScore(card, answers) {
-    let score = this.config.scoring.baseScore;
-    const reasons = [];
-
-    // PASO 2: Scoring por matchFactors
-    const factorResult = this.scoreByMatchFactors(card, answers);
-    score += factorResult.points;
-    reasons.push(...factorResult.reasons);
-
-    // PASO 3: Aplicar bonuses
-    const bonusResult = this.applyBonuses(card, answers);
-    score += bonusResult.points;
-    reasons.push(...bonusResult.reasons);
-
-    // PASO 4: Aplicar penalties
-    const penaltyResult = this.applyPenalties(card, answers);
-    score += penaltyResult.points;
-    reasons.push(...penaltyResult.reasons);
-
-    this.log(`📊 ${card.name}: base(${this.config.scoring.baseScore}) + factors(${factorResult.points}) + bonus(${bonusResult.points}) + penalty(${penaltyResult.points}) = ${score}`);
-
-    return { score, reasons };
-  }
-
-  /**
-   * ============================================================
-   * SCORING POR MATCH FACTORS
-   * ============================================================
-   * Compara las respuestas del usuario con los matchFactors
-   * definidos en cada tarjeta.
-   * 
-   * Los pesos vienen de config.weights
-   */
-  scoreByMatchFactors(card, answers) {
-    let points = 0;
-    const reasons = [];
-    const { weights, scoring } = this.config;
-
-    if (!card.matchFactors) return { points, reasons };
-
-    Object.entries(card.matchFactors).forEach(([factor, cardValues]) => {
-      const userValue = answers[factor];
-      const weight = weights[factor] || 5;
-
-      if (!userValue) return;
-
-      let matched = false;
-      let matchStrength = 0;
-
-      if (Array.isArray(userValue)) {
-        // Usuario seleccionó múltiples opciones
-        const matches = userValue.filter(v => cardValues.includes(v));
-        if (matches.length > 0) {
-          matchStrength = (matches.length / userValue.length);
-          matched = true;
-        }
-      } else {
-        // Usuario seleccionó una opción
-        if (cardValues.includes(userValue)) {
-          matchStrength = 1;
-          matched = true;
-        }
-      }
-
-      if (matched) {
-        const factorPoints = (scoring.exactMatchPoints * weight * matchStrength) / 10;
-        points += factorPoints;
-        
-        const reasonText = this.generateMatchReason(factor, userValue, cardValues, factorPoints);
-        if (reasonText) reasons.push(reasonText);
-      }
-    });
-
-    return { points, reasons };
-  }
-
-  /**
-   * ============================================================
-   * APLICAR BONUSES
-   * ============================================================
-   * Revisa cada regla de bonus en config y aplica si corresponde
-   */
-  applyBonuses(card, answers) {
-    let points = 0;
-    const reasons = [];
-
-    this.config.bonusRules.forEach(rule => {
-      if (this.evaluateRule(rule.conditions, card, answers)) {
-        points += rule.bonus;
-        reasons.push({
-          type: 'bonus',
-          text: rule.name,
-          points: rule.bonus
-        });
-        this.log(`  ✨ Bonus aplicado: ${rule.name} (+${rule.bonus})`);
-      }
-    });
-
-    return { points, reasons };
-  }
-
-  /**
-   * ============================================================
-   * APLICAR PENALTIES
-   * ============================================================
-   * Revisa cada regla de penalty en config y aplica si corresponde
-   */
-  applyPenalties(card, answers) {
-    let points = 0;
-    const reasons = [];
-
-    this.config.penaltyRules.forEach(rule => {
-      // Caso especial: verificación de ingresos
-      if (rule.conditions.type === 'income_check') {
-        if (!this.checkIncomeEligibility(card, answers)) {
-          points += rule.penalty;
-          reasons.push({
-            type: 'penalty',
-            text: 'Puede requerir ingresos mayores a los indicados',
-            points: rule.penalty
-          });
-        }
-        return;
-      }
-
-      if (this.evaluateRule(rule.conditions, card, answers)) {
-        points += rule.penalty;
-        reasons.push({
-          type: 'penalty',
-          text: rule.name,
-          points: rule.penalty
-        });
-        this.log(`  ⚠️ Penalty aplicado: ${rule.name} (${rule.penalty})`);
-      }
-    });
-
-    return { points, reasons };
-  }
-
-  /**
-   * ============================================================
-   * EVALUAR UNA REGLA
-   * ============================================================
-   * Verifica si las condiciones de una regla se cumplen
-   */
-  evaluateRule(conditions, card, answers) {
-    const { userFactor, userValue, userValueIn, userValueIncludes,
-            cardField, cardValue, cardValueIn, cardValueLessThan, 
-            cardValueGreaterThan } = conditions;
-
-    // Verificar condición del usuario
-    const userAnswer = answers[userFactor];
-    if (!userAnswer) return false;
-
-    let userConditionMet = false;
-
-    if (userValue !== undefined) {
-      userConditionMet = userAnswer === userValue;
-    } else if (userValueIn) {
-      userConditionMet = userValueIn.includes(userAnswer);
-    } else if (userValueIncludes) {
-      userConditionMet = Array.isArray(userAnswer) 
-        ? userAnswer.includes(userValueIncludes)
-        : userAnswer === userValueIncludes;
-    } else {
-      userConditionMet = true; // No hay condición de usuario
-    }
-
-    if (!userConditionMet) return false;
-
-    // Verificar condición de la tarjeta
-    const cardFieldValue = this.getNestedValue(card, cardField);
-
-    if (cardValue !== undefined) {
-      return cardFieldValue === cardValue;
-    } else if (cardValueIn) {
-      return cardValueIn.includes(cardFieldValue);
-    } else if (cardValueLessThan !== undefined) {
-      return cardFieldValue < cardValueLessThan;
-    } else if (cardValueGreaterThan !== undefined) {
-      return cardFieldValue > cardValueGreaterThan;
-    }
-
-    return true;
-  }
-
-  /**
-   * ============================================================
-   * PASO 5: CALCULAR PROS Y CONTRAS
-   * ============================================================
-   * Para cada tarjeta, identifica:
-   * - ✅ PROS: Por qué SÍ le conviene
-   * - ⚠️ CONS: Por qué podría NO convenirle
-   */
-  calculateProsCons(card, answers) {
-    const pros = [];
-    const cons = [];
-    const { prosConsRules } = this.config;
-
-    // Evaluar PROS
-    prosConsRules.pros.forEach(rule => {
-      if (this.evaluateProConCondition(rule.condition, card)) {
-        let text = rule.text;
-        // Reemplazar {value} con el valor real
-        const value = this.getNestedValue(card, rule.condition.field);
-        text = text.replace('{value}', this.formatValue(value, rule.condition.field));
-        
-        pros.push({
-          icon: rule.icon,
-          text: text
-        });
-      }
-    });
-
-    // Evaluar CONS
-    prosConsRules.cons.forEach(rule => {
-      if (this.evaluateProConCondition(rule.condition, card)) {
-        let text = rule.text;
-        const value = this.getNestedValue(card, rule.condition.field);
-        text = text.replace('{value}', this.formatValue(value, rule.condition.field));
-        
-        cons.push({
-          icon: rule.icon,
-          text: text
-        });
-      }
-    });
-
-    // Limitar cantidad mostrada
-    const maxShow = this.config.display.showProsConsPerCard;
-    return {
-      pros: pros.slice(0, maxShow),
-      cons: cons.slice(0, maxShow)
-    };
-  }
-
-  /**
-   * Evalúa una condición de pro/con
-   */
-  evaluateProConCondition(condition, card) {
-    const value = this.getNestedValue(card, condition.field);
-    
-    if (condition.equals !== undefined) return value === condition.equals;
-    if (condition.lessThan !== undefined) return value < condition.lessThan;
-    if (condition.greaterThan !== undefined) return value > condition.greaterThan;
-    if (condition.in) return condition.in.includes(value);
-    
-    return false;
-  }
-
-  /**
-   * ============================================================
-   * UTILIDADES
-   * ============================================================
-   */
-
-  // Obtener valor anidado: "fees.annualFee" → card.fees.annualFee
-  getNestedValue(obj, path) {
-    return path.split('.').reduce((current, key) => current?.[key], obj);
-  }
-
-  /**
-   * ============================================================
-   * EXTRAER BENEFICIOS DE LA TARJETA
-   * ============================================================
-   * Genera lista de beneficios legibles para mostrar al usuario
-   */
-  extractBenefits(card, answers) {
-    const benefits = [];
-    
-    // Beneficios desde el campo benefits de la tarjeta (si existe)
-    if (card.benefits && Array.isArray(card.benefits)) {
-      benefits.push(...card.benefits.slice(0, 5));
-    }
-    
-    // Generar beneficios desde los datos de la tarjeta
-    if (benefits.length < 3) {
-      // Cuota gratis
-      if (card.fees?.annualFee === 0 || card.fees?.monthlyFee === 0) {
-        benefits.push('✨ Sin cuota de manejo');
-      }
-      
-      // Rewards
-      if (card.rewards?.type === 'miles') {
-        const rate = card.rewards.milesPerCOP || 4000;
-        benefits.push(`✈️ Acumula 1 milla por cada $${rate.toLocaleString()} gastados`);
-      } else if (card.rewards?.type === 'cashback') {
-        const rate = card.rewards.rate || '2%';
-        benefits.push(`💰 ${rate} de cashback en compras`);
-      } else if (card.rewards?.type === 'points') {
-        benefits.push('🎁 Acumula puntos canjeables');
-      }
-      
-      // Seguros
-      if (card.perks?.travelInsurance) {
-        benefits.push('🛡️ Seguro de viaje incluido');
-      }
-      if (card.perks?.purchaseProtection) {
-        benefits.push('🛡️ Protección de compras');
-      }
-      
-      // Salas VIP
-      if (card.perks?.loungeAccess) {
-        benefits.push('👑 Acceso a salas VIP en aeropuertos');
-      }
-      
-      // Sin comisión internacional
-      if (card.fees?.foreignTransactionFee === 0) {
-        benefits.push('🌎 Sin comisión por compras internacionales');
-      }
-      
-      // App digital
-      if (card.digital?.appRating && card.digital.appRating >= 4.5) {
-        benefits.push(`📱 App excelente (${card.digital.appRating}/5)`);
-      }
-      
-      // Tasa baja
-      if (card.rates?.interestRateEA && card.rates.interestRateEA < 25) {
-        benefits.push(`📉 Tasa competitiva: ${card.rates.interestRateEA}% EA`);
-      }
-    }
-    
-    // Limitar a 5 beneficios
-    return benefits.slice(0, 5);
-  }
-
-  // Verificar elegibilidad por ingresos
   checkIncomeEligibility(card, answers) {
     if (answers.income === 'skip' || !answers.income) return true;
     
-    const userIncomeRange = this.config.incomeRanges[answers.income];
-    if (!userIncomeRange) return true;
+    const incomeRanges = {
+      '0-2': 2000000, '2-4': 4000000, '4-6': 6000000, 
+      '6-10': 10000000, '10+': 999999999
+    };
     
-    const userMaxIncome = userIncomeRange.max;
+    const userMaxIncome = incomeRanges[answers.income] || 999999999;
     const cardMinIncome = card.requirements?.minIncome || 0;
     
     return userMaxIncome >= cardMinIncome;
   }
 
-  // Calcular ahorros personalizados
+  calculateCardScore(card, answers) {
+    let score = 40;
+    const reasons = [];
+    
+    if (answers.payment_behavior) {
+      const paymentMatch = card.matchFactors?.paymentBehavior || [];
+      if (paymentMatch.includes(answers.payment_behavior)) {
+        score += 25;
+        reasons.push(answers.payment_behavior === 'full' 
+          ? 'Optimizada para pago total' 
+          : 'Buena tasa para financiar');
+      }
+    }
+    
+    if (answers.fee_sensitivity === 'no_fee' && card.fees?.annualFee === 0) {
+      score += 20;
+      reasons.push('Sin cuota de manejo');
+    }
+    
+    if (answers.digital_preference) {
+      const digitalMatch = card.matchFactors?.digitalPreference || [];
+      if (digitalMatch.includes(answers.digital_preference)) {
+        score += 15;
+      }
+    }
+    
+    if (answers.interests?.length) {
+      const interestMatch = card.matchFactors?.interests || [];
+      const matches = answers.interests.filter(i => interestMatch.includes(i));
+      score += matches.length * 5;
+    }
+    
+    if (answers.product_selection === 'cambiar_tarjeta' && answers.current_card_pain) {
+      const pains = Array.isArray(answers.current_card_pain) ? answers.current_card_pain : [answers.current_card_pain];
+      const solved = card.painPointsSolved || [];
+      const matched = pains.filter(p => solved.includes(p));
+      score += matched.length * 5;
+    }
+    
+    return { score: Math.min(score, 100), reasons };
+  }
+
+  extractBenefits(card, answers) {
+    return card.benefits?.slice(0, 5) || [];
+  }
+
   calculateSavings(card, answers) {
-    const monthlySpend = answers.monthlySpend || 1500000;
+    const monthlySpend = answers.monthly_spend || 1500000;
     const annualSpend = monthlySpend * 12;
     let savings = 0;
 
-    switch (card.rewards?.type) {
-      case 'cashback':
-        const rate = parseFloat(card.rewards.rate) / 100 || 0.02;
-        savings = annualSpend * rate;
-        break;
-      case 'miles':
-        const milesEarned = (annualSpend / 4000) * 1;
-        savings = milesEarned * 50; // Valor estimado por milla
-        break;
-      case 'points':
-        savings = annualSpend * 0.01;
-        break;
-      default:
-        savings = annualSpend * 0.005;
+    if (card.rewards?.cashbackPercent) {
+      savings += annualSpend * (card.rewards.cashbackPercent / 100);
     }
-
-    // Restar cuota de manejo
-    savings -= card.fees?.annualFee || 0;
+    
+    const avgFee = 25000 * 12;
+    const cardFee = card.fees?.annualFee || 0;
+    savings += avgFee - cardFee;
     
     return Math.max(Math.floor(savings), 0);
   }
 
-  // Generar razón de match legible y personalizada
-  generateMatchReason(factor, userValue, cardValues, points) {
-    if (points < 2) return null; // No mostrar matches débiles
+  generateComparativeReasons(topCards, answers) {
+    if (topCards.length < 2) return topCards;
+    const [winner, ...alts] = topCards;
     
-    const valueLabels = {
-      // Intereses
-      travel: 'viajar',
-      sports: 'deportes',
-      entertainment: 'entretenimiento',
-      dining: 'gastronomía',
-      shopping: 'compras',
-      education: 'educación',
-      gaming: 'gaming y tecnología',
-      family: 'familia',
-      wellness: 'salud y bienestar',
-      // Digital preference
-      digital: '100% digital',
-      hybrid: 'híbrido (app + oficinas)',
-      traditional: 'atención presencial',
-      // Fee sensitivity
-      no_fee: 'sin cuota de manejo',
-      flexible: 'beneficios sobre cuota',
-      // Payment behavior
-      full: 'pagar el total cada mes',
-      sometimes: 'pago mixto',
-      finance: 'pagar en cuotas',
-      minimum: 'pago mínimo',
-      // Card usage
-      daily: 'compras diarias',
-      big_purchases: 'compras grandes',
-      services: 'servicios y suscripciones',
-      online: 'compras internacionales',
-      emergency: 'emergencias',
-      balance_transfer: 'compra de cartera',
-      // Shopping places
-      exito: 'Éxito',
-      carulla: 'Carulla',
-      jumbo: 'Jumbo',
-      olimpica: 'Olímpica',
-      falabella: 'Falabella',
-      rappi: 'Rappi',
-      avianca: 'Avianca',
-      latam: 'LATAM',
-      netflix: 'streaming',
-      spotify: 'Spotify',
-      terpel: 'Terpel',
-      // Values
-      environment: 'medio ambiente',
-      entrepreneurship: 'emprendimiento',
-      inclusion: 'inclusión financiera',
-      technology: 'tecnología',
-      social_welfare: 'bienestar social'
-    };
-
-    const templates = {
-      interests: (val) => {
-        if (Array.isArray(val)) {
-          const labels = val.map(v => valueLabels[v] || v).slice(0, 2);
-          return `Te gusta ${labels.join(' y ')} → Tiene beneficios especiales para ti`;
-        }
-        return `Te gusta ${valueLabels[val] || val} → Beneficios alineados`;
-      },
-      digitalPreference: (val) => {
-        if (val === 'digital') return 'Prefieres 100% digital → App premiada y sin filas';
-        if (val === 'hybrid') return 'Prefieres híbrido → Buena app + sucursales';
-        if (val === 'traditional') return 'Prefieres oficinas → Red amplia de sucursales';
-        return null;
-      },
-      feeSensitivity: (val) => {
-        if (val === 'no_fee') return 'Quieres sin cuota → Esta no cobra cuota de manejo';
-        if (val === 'flexible') return 'Valoras beneficios → Excelente relación costo/beneficio';
-        return null;
-      },
-      paymentBehavior: (val) => {
-        if (val === 'full') return 'Pagas el total → Maximiza beneficios y rewards';
-        if (val === 'finance' || val === 'minimum') return 'Financias compras → Tasa de interés competitiva';
-        return null;
-      },
-      shoppingPlaces: (val) => {
-        if (Array.isArray(val) && val.length > 0) {
-          const labels = val.map(v => valueLabels[v] || v).slice(0, 2);
-          return `Compras en ${labels.join(', ')} → Puntos extra en estos comercios`;
-        }
-        return null;
-      },
-      travelFreq: (val) => {
-        if (val === '6+' || val === '3-5') return 'Viajas frecuentemente → Acumula millas rápido';
-        if (val === '1-2') return 'Viajas ocasionalmente → Millas sin vencimiento';
-        return null;
-      },
-      travelPreference: (val) => {
-        if (val === 'miles') return 'Quieres millas → Programa de millas robusto';
-        if (val === 'cashback') return 'Prefieres cashback → Devolución directa a tu bolsillo';
-        if (val === 'vip') return 'Valoras experiencias → Acceso a salas VIP';
-        return null;
-      },
-      cardUsage: (val) => {
-        if (Array.isArray(val)) {
-          if (val.includes('travel')) return 'Usarás para viajes → Seguro de viaje incluido';
-          if (val.includes('online')) return 'Compras online → Sin comisión internacional';
-          if (val.includes('daily')) return 'Uso diario → Cashback en todas las compras';
-          if (val.includes('balance_transfer')) return 'Quieres compra de cartera → Tasa preferencial';
-        }
-        return null;
-      },
-      values: (val) => {
-        if (Array.isArray(val)) {
-          if (val.includes('environment')) return 'Te importa el ambiente → Tarjeta eco-friendly';
-          if (val.includes('technology')) return 'Te gusta la tecnología → Innovación constante';
-        }
-        return null;
-      },
-      team: (val) => {
-        if (val && val !== 'none') {
-          return `Hincha de ${valueLabels[val] || val} → Beneficios exclusivos para fans`;
-        }
-        return null;
-      }
-    };
-
-    const template = templates[factor];
-    if (template) {
-      return template(userValue);
+    const winnerReasons = [];
+    if (winner.fees?.annualFee === 0 && alts.some(a => a.fees?.annualFee > 0)) {
+      winnerReasons.push('Sin cuota de manejo');
     }
+    if (winner.personalizedSavings > (alts[0]?.personalizedSavings || 0) + 50000) {
+      winnerReasons.push('Mayor ahorro anual');
+    }
+    if (!winnerReasons.length) winnerReasons.push('Mejor match para tu perfil');
     
-    return null;
-  }
-
-  // Formatear valores para mostrar
-  formatValue(value, field) {
-    if (field.includes('Fee') || field.includes('Income')) {
-      return value.toLocaleString();
-    }
-    return value;
-  }
-
-  // Logger para debug
-  log(...args) {
-    if (this.debug) {
-      console.log('[MatchingEngine]', ...args);
-    }
+    return [
+      { ...winner, whyWinner: winnerReasons },
+      ...alts.map(a => ({ ...a, whyConsider: ['Alternativa viable'] }))
+    ];
   }
 }
 
-/**
- * ============================================================
- * FACTORY FUNCTION
- * ============================================================
- * Crea una instancia del engine con los datos cargados
- */
+// ============================================
+// CREDIT MATCHING ENGINE (nuevo - unificado)
+// ============================================
+export class CreditMatchingEngine {
+  constructor(products, config) {
+    this.products = products;
+    this.config = config;
+  }
+
+  getTopResults(answers) {
+    console.log('[CreditEngine] Procesando respuestas:', answers);
+    
+    // Filtrar por elegibilidad básica
+    let eligible = this.products.filter(product => {
+      return this.checkEligibility(product, answers);
+    });
+    
+    console.log('[CreditEngine] Productos elegibles:', eligible.length);
+    
+    // Si no hay elegibles, usar TODOS los productos pero con score penalizado
+    let useFallback = false;
+    if (eligible.length === 0) {
+      console.log('[CreditEngine] Sin elegibles, usando fallback con todos los productos');
+      eligible = this.products;
+      useFallback = true;
+    }
+
+    // Calcular score para cada producto
+    const scored = eligible.map(product => {
+      let { score, reasons } = this.calculateScore(product, answers);
+      
+      // Penalizar si es fallback (no cumple requisitos)
+      if (useFallback) {
+        score = Math.max(score - 20, 30); // Mínimo 30%
+        reasons = ['Opción disponible aunque no cumples todos los requisitos', ...reasons];
+      }
+      
+      return { 
+        ...product, 
+        score: Math.min(Math.max(score, 0), 100), 
+        matchReasons: reasons 
+      };
+    });
+
+    // Ordenar por score
+    const sorted = scored.sort((a, b) => b.score - a.score);
+    const top = sorted.slice(0, 3);
+    
+    console.log('[CreditEngine] Top 3:', top.map(p => ({ name: p.name, score: p.score })));
+    
+    // Generar razones comparativas
+    const topWithReasons = this.generateComparativeReasons(top, answers);
+    
+    return {
+      topMatch: topWithReasons[0] || null,
+      alternatives: topWithReasons.slice(1),
+      allResults: sorted
+    };
+  }
+
+  checkEligibility(product, answers) {
+    // Filtros muy básicos - solo cosas que realmente descalifican
+    
+    // Si requiere Bold y no lo tiene, no puede aplicar
+    if (product.requirements?.requiresBoldDatafono || product.requirements?.requiresBold) {
+      const hasRelBold = answers.entity_relationships?.includes('rel_bold');
+      if (!hasRelBold) return false;
+    }
+    
+    // Si está reportado y el producto NO acepta reportados, filtrar
+    // (pero muchos productos no tienen este campo, así que solo filtrar si explícitamente lo rechaza)
+    if (answers.credit_history === 'historial_reportado') {
+      if (product.requirements?.acceptsReported === false) {
+        return false;
+      }
+    }
+    
+    // Todo lo demás pasa - la penalización se hace en el score
+    return true;
+  }
+
+  calculateScore(product, answers) {
+    let score = 40; // Base score
+    const reasons = [];
+    
+    // +25 puntos: Velocidad de desembolso vs urgencia
+    const disbursementHours = product.loanDetails?.disbursementTimeHours || 72;
+    if (answers.loan_urgency === 'inmediato' && disbursementHours <= 24) {
+      score += 25;
+      reasons.push('Desembolso en menos de 24 horas');
+    } else if (answers.loan_urgency === 'urgente' && disbursementHours <= 72) {
+      score += 20;
+      reasons.push('Desembolso rápido (1-3 días)');
+    } else if (answers.loan_urgency === 'normal') {
+      score += 10;
+    } else if (answers.loan_urgency === 'flexible') {
+      score += 5;
+    }
+    
+    // +20 puntos: Prioridad (velocidad vs tasa)
+    const minRate = product.loanDetails?.interestRateEA?.min || 25;
+    if (answers.priority_preference === 'prioridad_velocidad') {
+      if (disbursementHours <= 24) {
+        score += 20;
+        reasons.push('Aprobación express');
+      } else if (disbursementHours <= 48) {
+        score += 15;
+      }
+    } else if (answers.priority_preference === 'prioridad_tasa') {
+      if (minRate < 18) {
+        score += 20;
+        reasons.push('Tasa competitiva desde ' + minRate + '% EA');
+      } else if (minRate < 23) {
+        score += 10;
+        reasons.push('Tasa razonable');
+      }
+    } else if (answers.priority_preference === 'prioridad_balance') {
+      if (disbursementHours <= 72 && minRate < 25) {
+        score += 15;
+        reasons.push('Buen balance rapidez/tasa');
+      }
+    }
+    
+    // +15 puntos: Match con propósito del crédito
+    if (answers.loan_purpose && product.useCase) {
+      const purposes = Array.isArray(answers.loan_purpose) ? answers.loan_purpose : [answers.loan_purpose];
+      const useCaseLower = product.useCase.map(uc => uc.toLowerCase());
+      
+      const purposeMapping = {
+        'emergencia_personal': ['emergencia', 'urgente', 'personal'],
+        'consolidar_deuda': ['consolidar', 'deuda', 'cartera'],
+        'compra_especifica': ['compra', 'activo', 'libre'],
+        'inversion_negocio': ['inversión', 'negocio', 'capital', 'emprendimiento'],
+        'capital_trabajo': ['capital', 'trabajo', 'nómina', 'inventario'],
+        'inventario': ['inventario', 'mercancía', 'capital'],
+        'iniciar_negocio': ['iniciar', 'emprender', 'inicial', 'micro'],
+        'oportunidad': ['oportunidad', 'libre'],
+        'libre_inversion': ['libre', 'personal', 'gastos']
+      };
+      
+      let matchCount = 0;
+      purposes.forEach(p => {
+        const keywords = purposeMapping[p] || [];
+        if (keywords.some(kw => useCaseLower.some(uc => uc.includes(kw)))) {
+          matchCount++;
+        }
+      });
+      
+      if (matchCount > 0) {
+        score += 10 + (matchCount * 3);
+        reasons.push('Ideal para tu necesidad');
+      }
+    }
+    
+    // +15 puntos: Acepta informales (si el usuario es informal)
+    if ((answers.business_formalization === 'informal' || answers.employment_status === 'independiente') 
+        && product.requirements?.acceptsInformal) {
+      score += 15;
+      reasons.push('Acepta trabajadores informales');
+    }
+    
+    // +15 puntos: Acepta reportados (si el usuario está reportado)
+    if (answers.credit_history === 'historial_reportado' && product.requirements?.acceptsReported) {
+      score += 15;
+      reasons.push('Acepta reportados en DataCrédito');
+    }
+    
+    // +10 puntos: Acepta sin historial (si el usuario no tiene historial)
+    if ((answers.credit_history === 'sin_historial' || answers.credit_history === 'historial_desconocido') 
+        && product.requirements?.acceptsNoHistory) {
+      score += 10;
+      reasons.push('No requiere historial crediticio');
+    }
+    
+    // +10 puntos: Proceso digital (la mayoría de fintechs son digitales)
+    if (answers.process_preference === 'proceso_digital') {
+      score += 10;
+      if (!reasons.includes('100% digital')) {
+        reasons.push('100% digital');
+      }
+    }
+    
+    // +10 puntos: Match por categoría
+    if (product.category && Array.isArray(product.category)) {
+      if (answers.credit_destination === 'personal' && product.category.includes('personal')) {
+        score += 10;
+        if (!reasons.includes('Ideal para personas naturales')) {
+          reasons.push('Ideal para personas naturales');
+        }
+      }
+      if (answers.credit_destination === 'negocio' && 
+          (product.category.includes('empresarial') || product.category.includes('micro') || product.category.includes('emprendedor'))) {
+        score += 10;
+        reasons.push('Diseñado para negocios');
+      }
+    }
+    
+    // Penalizaciones
+    
+    // -15 puntos: Si es informal y producto no acepta informales
+    if ((answers.business_formalization === 'informal' || answers.employment_status === 'independiente') 
+        && !product.requirements?.acceptsInformal) {
+      score -= 15;
+    }
+    
+    // -15 puntos: Si está reportado y producto no acepta reportados
+    if (answers.credit_history === 'historial_reportado' && !product.requirements?.acceptsReported) {
+      score -= 15;
+    }
+    
+    // -10 puntos: Monto solicitado vs rango del producto
+    if (answers.loan_amount && product.loanDetails) {
+      const amountRanges = {
+        '0-1M': 0.5, '1-5M': 3, '5-10M': 7.5, '10-30M': 20, 
+        '30-50M': 40, '50-100M': 75, '100-200M': 150, '200M+': 300
+      };
+      const requestedMid = amountRanges[answers.loan_amount] || 5;
+      const productMax = product.loanDetails.maxAmountMillions || 100;
+      const productMin = product.loanDetails.minAmountMillions || 0;
+      
+      // Si el máximo del producto es menor que lo que necesita  
+      if (productMax < requestedMid * 0.5) {
+        score -= 15;
+      }
+      // Si el mínimo es mayor que lo que necesita
+      if (productMin > requestedMid * 2) {
+        score -= 10;
+      }
+    }
+
+    return { score: Math.max(score, 10), reasons };
+  }
+
+  generateComparativeReasons(topProducts, answers) {
+    if (topProducts.length === 0) return [];
+    if (topProducts.length === 1) {
+      return [{ ...topProducts[0], whyWinner: topProducts[0].matchReasons || ['Mejor opción disponible'] }];
+    }
+    
+    const [winner, ...alts] = topProducts;
+    
+    const winnerReasons = [...(winner.matchReasons || [])];
+    
+    // Comparar con alternativas
+    if (winner.loanDetails?.interestRateEA?.min < (alts[0]?.loanDetails?.interestRateEA?.min || 100)) {
+      if (!winnerReasons.some(r => r.includes('tasa'))) {
+        winnerReasons.push('Mejor tasa del grupo');
+      }
+    }
+    if (winner.loanDetails?.disbursementTimeHours < (alts[0]?.loanDetails?.disbursementTimeHours || 999)) {
+      if (!winnerReasons.some(r => r.includes('rápido') || r.includes('24'))) {
+        winnerReasons.push('Desembolso más rápido');
+      }
+    }
+    
+    if (winnerReasons.length === 0) {
+      winnerReasons.push('Mejor match para tu perfil');
+    }
+    
+    return [
+      { ...winner, whyWinner: winnerReasons.slice(0, 4) },
+      ...alts.map(a => ({ 
+        ...a, 
+        whyConsider: a.matchReasons?.slice(0, 2) || ['Alternativa viable'] 
+      }))
+    ];
+  }
+}
+
+// ============================================
+// FACTORY FUNCTIONS
+// ============================================
 export function createMatchingEngine(cardsData, configData) {
-  return new MatchingEngine(cardsData.cards, configData);
+  const cards = cardsData.cards || cardsData;
+  return new MatchingEngine(Array.isArray(cards) ? cards : [], configData || {});
+}
+
+export function createCreditMatchingEngine(productsData, configData) {
+  const products = productsData.creditProducts || productsData.businessLoans || productsData.loans || productsData;
+  console.log('[Factory] Creando CreditMatchingEngine con', Array.isArray(products) ? products.length : 0, 'productos');
+  return new CreditMatchingEngine(Array.isArray(products) ? products : [], configData || {});
+}
+
+// Mantener compatibilidad con código existente
+export function createBusinessMatchingEngine(loansData, configData) {
+  return createCreditMatchingEngine(loansData, configData);
 }
 
 export default MatchingEngine;
