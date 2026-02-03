@@ -235,12 +235,13 @@ function getDeviceType() {
  * 
  * @param {Object} params
  * @param {Object} params.answers - Respuestas del usuario
- * @param {Object} params.topMatch - Tarjeta ganadora
- * @param {Array} params.alternatives - Tarjetas alternativas
+ * @param {Object} params.topMatch - Tarjeta/Producto ganador
+ * @param {Array} params.alternatives - Alternativas
  * @param {number} params.timeToComplete - Tiempo en segundos
  * @param {Object} params.user - Usuario autenticado (opcional)
+ * @param {string} params.vertical - 'cards' o 'credit'
  */
-export async function saveQuizSession({ answers, topMatch, alternatives, timeToComplete, user }) {
+export async function saveQuizSession({ answers, topMatch, alternatives, timeToComplete, user, vertical }) {
   const sessionData = {
     // Datos del dispositivo
     device_type: getDeviceType(),
@@ -251,6 +252,9 @@ export async function saveQuizSession({ answers, topMatch, alternatives, timeToC
     user_email: user?.email || null,
     user_name: user?.user_metadata?.full_name || user?.user_metadata?.name || null,
     user_phone: user?.user_metadata?.phone || user?.phone || null,
+    user_age: user?.user_metadata?.age || user?.age || null,
+    user_gender: user?.user_metadata?.gender || user?.gender || null,
+    user_city: user?.user_metadata?.city || user?.city || null,
     
     // Aceptación de términos legales
     accepted_terms: user?.termsAccepted || true,
@@ -259,6 +263,10 @@ export async function saveQuizSession({ answers, topMatch, alternatives, timeToC
     
     // Respuestas del quiz
     answers: answers,
+    
+    // Vertical y tipo de producto
+    vertical: vertical || (answers?.product_selection?.includes('tarjeta') ? 'cards' : 'credit'),
+    product_selection: answers?.product_selection || null,
     
     // Resultado principal
     top_match_id: topMatch?.id || null,
