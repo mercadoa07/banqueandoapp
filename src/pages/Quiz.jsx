@@ -68,7 +68,7 @@ const iconMap = {
 function Quiz() {
   const [step, setStep] = useState('landing');
   const [vertical, setVertical] = useState(null); // 'cards' o 'credit'
-  const [productType, setProductType] = useState(null); // 'nueva_tarjeta', 'cambiar_tarjeta', 'credito_negocio'
+  const [productType, setProductType] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState(null);
@@ -96,15 +96,11 @@ function Quiz() {
   // Obtener preguntas segun vertical
   const getQuestionsForVertical = () => {
     if (!vertical) return [];
-    
-    // Nueva estructura: questions.cards o questions.credit
     const verticalQuestions = questionsData.questions?.[vertical] || questionsData.questions || [];
-    
     return verticalQuestions.filter(q => {
       if (!q.showIf) return true;
       const { field, equals, notEquals, includes } = q.showIf;
       const answer = answers[field];
-      
       if (equals !== undefined) return answer === equals;
       if (notEquals !== undefined) return answer !== notEquals;
       if (includes !== undefined) {
@@ -116,29 +112,50 @@ function Quiz() {
 
   const visibleQuestions = getQuestionsForVertical();
 
+  // ============================================
+  // INIT - Restaurar estado después de Google login
+  // ============================================
   useEffect(() => {
     const init = async () => {
+      // Crear engines
       const matchingEngine = createMatchingEngine(cardsData, matchingConfig);
       setEngine(matchingEngine);
       
-      // Crear engine para creditos (unificado)
       const creditMatchingEngine = createCreditMatchingEngine(creditProductsData, matchingConfig);
       setCreditEngine(creditMatchingEngine);
       
+      // Verificar si hay sesión de usuario (después de Google login)
       const { user: currentUser } = await getSession();
+      
       if (currentUser) {
         setUser(currentUser);
         
+        // Recuperar estado del quiz guardado
         const savedState = getQuizState();
+        
+        // TAMBIÉN recuperar vertical de sessionStorage (backup)
+        const savedVertical = sessionStorage.getItem('banqueando_vertical');
+        
         if (savedState) {
           setAnswers(savedState.answers || {});
           setCurrentQuestion(savedState.currentQuestion || 0);
           quizStartTime.current = savedState.startTime || Date.now();
           
-          if (savedState.quizCompleted) {
+          // CORRECCION: Restaurar vertical desde savedState o sessionStorage
+          const verticalToUse = savedState.vertical || savedVertical || null;
+          setVertical(verticalToUse);
+          
+          if (savedState.quizCompleted && verticalToUse) {
             setStep('calculating');
+            
+            // Usar el engine correcto según la vertical
             setTimeout(() => {
-              calculateResultsWithUser(savedState.answers, currentUser, matchingEngine);
+              calculateResultsWithUser(
+                savedState.answers, 
+                currentUser, 
+                verticalToUse === 'credit' ? creditMatchingEngine : matchingEngine,
+                verticalToUse
+              );
             }, 500);
           } else {
             setStep('quiz');
@@ -183,12 +200,17 @@ function Quiz() {
     }
   };
 
+  // ============================================
+  // GO TO LOGIN - Guardar estado incluyendo vertical
+  // ============================================
   const goToLogin = () => {
+    // CORRECCION: Guardar vertical en el estado
     saveQuizState({
       answers,
       currentQuestion,
       startTime: quizStartTime.current,
-      quizCompleted: true
+      quizCompleted: true,
+      vertical: vertical  // <-- AGREGADO
     });
     setStep('login');
   };
@@ -199,13 +221,21 @@ function Quiz() {
     setPhoneCollected(true);
   };
 
+  // ============================================
+  // GOOGLE LOGIN - Guardar vertical en sessionStorage
+  // ============================================
   const handleGoogleLogin = async () => {
+    // Guardar datos del usuario
     sessionStorage.setItem('banqueando_phone', phoneInput);
     sessionStorage.setItem('banqueando_age', ageInput);
     sessionStorage.setItem('banqueando_gender', genderInput);
     sessionStorage.setItem('banqueando_city', cityInput);
     sessionStorage.setItem('banqueando_terms_accepted', 'true');
     sessionStorage.setItem('banqueando_terms_accepted_at', new Date().toISOString());
+    
+    // CORRECCION: Guardar vertical como backup
+    sessionStorage.setItem('banqueando_vertical', vertical);
+    
     setIsLoading(true);
     await signInWithGoogle();
   };
@@ -230,24 +260,30 @@ function Quiz() {
     setStep('calculating');
     
     setTimeout(() => {
-      calculateResultsWithUser(answers, tempUser, engine);
+      calculateResultsWithUser(answers, tempUser, engine, vertical);
     }, 500);
   };
 
-  const calculateResultsWithUser = async (quizAnswers, currentUser, matchingEngine) => {
+  // ============================================
+  // CALCULATE RESULTS - Recibe vertical como parámetro
+  // ============================================
+  const calculateResultsWithUser = async (quizAnswers, currentUser, matchingEngine, verticalToUse) => {
+    // Usar el vertical pasado como parámetro o el del estado
+    const currentVertical = verticalToUse || vertical;
+    
     let engineToUse;
     let matchResults;
     
-    console.log('[Quiz] Calculando resultados, vertical:', vertical);
+    console.log('[Quiz] Calculando resultados, vertical:', currentVertical);
     
-    // Usar el engine correcto segun la vertical
-    if (vertical === 'credit' && creditEngine) {
+    // Usar el engine correcto según la vertical
+    if (currentVertical === 'credit') {
       console.log('[Quiz] Usando creditEngine');
-      engineToUse = creditEngine;
+      engineToUse = creditEngine || matchingEngine;
       matchResults = engineToUse.getTopResults(quizAnswers);
     } else {
       console.log('[Quiz] Usando cardsEngine');
-      engineToUse = matchingEngine || engine;
+      engineToUse = engine || matchingEngine;
       if (!engineToUse) {
         console.error('[Quiz] No hay engine disponible');
         setResults({ topMatch: null, alternatives: [] });
@@ -259,7 +295,11 @@ function Quiz() {
     
     console.log('[Quiz] Resultados:', matchResults);
     
-    // Verificar que hay resultados - si no hay, igual ir a results para mostrar mensaje
+    // Asegurar que vertical esté seteado en el estado
+    if (!vertical && currentVertical) {
+      setVertical(currentVertical);
+    }
+    
     if (!matchResults || !matchResults.topMatch) {
       console.warn('[Quiz] No se encontraron resultados');
       setResults({ topMatch: null, alternatives: [] });
@@ -289,7 +329,7 @@ function Quiz() {
         topMatch: matchResults.topMatch,
         alternatives: matchResults.alternatives,
         timeToComplete,
-        vertical: vertical,
+        vertical: currentVertical,
         user: {
           ...currentUser,
           termsAccepted: true,
@@ -299,6 +339,9 @@ function Quiz() {
     } catch (error) {
       console.error('[App] Error guardando analytics:', error);
     }
+    
+    // Limpiar sessionStorage de vertical después de usar
+    sessionStorage.removeItem('banqueando_vertical');
   };
 
   const handleApplyClick = (card) => {
@@ -363,11 +406,17 @@ function Quiz() {
     setPhoneInput('');
     setPhoneCollected(false);
     setTermsAccepted(false);
+    // Limpiar sessionStorage
+    sessionStorage.removeItem('banqueando_vertical');
   };
 
   const progress = ((currentQuestion + 1) / visibleQuestions.length) * 100;
   const currentQ = visibleQuestions[currentQuestion];
 
+  // ============================================
+  // COMPONENTES UI
+  // ============================================
+  
   const LegalFooter = ({ variant = 'general' }) => (
     <div className="mt-8 pt-6 border-t border-gray-200">
       <div className="text-xs text-gray-400 space-y-1 text-center">
@@ -463,6 +512,9 @@ function Quiz() {
     </div>
   );
 
+  // ============================================
+  // RENDER - LOADING
+  // ============================================
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center">
@@ -474,6 +526,9 @@ function Quiz() {
     );
   }
 
+  // ============================================
+  // RENDER - LANDING
+  // ============================================
   if (step === 'landing') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
@@ -487,9 +542,9 @@ function Quiz() {
             <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-cyan-500 to-purple-700 bg-clip-text text-transparent">
               Banqueando
             </h1>
-            <p className="text-gray-500 font-medium mb-1">Encuentra Tu Tarjeta Ideal</p>
+            <p className="text-gray-500 font-medium mb-1">Encuentra Tu Producto Ideal</p>
             <p className="text-gray-400 text-sm mb-6">
-              En 2 minutos analizamos tu perfil y te recomendamos la tarjeta perfecta
+              En 2 minutos analizamos tu perfil y te recomendamos el producto perfecto
             </p>
             
             <div className="grid grid-cols-3 gap-3 mb-6">
@@ -530,11 +585,11 @@ function Quiz() {
   }
 
   // ============================================
-  // PRE-QUIZ - SELECTOR DE VERTICAL
+  // RENDER - PRE-QUIZ (SELECTOR DE VERTICAL)
   // ============================================
   if (step === 'prequiz') {
     const preQuizOptions = questionsData.preQuiz?.options || [
-      { value: 'nueva_tarjeta', label: 'Nueva tarjeta de credito', description: 'Quiero mi primera tarjeta o una adicional', emoji: '💳', vertical: 'cards' },
+      { value: 'nueva_tarjeta', label: 'Nueva tarjeta de crédito', description: 'Quiero mi primera tarjeta o una adicional', emoji: '💳', vertical: 'cards' },
       { value: 'cambiar_tarjeta', label: 'Cambiar mi tarjeta actual', description: 'Tengo una tarjeta pero no estoy satisfecho', emoji: '🔄', vertical: 'cards' },
       { value: 'necesito_credito', label: 'Necesito dinero / Crédito', description: 'Busco financiamiento personal o para mi negocio', emoji: '💰', vertical: 'credit' }
     ];
@@ -547,10 +602,10 @@ function Quiz() {
             <div className="text-center mb-8">
               <BanqueandoLogo className="w-16 h-16 mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                {questionsData.preQuiz?.question || 'Que estas buscando hoy?'}
+                {questionsData.preQuiz?.question || '¿Qué estás buscando hoy?'}
               </h2>
               <p className="text-gray-500 text-sm">
-                {questionsData.preQuiz?.subtitle || 'Selecciona una opcion para personalizar tu experiencia'}
+                {questionsData.preQuiz?.subtitle || 'Selecciona una opción para personalizar tu experiencia'}
               </p>
             </div>
             
@@ -591,6 +646,9 @@ function Quiz() {
     );
   }
 
+  // ============================================
+  // RENDER - LOGIN
+  // ============================================
   if (step === 'login') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
@@ -840,6 +898,9 @@ function Quiz() {
     );
   }
 
+  // ============================================
+  // RENDER - CALCULATING
+  // ============================================
   if (step === 'calculating') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
@@ -858,10 +919,12 @@ function Quiz() {
     );
   }
 
+  // ============================================
+  // RENDER - RESULTS
+  // ============================================
   if (step === 'results' && results) {
     const { topMatch, alternatives } = results;
     
-    // Validar que hay resultados
     if (!topMatch) {
       return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
@@ -976,7 +1039,6 @@ function Quiz() {
 
           {/* Sección de información - diferente para crédito vs tarjetas */}
           {vertical === 'credit' ? (
-            // Vista para CRÉDITO
             <>
               <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
                 <div className="grid grid-cols-2 gap-2 text-center">
@@ -1007,7 +1069,6 @@ function Quiz() {
                 </div>
               </div>
 
-              {/* Tipo de crédito / Descripción */}
               <div className="bg-purple-50 rounded-xl p-3 mb-3 border border-purple-100">
                 <p className="text-xs text-gray-500 mb-1">Tipo de crédito</p>
                 <p className="text-sm font-medium text-purple-800">
@@ -1021,7 +1082,6 @@ function Quiz() {
               </div>
             </>
           ) : (
-            // Vista para TARJETAS (original)
             <>
               <div className="bg-gray-50 rounded-xl p-3 mb-3 mt-auto">
                 <div className="grid grid-cols-2 gap-2 text-center">
@@ -1223,7 +1283,9 @@ function Quiz() {
     );
   }
 
-  // Si no hay pregunta actual, mostrar mensaje de carga
+  // ============================================
+  // RENDER - QUIZ QUESTIONS
+  // ============================================
   if (!currentQ) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center p-4">
@@ -1235,7 +1297,6 @@ function Quiz() {
     );
   }
 
-  // Obtener seccion segun la vertical actual
   const currentSections = questionsData.sections?.[vertical] || [];
   const currentSection = currentSections.find(s => s.id === currentQ.section);
   const IconComponent = iconMap[currentSection?.icon] || CreditCard;
@@ -1294,7 +1355,7 @@ function Quiz() {
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center flex-1">
-                          {optionIcon && <optionIcon className="w-5 h-5 mr-3 text-gray-600" />}
+                          {optionIcon && React.createElement(optionIcon, { className: "w-5 h-5 mr-3 text-gray-600" })}
                           {!optionIcon && option.emoji && <span className="text-xl mr-3">{option.emoji}</span>}
                           <div>
                             <span className="font-medium text-gray-700 block">{option.label}</span>
