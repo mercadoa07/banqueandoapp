@@ -140,12 +140,12 @@ function Quiz() {
     const breakdown = [];
     const cardFee = card.fees?.monthlyFee || 0;
     const feeSavings = (SAVINGS_CONFIG.averageMonthlyFee - cardFee) * 12;
-    if (feeSavings > 0) breakdown.push({ concept: \`Cuota de manejo (\$0 vs promedio \$\${SAVINGS_CONFIG.averageMonthlyFee.toLocaleString()}/mes)\`, amount: feeSavings });
-    if (card.rewards?.cashbackPercent) breakdown.push({ concept: \`Cashback (\${card.rewards.cashbackPercent}% de tu gasto)\`, amount: Math.round(monthlySpend * (card.rewards.cashbackPercent / 100) * 12) });
+    if (feeSavings > 0) breakdown.push({ concept: `Cuota de manejo ($0 vs promedio $${SAVINGS_CONFIG.averageMonthlyFee.toLocaleString()}/mes)`, amount: feeSavings });
+    if (card.rewards?.cashbackPercent) breakdown.push({ concept: `Cashback (${card.rewards.cashbackPercent}% de tu gasto)`, amount: Math.round(monthlySpend * (card.rewards.cashbackPercent / 100) * 12) });
     if (card.rewards?.milesPerCOP) {
       const milesPerYear = (monthlySpend / card.rewards.milesPerCOP) * 12;
       const mileValue = SAVINGS_CONFIG.mileValues[card.rewards.mileProgram] || SAVINGS_CONFIG.mileValues.generic;
-      breakdown.push({ concept: \`Millas (\${Math.round(milesPerYear).toLocaleString()} millas/año)\`, amount: Math.round(milesPerYear * mileValue * SAVINGS_CONFIG.trm) });
+      breakdown.push({ concept: `Millas (${Math.round(milesPerYear).toLocaleString()} millas/año)`, amount: Math.round(milesPerYear * mileValue * SAVINGS_CONFIG.trm) });
     }
     return breakdown;
   };
@@ -188,12 +188,12 @@ function Quiz() {
             {breakdown.map((item, idx) => (
               <div key={idx} className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-sm text-gray-600">{item.concept}</span>
-                <span className="font-semibold text-green-600">+\${item.amount.toLocaleString()}</span>
+                <span className="font-semibold text-green-600">+${item.amount.toLocaleString()}</span>
               </div>
             ))}
             <div className="flex justify-between items-center py-2 bg-green-50 px-3 rounded-lg">
               <span className="font-bold text-gray-800">Total estimado</span>
-              <span className="font-bold text-green-600 text-lg">\${total.toLocaleString()}/año</span>
+              <span className="font-bold text-green-600 text-lg">${total.toLocaleString()}/año</span>
             </div>
           </div>
           <p className="text-xs text-gray-400 italic">{LEGAL_TEXTS.savingsBreakdown.footer}</p>
