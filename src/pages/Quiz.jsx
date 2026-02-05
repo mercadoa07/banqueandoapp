@@ -14,7 +14,7 @@ import { saveQuizSession } from '../lib/supabase.js';
 import { LEGAL_TEXTS, SAVINGS_CONFIG, LEGAL_URLS } from '../constants/legal.js';
 
 const BanqueandoLogo = ({ className = "w-16 h-16" }) => (
-  <img src="/logo.png" alt="Banqueando" className={\`\${className} object-contain\`} />
+  <img src="/logo.png" alt="Banqueando" className={`${className} object-contain`} />
 );
 
 const iconMap = { TrendingUp, DollarSign, Heart, Smartphone, CreditCard, Sparkles };
