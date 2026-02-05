@@ -1,386 +1,247 @@
-/**
- * ============================================================
- * SUPABASE - Configuración, Auth y Analytics
- * ============================================================
- * 
- * Este archivo conecta la app con Supabase para:
- * - Autenticación con Google
- * - Guardar sesiones del quiz
- * - Analytics
- * 
- * UBICACIÓN: src/lib/supabase.js
- * ============================================================
- */
+import { createClient } from '@supabase/supabase-js';
 
-// Configuración de Supabase
-const SUPABASE_URL = 'https://aaofldffwmqbkykyupii.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_A3MAhIiNYXnzbBuEwBpAxw_moFD4Btc';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// URL de redirección después del login
-const REDIRECT_URL = window.location.origin;
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn('Supabase credentials not found. Analytics will be disabled.');
+}
 
-/**
- * Cliente simple de Supabase (sin dependencias externas)
- * Usamos fetch nativo para no agregar librerías
- */
-class SupabaseClient {
-  constructor(url, key) {
-    this.url = url;
-    this.key = key;
-    this.headers = {
-      'apikey': key,
-      'Authorization': `Bearer ${key}`,
-      'Content-Type': 'application/json',
-      'Prefer': 'return=minimal'
+export const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : null;
+
+// ============================================
+// GUARDAR SESIÓN DEL QUIZ
+// ============================================
+export const saveQuizSession = async ({ 
+  answers, 
+  topMatch, 
+  alternatives, 
+  timeToComplete,
+  vertical,
+  user 
+}) => {
+  if (!supabase) {
+    console.warn('Supabase not configured, skipping save');
+    return null;
+  }
+
+  try {
+    // Extraer respuestas individuales para columnas separadas
+    const individualAnswers = extractIndividualAnswers(answers, vertical);
+
+    const sessionData = {
+      // Datos del usuario
+      user_id: user?.id || null,
+      user_email: user?.email || null,
+      user_name: user?.user_metadata?.name || null,
+      user_phone: user?.phone || user?.user_metadata?.phone || null,
+      user_age: user?.age || user?.user_metadata?.age || null,
+      user_gender: user?.gender || user?.user_metadata?.gender || null,
+      user_city: user?.city || user?.user_metadata?.city || null,
+      
+      // Vertical (cards o credit)
+      vertical: vertical,
+      
+      // Respuestas completas en JSON (backup)
+      answers: answers,
+      
+      // Respuestas individuales en columnas separadas
+      ...individualAnswers,
+      
+      // Resultado principal
+      top_match_id: topMatch?.id || null,
+      top_match_name: topMatch?.name || null,
+      top_match_bank: topMatch?.bank || null,
+      top_match_score: topMatch?.score || null,
+      
+      // Alternativas
+      alternatives: alternatives?.map(a => ({
+        id: a.id,
+        name: a.name,
+        bank: a.bank,
+        score: a.score
+      })) || [],
+      
+      // Métricas
+      time_to_complete_seconds: timeToComplete,
+      
+      // Términos aceptados
+      terms_accepted: user?.termsAccepted || false,
+      terms_accepted_at: user?.termsAcceptedAt || null,
+      
+      // Timestamp
+      created_at: new Date().toISOString()
     };
-  }
 
-  /**
-   * Insertar un registro en una tabla
-   */
-  async insert(table, data) {
-    try {
-      const response = await fetch(`${this.url}/rest/v1/${table}`, {
-        method: 'POST',
-        headers: this.headers,
-        body: JSON.stringify(data)
-      });
+    const { data, error } = await supabase
+      .from('quiz_sessions')
+      .insert([sessionData])
+      .select()
+      .single();
 
-      if (!response.ok) {
-        const error = await response.text();
-        console.error('[Supabase] Error inserting:', error);
-        return { error };
-      }
-
-      return { success: true };
-    } catch (error) {
-      console.error('[Supabase] Network error:', error);
-      return { error: error.message };
+    if (error) {
+      console.error('Error saving quiz session:', error);
+      throw error;
     }
-  }
 
-  /**
-   * Obtener registros de una tabla
-   */
-  async select(table, options = {}) {
-    try {
-      let url = `${this.url}/rest/v1/${table}?select=*`;
-      
-      if (options.limit) {
-        url += `&limit=${options.limit}`;
-      }
-      if (options.order) {
-        url += `&order=${options.order}`;
-      }
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: this.headers
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        console.error('[Supabase] Error selecting:', error);
-        return { error, data: [] };
-      }
-
-      const data = await response.json();
-      return { data };
-    } catch (error) {
-      console.error('[Supabase] Network error:', error);
-      return { error: error.message, data: [] };
-    }
-  }
-}
-
-// Crear instancia del cliente
-export const supabase = new SupabaseClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/**
- * ============================================================
- * FUNCIONES DE AUTENTICACIÓN
- * ============================================================
- */
-
-/**
- * Iniciar sesión con Google
- */
-export async function signInWithGoogle() {
-  try {
-    // Redirigir directamente al quiz después del login
-    const redirectTo = `${REDIRECT_URL}/quiz`;
-    const authUrl = `${SUPABASE_URL}/auth/v1/authorize?provider=google&redirect_to=${encodeURIComponent(redirectTo)}`;
-    
-    // Guardar estado del quiz antes de redirigir
-    const quizState = sessionStorage.getItem('banqueando_quiz_state');
-    if (quizState) {
-      sessionStorage.setItem('banqueando_quiz_state_backup', quizState);
-    }
-    
-    // Redirigir a Google
-    window.location.href = authUrl;
-    
-    return { success: true };
+    console.log('Quiz session saved:', data?.id);
+    return data;
   } catch (error) {
-    console.error('[Auth] Error con Google:', error);
-    return { error: error.message };
+    console.error('Error in saveQuizSession:', error);
+    return null;
   }
-}
+};
 
-/**
- * Obtener sesión actual del usuario
- */
-export async function getSession() {
-  try {
-    // Buscar token en URL (después de callback)
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    const accessToken = hashParams.get('access_token');
-    
-    if (accessToken) {
-      // Limpiar URL (quitar el hash con el token)
-      window.history.replaceState({}, document.title, window.location.pathname);
-      
-      // Obtener datos del usuario desde Supabase
-      const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'apikey': SUPABASE_ANON_KEY
-        }
-      });
-      
-      if (response.ok) {
-        const user = await response.json();
-        
-        // Recuperar TODOS los datos guardados antes del login
-        const savedPhone = sessionStorage.getItem('banqueando_phone');
-        const savedAge = sessionStorage.getItem('banqueando_age');
-        const savedGender = sessionStorage.getItem('banqueando_gender');
-        const savedCity = sessionStorage.getItem('banqueando_city');
-        const savedTermsAccepted = sessionStorage.getItem('banqueando_terms_accepted');
-        const savedTermsAcceptedAt = sessionStorage.getItem('banqueando_terms_accepted_at');
-        
-        // Inicializar user_metadata si no existe
-        user.user_metadata = user.user_metadata || {};
-        
-        // Agregar teléfono
-        if (savedPhone) {
-          user.phone = savedPhone;
-          user.user_metadata.phone = savedPhone;
-        }
-        
-        // Agregar edad
-        if (savedAge) {
-          user.age = savedAge;
-          user.user_metadata.age = savedAge;
-        }
-        
-        // Agregar género
-        if (savedGender) {
-          user.gender = savedGender;
-          user.user_metadata.gender = savedGender;
-        }
-        
-        // Agregar ciudad
-        if (savedCity) {
-          user.city = savedCity;
-          user.user_metadata.city = savedCity;
-        }
-        
-        // Agregar aceptación de términos
-        if (savedTermsAccepted) {
-          user.termsAccepted = true;
-          user.termsAcceptedAt = savedTermsAcceptedAt;
-        }
-        
-        // Guardar usuario completo en sessionStorage
-        sessionStorage.setItem('banqueando_user', JSON.stringify(user));
-        sessionStorage.setItem('banqueando_token', accessToken);
-        
-        return { user, accessToken };
-      }
-    }
-    
-    // Buscar sesión guardada previamente
-    const savedUser = sessionStorage.getItem('banqueando_user');
-    const savedToken = sessionStorage.getItem('banqueando_token');
-    
-    if (savedUser && savedToken) {
-      return { user: JSON.parse(savedUser), accessToken: savedToken };
-    }
-    
-    return { user: null };
-  } catch (error) {
-    console.error('[Auth] Error obteniendo sesión:', error);
-    return { user: null, error: error.message };
-  }
-}
+// ============================================
+// EXTRAER RESPUESTAS INDIVIDUALES
+// ============================================
+const extractIndividualAnswers = (answers, vertical) => {
+  if (!answers) return {};
 
-/**
- * Cerrar sesión
- */
-export function signOut() {
-  sessionStorage.removeItem('banqueando_user');
-  sessionStorage.removeItem('banqueando_token');
-  sessionStorage.removeItem('banqueando_quiz_state');
-  sessionStorage.removeItem('banqueando_quiz_state_backup');
-  sessionStorage.removeItem('banqueando_phone');
-  sessionStorage.removeItem('banqueando_age');
-  sessionStorage.removeItem('banqueando_gender');
-  sessionStorage.removeItem('banqueando_city');
-  sessionStorage.removeItem('banqueando_terms_accepted');
-  sessionStorage.removeItem('banqueando_terms_accepted_at');
-  return { success: true };
-}
-
-/**
- * Guardar estado del quiz (para recuperar después del login)
- */
-export function saveQuizState(state) {
-  sessionStorage.setItem('banqueando_quiz_state', JSON.stringify(state));
-}
-
-/**
- * Recuperar estado del quiz
- */
-export function getQuizState() {
-  const state = sessionStorage.getItem('banqueando_quiz_state') 
-    || sessionStorage.getItem('banqueando_quiz_state_backup');
-  
-  // Limpiar backup después de recuperar
-  sessionStorage.removeItem('banqueando_quiz_state_backup');
-  
-  return state ? JSON.parse(state) : null;
-}
-
-/**
- * ============================================================
- * FUNCIONES DE ANALYTICS
- * ============================================================
- */
-
-/**
- * Detectar tipo de dispositivo
- */
-function getDeviceType() {
-  const ua = navigator.userAgent;
-  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
-    return 'tablet';
-  }
-  if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
-    return 'mobile';
-  }
-  return 'desktop';
-}
-
-/**
- * Guardar sesión del quiz
- * 
- * @param {Object} params
- * @param {Object} params.answers - Respuestas del usuario
- * @param {Object} params.topMatch - Tarjeta/Producto ganador
- * @param {Array} params.alternatives - Alternativas
- * @param {number} params.timeToComplete - Tiempo en segundos
- * @param {Object} params.user - Usuario autenticado (opcional)
- * @param {string} params.vertical - 'cards' o 'credit'
- */
-export async function saveQuizSession({ answers, topMatch, alternatives, timeToComplete, user, vertical }) {
-  const sessionData = {
-    // Datos del dispositivo
-    device_type: getDeviceType(),
-    user_agent: navigator.userAgent.substring(0, 500),
-    
-    // Datos del usuario (si está autenticado)
-    user_id: user?.id || null,
-    user_email: user?.email || null,
-    user_name: user?.user_metadata?.full_name || user?.user_metadata?.name || null,
-    user_phone: user?.user_metadata?.phone || user?.phone || null,
-    user_age: user?.user_metadata?.age || user?.age || null,
-    user_gender: user?.user_metadata?.gender || user?.gender || null,
-    user_city: user?.user_metadata?.city || user?.city || null,
-    
-    // Aceptación de términos legales
-    accepted_terms: user?.termsAccepted || true,
-    accepted_privacy: user?.termsAccepted || true,
-    accepted_at: user?.termsAcceptedAt || new Date().toISOString(),
-    
-    // Respuestas del quiz
-    answers: answers,
-    
-    // Vertical y tipo de producto
-    vertical: vertical || (answers?.product_selection?.includes('tarjeta') ? 'cards' : 'credit'),
-    product_selection: answers?.product_selection || null,
-    
-    // Resultado principal
-    top_match_id: topMatch?.id || null,
-    top_match_name: topMatch?.name || null,
-    top_match_score: topMatch?.score || null,
-    top_match_reasons: topMatch?.matchReasons || topMatch?.reasons || [],
-    
-    // Alternativas
-    alternative_1_id: alternatives?.[0]?.id || null,
-    alternative_1_score: alternatives?.[0]?.score || null,
-    alternative_2_id: alternatives?.[1]?.id || null,
-    alternative_2_score: alternatives?.[1]?.score || null,
-    
-    // Metadata
-    quiz_completed: true,
-    time_to_complete_seconds: timeToComplete || null
+  const result = {
+    // Común
+    answer_product_selection: answers.product_selection || null,
   };
 
-  console.log('[Analytics] Guardando sesión:', sessionData);
-  
-  const result = await supabase.insert('quiz_sessions', sessionData);
-  
-  if (result.error) {
-    console.error('[Analytics] Error guardando sesión:', result.error);
-  } else {
-    console.log('[Analytics] ✅ Sesión guardada exitosamente');
+  if (vertical === 'cards') {
+    // Tarjetas
+    result.answer_income = answers.income || null;
+    result.answer_credit_history = answers.credit_history || null;
+    result.answer_current_cards = answers.current_cards || null;
+    result.answer_current_card_bank = answers.current_card_bank || null;
+    result.answer_current_card_pain = Array.isArray(answers.current_card_pain) ? answers.current_card_pain : null;
+    result.answer_payment_behavior = answers.payment_behavior || null;
+    result.answer_monthly_spend = answers.monthly_spend ? parseInt(answers.monthly_spend) : null;
+    result.answer_fee_sensitivity = answers.fee_sensitivity || null;
+    result.answer_interests = Array.isArray(answers.interests) ? answers.interests : null;
+    result.answer_shopping_places = Array.isArray(answers.shopping_places) ? answers.shopping_places : null;
+    result.answer_travel_frequency = answers.travel_frequency || null;
+    result.answer_travel_preference = answers.travel_preference || null;
+    result.answer_digital_preference = answers.digital_preference || null;
   }
-  
+
+  if (vertical === 'credit') {
+    // Crédito - Necesidad
+    result.answer_loan_purpose = Array.isArray(answers.loan_purpose) ? answers.loan_purpose : null;
+    result.answer_loan_amount = answers.loan_amount || null;
+    result.answer_loan_urgency = answers.loan_urgency || null;
+    result.answer_credit_destination = answers.credit_destination || null;
+
+    // Crédito - Perfil Negocio
+    result.answer_business_formalization = answers.business_formalization || null;
+    result.answer_business_age = answers.business_age || null;
+    result.answer_business_sector = answers.business_sector || null;
+    result.answer_business_monthly_sales = answers.business_monthly_sales || null;
+
+    // Crédito - Perfil Personal
+    result.answer_employment_status = answers.employment_status || null;
+    result.answer_monthly_income_personal = answers.monthly_income_personal || null;
+
+    // Crédito - Perfil Iniciar Negocio
+    result.answer_other_income_source = answers.other_income_source || null;
+    result.answer_monthly_income_startup = answers.monthly_income_startup || null;
+
+    // Crédito - Elegibilidad
+    result.answer_credit_history_credit = answers.credit_history || null;
+    result.answer_monthly_debt_payment = answers.monthly_debt_payment ? parseInt(answers.monthly_debt_payment) : null;
+    result.answer_available_documents = Array.isArray(answers.available_documents) ? answers.available_documents : null;
+    result.answer_entity_relationships = Array.isArray(answers.entity_relationships) ? answers.entity_relationships : null;
+
+    // Crédito - Preferencias
+    result.answer_priority_preference = answers.priority_preference || null;
+    result.answer_process_preference = answers.process_preference || null;
+    result.answer_desired_term = answers.desired_term || null;
+    result.answer_about_you = answers.about_you || null;
+    result.answer_loan_purpose_detail = answers.loan_purpose_detail || null;
+  }
+
   return result;
-}
+};
 
-/**
- * Obtener estadísticas básicas (para dashboard futuro)
- */
-export async function getStats() {
-  const { data, error } = await supabase.select('quiz_sessions', {
-    order: 'created_at.desc',
-    limit: 100
-  });
+// ============================================
+// OTRAS FUNCIONES ÚTILES
+// ============================================
+
+// Obtener estadísticas de respuestas
+export const getAnswerStats = async (vertical, questionId) => {
+  if (!supabase) return null;
+
+  const columnName = `answer_${questionId}`;
   
+  const { data, error } = await supabase
+    .from('quiz_sessions')
+    .select(columnName)
+    .eq('vertical', vertical)
+    .not(columnName, 'is', null);
+
   if (error) {
-    return { error };
+    console.error('Error getting answer stats:', error);
+    return null;
   }
-  
-  // Calcular estadísticas
-  const stats = {
-    totalSessions: data.length,
-    byDevice: {},
-    topMatchWins: {},
-    avgScore: 0
-  };
-  
-  let totalScore = 0;
-  
-  data.forEach(session => {
-    // Por dispositivo
-    const device = session.device_type || 'unknown';
-    stats.byDevice[device] = (stats.byDevice[device] || 0) + 1;
-    
-    // Por tarjeta ganadora
-    const winner = session.top_match_name || 'unknown';
-    stats.topMatchWins[winner] = (stats.topMatchWins[winner] || 0) + 1;
-    
-    // Score promedio
-    if (session.top_match_score) {
-      totalScore += session.top_match_score;
+
+  // Contar frecuencias
+  const counts = {};
+  data.forEach(row => {
+    const value = row[columnName];
+    if (Array.isArray(value)) {
+      value.forEach(v => {
+        counts[v] = (counts[v] || 0) + 1;
+      });
+    } else {
+      counts[value] = (counts[value] || 0) + 1;
     }
   });
-  
-  stats.avgScore = data.length > 0 ? Math.round(totalScore / data.length) : 0;
-  
-  return { stats, data };
-}
 
-export default supabase;
+  return counts;
+};
+
+// Obtener leads por ciudad
+export const getLeadsByCity = async () => {
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from('quiz_sessions')
+    .select('user_city')
+    .not('user_city', 'is', null);
+
+  if (error) {
+    console.error('Error getting leads by city:', error);
+    return null;
+  }
+
+  const counts = {};
+  data.forEach(row => {
+    const city = row.user_city;
+    counts[city] = (counts[city] || 0) + 1;
+  });
+
+  return counts;
+};
+
+// Obtener leads por rango de ingreso
+export const getLeadsByIncome = async (vertical = 'cards') => {
+  if (!supabase) return null;
+
+  const columnName = vertical === 'cards' ? 'answer_income' : 'answer_monthly_income_personal';
+  
+  const { data, error } = await supabase
+    .from('quiz_sessions')
+    .select(columnName)
+    .eq('vertical', vertical)
+    .not(columnName, 'is', null);
+
+  if (error) {
+    console.error('Error getting leads by income:', error);
+    return null;
+  }
+
+  const counts = {};
+  data.forEach(row => {
+    const income = row[columnName];
+    counts[income] = (counts[income] || 0) + 1;
+  });
+
+  return counts;
+};
