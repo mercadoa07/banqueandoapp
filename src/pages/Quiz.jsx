@@ -10,7 +10,7 @@ import creditProductsData from '../../config/creditProducts.json';
 import questionsData from '../../config/questions.json';
 import matchingConfig from '../../config/matchingConfig.json';
 import { createMatchingEngine, createCreditMatchingEngine } from '../engine/matchingEngine.js';
-import { saveQuizSession } from '../lib/supabase.js';
+import { saveQuizSession, trackApplyClick, createSessionId, getEntityName } from '../lib/supabase.js';
 import { LEGAL_TEXTS, SAVINGS_CONFIG, LEGAL_URLS } from '../constants/legal.js';
 
 const BanqueandoLogo = ({ className = "w-16 h-16" }) => (
@@ -43,6 +43,8 @@ function Quiz() {
   const [showSavingsBreakdown, setShowSavingsBreakdown] = useState(false);
   const [showApplyPopup, setShowApplyPopup] = useState(false);
   const [selectedCardForApply, setSelectedCardForApply] = useState(null);
+  const [selectedRankForApply, setSelectedRankForApply] = useState(null);
+  const sessionIdRef = useRef(null);
 
   const getQuestionsForVertical = () => {
     if (!vertical) return [];
@@ -85,12 +87,25 @@ function Quiz() {
   const nextQuestion = () => currentQuestion < visibleQuestions.length - 1 ? setCurrentQuestion(prev => prev + 1) : setStep('login');
   const prevQuestion = () => currentQuestion > 0 && setCurrentQuestion(prev => prev - 1);
 
+  // Celular colombiano: 10 dígitos que empiezan por 3 (se aceptan espacios, guiones y +57).
+  const normalizePhone = (value) => {
+    const digits = (value || '').replace(/\D/g, '');
+    const local = digits.length === 12 && digits.startsWith('57') ? digits.slice(2) : digits;
+    return /^3\d{9}$/.test(local) ? local : null;
+  };
+  const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || '').trim());
+  const phoneIsValid = normalizePhone(phoneInput) !== null;
+  const canSubmitForm = phoneIsValid && isValidEmail(emailInput) && termsAccepted;
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!phoneInput || !ageInput || !genderInput || !cityInput || !emailInput || !termsAccepted) return;
+    if (!canSubmitForm) return;
+    const phone = normalizePhone(phoneInput);
+    const email = emailInput.trim();
+    const age = ageInput || null, gender = genderInput || null, city = cityInput || null;
     const tempUser = {
-      id: null, email: emailInput, phone: phoneInput, age: ageInput, gender: genderInput, city: cityInput,
-      user_metadata: { name: nameInput, phone: phoneInput, age: ageInput, gender: genderInput, city: cityInput },
+      id: null, email, phone, age, gender, city,
+      user_metadata: { name: nameInput.trim() || null, phone, age, gender, city },
       termsAccepted: true, termsAcceptedAt: new Date().toISOString()
     };
     setUser(tempUser);
@@ -100,12 +115,9 @@ function Quiz() {
 
   const calculateResults = async (quizAnswers, currentUser) => {
     let matchResults;
-    console.log('[Quiz] Calculando resultados, vertical:', vertical);
     if (vertical === 'credit' && creditEngine) {
-      console.log('[Quiz] Usando creditEngine');
       matchResults = creditEngine.getTopResults(quizAnswers);
     } else if (engine) {
-      console.log('[Quiz] Usando cardsEngine');
       matchResults = engine.getTopResults(quizAnswers);
     } else {
       setResults({ topMatch: null, alternatives: [] });
@@ -127,13 +139,21 @@ function Quiz() {
       if (count >= targetScore) clearInterval(interval);
     }, 20);
     const timeToComplete = quizStartTime.current ? Math.round((Date.now() - quizStartTime.current) / 1000) : null;
+    sessionIdRef.current = createSessionId();
     try {
-      await saveQuizSession({ answers: quizAnswers, topMatch: matchResults.topMatch, alternatives: matchResults.alternatives, timeToComplete, vertical, user: currentUser });
+      await saveQuizSession({ sessionId: sessionIdRef.current, answers: quizAnswers, topMatch: matchResults.topMatch, alternatives: matchResults.alternatives, timeToComplete, vertical, user: currentUser });
     } catch (error) { console.error('[Quiz] Error guardando sesión:', error); }
   };
 
-  const handleApplyClick = (card) => { setSelectedCardForApply(card); setShowApplyPopup(true); };
-  const confirmApply = () => { if (selectedCardForApply?.applyUrl) window.open(selectedCardForApply.applyUrl, '_blank'); setShowApplyPopup(false); };
+  const handleApplyClick = (card, rank) => { setSelectedCardForApply(card); setSelectedRankForApply(rank); setShowApplyPopup(true); };
+  const confirmApply = () => {
+    if (selectedCardForApply) {
+      // No se espera la respuesta: el registro no debe frenar la salida hacia la entidad.
+      trackApplyClick({ sessionId: sessionIdRef.current, product: selectedCardForApply, rank: selectedRankForApply, vertical }).catch(() => {});
+    }
+    if (selectedCardForApply?.applyUrl) window.open(selectedCardForApply.applyUrl, '_blank', 'noopener');
+    setShowApplyPopup(false);
+  };
 
   const calculateSavingsBreakdown = (card) => {
     const monthlySpend = answers.monthly_spend || 1500000;
@@ -152,7 +172,7 @@ function Quiz() {
 
   const resetQuiz = () => {
     setStep('landing'); setCurrentQuestion(0); setAnswers({}); setResults(null); setMatchScore(0);
-    setVertical(null); setProductType(null); setUser(null); quizStartTime.current = null;
+    setVertical(null); setProductType(null); setUser(null); quizStartTime.current = null; sessionIdRef.current = null;
     setEmailInput(''); setNameInput(''); setPhoneInput(''); setAgeInput(''); setGenderInput(''); setCityInput(''); setTermsAccepted(false);
   };
 
@@ -209,7 +229,7 @@ function Quiz() {
         <h3 className="text-lg font-bold text-gray-800 mb-4">{LEGAL_TEXTS.applyPopup.title}</h3>
         <div className="space-y-2 mb-6">
           {LEGAL_TEXTS.applyPopup.items.map((item, idx) => (
-            <div key={idx} className="flex items-start"><span className="text-cyan-600 mr-2">•</span><span className="text-sm text-gray-600">{item.replace('{bankName}', card?.bank || 'la entidad')}</span></div>
+            <div key={idx} className="flex items-start"><span className="text-cyan-600 mr-2">•</span><span className="text-sm text-gray-600">{item.replace('{bankName}', getEntityName(card) || 'la entidad')}</span></div>
           ))}
         </div>
         <div className="flex gap-3">
@@ -291,35 +311,37 @@ function Quiz() {
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div>
             <label className="block text-gray-700 font-medium mb-2 text-sm flex items-center"><Smartphone className="w-4 h-4 mr-2" />Tu WhatsApp *</label>
-            <input type="tel" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} placeholder="Ej: 3001234567" required className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-lg" />
+            <input type="tel" inputMode="numeric" autoComplete="tel" value={phoneInput} onChange={(e) => setPhoneInput(e.target.value)} placeholder="Ej: 3001234567" required className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-lg" />
+            {phoneInput && !phoneIsValid && <p className="text-xs text-red-500 mt-1">Escribe un celular de 10 dígitos que empiece por 3.</p>}
           </div>
+          <div>
+            <label className="block text-gray-700 font-medium mb-2 text-sm"><Mail className="w-4 h-4 inline mr-2" />Tu email *</label>
+            <input type="email" autoComplete="email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="tu@email.com" required className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none" />
+          </div>
+          <p className="text-xs text-gray-400 pt-1">Opcional: nos ayuda a mejorar las recomendaciones</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-gray-700 font-medium mb-2 text-sm">Edad *</label>
-              <select value={ageInput} onChange={(e) => setAgeInput(e.target.value)} required className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-gray-700">
+              <label className="block text-gray-700 font-medium mb-2 text-sm">Edad</label>
+              <select value={ageInput} onChange={(e) => setAgeInput(e.target.value)} className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-gray-700">
                 <option value="">Selecciona</option><option value="18-25">18-25 años</option><option value="26-35">26-35 años</option><option value="36-45">36-45 años</option><option value="46-55">46-55 años</option><option value="56+">56+ años</option>
               </select>
             </div>
             <div>
-              <label className="block text-gray-700 font-medium mb-2 text-sm">Género *</label>
-              <select value={genderInput} onChange={(e) => setGenderInput(e.target.value)} required className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-gray-700">
+              <label className="block text-gray-700 font-medium mb-2 text-sm">Género</label>
+              <select value={genderInput} onChange={(e) => setGenderInput(e.target.value)} className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-gray-700">
                 <option value="">Selecciona</option><option value="masculino">Masculino</option><option value="femenino">Femenino</option><option value="otro">Otro</option><option value="no_responde">Prefiero no decir</option>
               </select>
             </div>
           </div>
           <div>
-            <label className="block text-gray-700 font-medium mb-2 text-sm">Ciudad *</label>
-            <select value={cityInput} onChange={(e) => setCityInput(e.target.value)} required className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-gray-700">
+            <label className="block text-gray-700 font-medium mb-2 text-sm">Ciudad</label>
+            <select value={cityInput} onChange={(e) => setCityInput(e.target.value)} className="w-full px-3 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none text-gray-700">
               <option value="">Selecciona tu ciudad</option><option value="bogota">Bogotá</option><option value="medellin">Medellín</option><option value="cali">Cali</option><option value="barranquilla">Barranquilla</option><option value="cartagena">Cartagena</option><option value="bucaramanga">Bucaramanga</option><option value="pereira">Pereira</option><option value="manizales">Manizales</option><option value="santa_marta">Santa Marta</option><option value="cucuta">Cúcuta</option><option value="ibague">Ibagué</option><option value="villavicencio">Villavicencio</option><option value="otra">Otra ciudad</option>
             </select>
           </div>
           <div>
             <label className="block text-gray-700 font-medium mb-2 text-sm"><User className="w-4 h-4 inline mr-2" />Tu nombre</label>
-            <input type="text" value={nameInput} onChange={(e) => setNameInput(e.target.value)} placeholder="Ej: Juan Pérez" className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none" />
-          </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2 text-sm"><Mail className="w-4 h-4 inline mr-2" />Tu email *</label>
-            <input type="email" value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="tu@email.com" required className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none" />
+            <input type="text" autoComplete="name" value={nameInput} onChange={(e) => setNameInput(e.target.value)} placeholder="Ej: Juan Pérez" className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-cyan-500 focus:outline-none" />
           </div>
           <div>
             <label className="flex items-start gap-3 cursor-pointer">
@@ -327,7 +349,7 @@ function Quiz() {
               <span className="text-xs text-gray-600">Autorizo el tratamiento de mis datos personales conforme a la <a href={LEGAL_URLS.privacy} className="text-cyan-600 hover:underline" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> y acepto los <a href={LEGAL_URLS.terms} className="text-cyan-600 hover:underline" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>.</span>
             </label>
           </div>
-          <button type="submit" disabled={!phoneInput || !ageInput || !genderInput || !cityInput || !emailInput || !termsAccepted} className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-cyan-500/25">Ver mi resultado →</button>
+          <button type="submit" disabled={!canSubmitForm} className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-cyan-500/25">Ver mi resultado →</button>
           <button type="button" onClick={() => setStep('quiz')} className="w-full text-gray-500 hover:text-gray-700 text-sm">← Volver al quiz</button>
         </form>
         <p className="text-xs text-gray-400 mt-6 flex items-center justify-center"><Lock className="w-3 h-3 mr-1" />Tus datos están protegidos</p>
@@ -376,7 +398,7 @@ function Quiz() {
           </div>
           <div className="flex items-center mb-3">
             <div className="bg-gradient-to-br from-cyan-500 to-purple-600 p-2 rounded-xl mr-3"><CreditCard className="w-6 h-6 text-white" /></div>
-            <div><h3 className="font-bold text-gray-800 text-lg leading-tight">{card.name}</h3><p className="text-gray-500 text-sm">{card.bank}</p></div>
+            <div><h3 className="font-bold text-gray-800 text-lg leading-tight">{card.name}</h3><p className="text-gray-500 text-sm">{getEntityName(card)}</p></div>
           </div>
           {isTop && card.whyWinner && card.whyWinner.length > 0 && (
             <div className="bg-gradient-to-r from-cyan-100 to-purple-100 rounded-xl p-3 mb-3 border border-cyan-200">
@@ -432,7 +454,7 @@ function Quiz() {
               <div className="space-y-1">{card.cons.slice(0, 2).map((con, idx) => <p key={idx} className="text-xs text-amber-700 flex items-start"><span className="mr-1">•</span>{con.text || con}</p>)}</div>
             </div>
           )}
-          <button onClick={() => handleApplyClick(card)} className={`w-full py-3 rounded-xl font-semibold transition-all ${isTop ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>{isTop ? 'Solicitar Ahora →' : 'Ver más →'}</button>
+          <button onClick={() => handleApplyClick(card, rank + 1)} className={`w-full py-3 rounded-xl font-semibold transition-all ${isTop ? 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>{isTop ? 'Solicitar Ahora →' : 'Ver más →'}</button>
         </div>
       );
     };
