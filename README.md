@@ -1,84 +1,61 @@
 # 🏦 Banqueando
 
-Comparador inteligente de tarjetas de crédito para Colombia.
+Recomendador de productos financieros para Colombia: **tarjetas de crédito** y **créditos personales / para negocio**.
 
 ## 🚀 Cómo funciona
 
-1. El usuario responde un quiz sobre su perfil financiero
-2. El algoritmo de matching calcula compatibilidad con cada tarjeta
-3. Se muestran las mejores opciones personalizadas
+1. El usuario elige qué busca (nueva tarjeta, cambiar tarjeta o crédito) y responde un quiz sobre su perfil.
+2. El motor de matching califica cada producto (0–100) y muestra el mejor y dos alternativas, con razones.
+3. Antes del resultado deja WhatsApp + email (obligatorios) y, opcionalmente, edad, género, ciudad y nombre.
+4. La sesión se guarda en Supabase (`quiz_sessions`) y cada clic en "Solicitar" / "Ver más" en `apply_clicks`.
 
-## 📁 Estructura del proyecto
+## 📁 Estructura
 
 ```
 banqueandoapp/
-├── config/                    # ⚙️ ARCHIVOS EDITABLES
-│   ├── cards.json            # Base de datos de tarjetas
-│   ├── matchingConfig.json   # Pesos y reglas del algoritmo
-│   └── questions.json        # Preguntas del quiz
+├── config/                     # ⚙️ Datos editables
+│   ├── cards.json              # Tarjetas de crédito
+│   ├── creditProducts.json     # Créditos (personales y negocio)
+│   ├── businessLoans.json      # (sin uso — pendiente unificar, ver ROADMAP)
+│   ├── questions.json          # Preguntas del quiz por vertical
+│   └── matchingConfig.json     # (aún no lo lee el motor — ver ROADMAP)
 ├── src/
-│   ├── engine/
-│   │   └── matchingEngine.js # Lógica del algoritmo
-│   ├── App.jsx               # Componente principal
-│   ├── main.jsx              # Entry point
-│   └── index.css             # Estilos
-├── public/
-│   └── favicon.svg
-└── package.json
+│   ├── engine/matchingEngine.js  # Motores de tarjetas y crédito
+│   ├── lib/supabase.js           # Guardado de sesiones y clics
+│   ├── pages/                    # Landing y Quiz
+│   ├── components/               # Navbar, Footer
+│   └── constants/legal.js        # Textos legales y supuestos de ahorro
+├── supabase/migrations/        # SQL para correr en Supabase
+├── public/                     # Logo, favicon, términos y privacidad
+└── ROADMAP.md                  # Plan de trabajo
 ```
-
-## ⚙️ Cómo editar
-
-### Agregar una tarjeta nueva
-Edita `config/cards.json` y agrega un objeto con la estructura:
-
-```json
-{
-  "id": "nueva_tarjeta",
-  "name": "Nombre Tarjeta",
-  "bank": "Banco X",
-  ...
-}
-```
-
-### Cambiar pesos del algoritmo
-Edita `config/matchingConfig.json`:
-
-```json
-{
-  "weights": {
-    "paymentBehavior": 20,  // Importancia del comportamiento de pago
-    "feeSensitivity": 15,   // Importancia de la sensibilidad a cuotas
-    ...
-  }
-}
-```
-
-### Agregar/modificar preguntas
-Edita `config/questions.json`
 
 ## 🛠️ Desarrollo local
 
 ```bash
+cp .env.example .env.local   # y completar con la URL y la clave pública de Supabase
 npm install
 npm run dev
 ```
 
+Sin `.env.local` la app funciona, pero no guarda leads ni clics.
+
+## 🗄️ Supabase
+
+- Correr los archivos de `supabase/migrations/` en el SQL Editor, en orden.
+- La clave pública (`anon`) solo debe poder **insertar** en `quiz_sessions` y `apply_clicks`, nunca leer.
+- Los reportes se hacen desde el panel de Supabase, no desde la app.
+
 ## 📦 Deploy
 
-El proyecto está configurado para deploy automático en Vercel.
+Vercel despliega automáticamente cada push a `main`. Variables requeridas en Vercel:
+`VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`.
 
-Cada push a `main` despliega automáticamente.
+## ⚙️ Editar productos
 
-## 📊 Base de datos actual
-
-- Nu (Classic y Control)
-- RappiCard
-- BBVA (Aqua y Coral)
-- Falabella CMR
-- Bancolombia
-- Davivienda
-- Scotiabank LifeMiles
+- Tarjetas: `config/cards.json`
+- Créditos: `config/creditProducts.json`
+- Preguntas: `config/questions.json`
 
 ---
 

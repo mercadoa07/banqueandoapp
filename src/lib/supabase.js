@@ -4,95 +4,122 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials not found. Analytics will be disabled.');
+  console.warn('Supabase credentials not found. Leads and clicks will not be saved.');
 }
 
-export const supabase = supabaseUrl && supabaseAnonKey 
+export const supabase = supabaseUrl && supabaseAnonKey
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
 // ============================================
+// ID DE SESIÓN
+// ============================================
+// Se genera en el navegador para no tener que leer de vuelta la fila insertada:
+// con RLS correcto la clave pública solo puede insertar, no leer.
+export const createSessionId = () => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+};
+
+// ============================================
 // GUARDAR SESIÓN DEL QUIZ
 // ============================================
-export const saveQuizSession = async ({ 
-  answers, 
-  topMatch, 
-  alternatives, 
+export const saveQuizSession = async ({
+  sessionId,
+  answers,
+  topMatch,
+  alternatives,
   timeToComplete,
   vertical,
-  user 
+  user
 }) => {
-  if (!supabase) {
-    console.warn('Supabase not configured, skipping save');
-    return null;
+  if (!supabase) return false;
+
+  const sessionData = {
+    session_uuid: sessionId,
+
+    // Datos del usuario
+    user_id: user?.id || null,
+    user_email: user?.email || null,
+    user_name: user?.user_metadata?.name || null,
+    user_phone: user?.phone || user?.user_metadata?.phone || null,
+    user_age: user?.age || user?.user_metadata?.age || null,
+    user_gender: user?.gender || user?.user_metadata?.gender || null,
+    user_city: user?.city || user?.user_metadata?.city || null,
+
+    // Vertical (cards o credit)
+    vertical: vertical,
+
+    // Respuestas completas en JSON (backup)
+    answers: answers,
+
+    // Respuestas individuales en columnas separadas
+    ...extractIndividualAnswers(answers, vertical),
+
+    // Resultado principal
+    top_match_id: topMatch?.id || null,
+    top_match_name: topMatch?.name || null,
+    top_match_bank: getEntityName(topMatch),
+    top_match_score: topMatch?.score || null,
+
+    // Alternativas
+    alternatives: alternatives?.map(a => ({
+      id: a.id,
+      name: a.name,
+      bank: getEntityName(a),
+      score: a.score
+    })) || [],
+
+    // Métricas
+    time_to_complete_seconds: timeToComplete,
+
+    // Términos aceptados
+    terms_accepted: user?.termsAccepted || false,
+    terms_accepted_at: user?.termsAcceptedAt || null,
+
+    created_at: new Date().toISOString()
+  };
+
+  // Sin .select(): la clave pública no tiene (ni debe tener) permiso de lectura.
+  const { error } = await supabase.from('quiz_sessions').insert([sessionData]);
+
+  if (error) {
+    console.error('Error saving quiz session:', error);
+    return false;
   }
-
-  try {
-    // Extraer respuestas individuales para columnas separadas
-    const individualAnswers = extractIndividualAnswers(answers, vertical);
-
-    const sessionData = {
-      // Datos del usuario
-      user_id: user?.id || null,
-      user_email: user?.email || null,
-      user_name: user?.user_metadata?.name || null,
-      user_phone: user?.phone || user?.user_metadata?.phone || null,
-      user_age: user?.age || user?.user_metadata?.age || null,
-      user_gender: user?.gender || user?.user_metadata?.gender || null,
-      user_city: user?.city || user?.user_metadata?.city || null,
-      
-      // Vertical (cards o credit)
-      vertical: vertical,
-      
-      // Respuestas completas en JSON (backup)
-      answers: answers,
-      
-      // Respuestas individuales en columnas separadas
-      ...individualAnswers,
-      
-      // Resultado principal
-      top_match_id: topMatch?.id || null,
-      top_match_name: topMatch?.name || null,
-      top_match_bank: topMatch?.bank || null,
-      top_match_score: topMatch?.score || null,
-      
-      // Alternativas
-      alternatives: alternatives?.map(a => ({
-        id: a.id,
-        name: a.name,
-        bank: a.bank,
-        score: a.score
-      })) || [],
-      
-      // Métricas
-      time_to_complete_seconds: timeToComplete,
-      
-      // Términos aceptados
-      terms_accepted: user?.termsAccepted || false,
-      terms_accepted_at: user?.termsAcceptedAt || null,
-      
-      // Timestamp
-      created_at: new Date().toISOString()
-    };
-
-    const { data, error } = await supabase
-      .from('quiz_sessions')
-      .insert([sessionData])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error saving quiz session:', error);
-      throw error;
-    }
-
-    console.log('Quiz session saved:', data?.id);
-    return data;
-  } catch (error) {
-    console.error('Error in saveQuizSession:', error);
-    return null;
-  }
+  return true;
 };
+
+// ============================================
+// REGISTRAR CLIC EN "APLICAR"
+// ============================================
+export const trackApplyClick = async ({ sessionId, product, rank, vertical }) => {
+  if (!supabase || !product) return false;
+
+  const { error } = await supabase.from('apply_clicks').insert([{
+    session_uuid: sessionId || null,
+    vertical: vertical || null,
+    product_id: product.id || null,
+    product_name: product.name || null,
+    entity: getEntityName(product),
+    rank: rank ?? null, // posición en resultados: 1 = mejor match
+    score: product.score ?? null,
+    apply_url: product.applyUrl || null,
+    created_at: new Date().toISOString()
+  }]);
+
+  if (error) {
+    console.error('Error tracking apply click:', error);
+    return false;
+  }
+  return true;
+};
+
+// Tarjetas usan `bank`; créditos usan `provider`.
+export const getEntityName = (product) => product?.bank || product?.provider || null;
 
 // ============================================
 // EXTRAER RESPUESTAS INDIVIDUALES
@@ -160,88 +187,6 @@ const extractIndividualAnswers = (answers, vertical) => {
   return result;
 };
 
-// ============================================
-// OTRAS FUNCIONES ÚTILES
-// ============================================
-
-// Obtener estadísticas de respuestas
-export const getAnswerStats = async (vertical, questionId) => {
-  if (!supabase) return null;
-
-  const columnName = `answer_${questionId}`;
-  
-  const { data, error } = await supabase
-    .from('quiz_sessions')
-    .select(columnName)
-    .eq('vertical', vertical)
-    .not(columnName, 'is', null);
-
-  if (error) {
-    console.error('Error getting answer stats:', error);
-    return null;
-  }
-
-  // Contar frecuencias
-  const counts = {};
-  data.forEach(row => {
-    const value = row[columnName];
-    if (Array.isArray(value)) {
-      value.forEach(v => {
-        counts[v] = (counts[v] || 0) + 1;
-      });
-    } else {
-      counts[value] = (counts[value] || 0) + 1;
-    }
-  });
-
-  return counts;
-};
-
-// Obtener leads por ciudad
-export const getLeadsByCity = async () => {
-  if (!supabase) return null;
-
-  const { data, error } = await supabase
-    .from('quiz_sessions')
-    .select('user_city')
-    .not('user_city', 'is', null);
-
-  if (error) {
-    console.error('Error getting leads by city:', error);
-    return null;
-  }
-
-  const counts = {};
-  data.forEach(row => {
-    const city = row.user_city;
-    counts[city] = (counts[city] || 0) + 1;
-  });
-
-  return counts;
-};
-
-// Obtener leads por rango de ingreso
-export const getLeadsByIncome = async (vertical = 'cards') => {
-  if (!supabase) return null;
-
-  const columnName = vertical === 'cards' ? 'answer_income' : 'answer_monthly_income_personal';
-  
-  const { data, error } = await supabase
-    .from('quiz_sessions')
-    .select(columnName)
-    .eq('vertical', vertical)
-    .not(columnName, 'is', null);
-
-  if (error) {
-    console.error('Error getting leads by income:', error);
-    return null;
-  }
-
-  const counts = {};
-  data.forEach(row => {
-    const income = row[columnName];
-    counts[income] = (counts[income] || 0) + 1;
-  });
-
-  return counts;
-};
+// Las estadísticas de leads (por ciudad, ingreso, respuestas) se sacaron del frontend:
+// leer `quiz_sessions` desde el navegador exige abrir la tabla a la clave pública.
+// Se consultan desde el panel de Supabase o un backend con la service key.

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vercel/
+
+# Variables de entorno (las reales nunca van al repo; ver .env.example)
+.env
+.env.*
+!.env.example
+
+*.log
+.DS_Store
+Thumbs.db

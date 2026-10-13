@@ -167,19 +167,14 @@ export class CreditMatchingEngine {
   }
 
   getTopResults(answers) {
-    console.log('[CreditEngine] Procesando respuestas:', answers);
-    
     // Filtrar por elegibilidad básica
     let eligible = this.products.filter(product => {
       return this.checkEligibility(product, answers);
     });
     
-    console.log('[CreditEngine] Productos elegibles:', eligible.length);
-    
     // Si no hay elegibles, usar TODOS los productos pero con score penalizado
     let useFallback = false;
     if (eligible.length === 0) {
-      console.log('[CreditEngine] Sin elegibles, usando fallback con todos los productos');
       eligible = this.products;
       useFallback = true;
     }
@@ -204,9 +199,7 @@ export class CreditMatchingEngine {
     // Ordenar por score
     const sorted = scored.sort((a, b) => b.score - a.score);
     const top = sorted.slice(0, 3);
-    
-    console.log('[CreditEngine] Top 3:', top.map(p => ({ name: p.name, score: p.score })));
-    
+
     // Generar razones comparativas
     const topWithReasons = this.generateComparativeReasons(top, answers);
     
@@ -436,7 +429,6 @@ export function createMatchingEngine(cardsData, configData) {
 
 export function createCreditMatchingEngine(productsData, configData) {
   const products = productsData.creditProducts || productsData.businessLoans || productsData.loans || productsData;
-  console.log('[Factory] Creando CreditMatchingEngine con', Array.isArray(products) ? products.length : 0, 'productos');
   return new CreditMatchingEngine(Array.isArray(products) ? products : [], configData || {});
 }
 
