@@ -45,8 +45,10 @@ Fuera del código (requiere acceso a Supabase / Vercel / GitHub):
 - [x] Eliminar la notificación a Telegram (trigger + función creados fuera del repo): bloqueaba el guardado si Telegram fallaba y tenía el token del bot dentro de la función.
 - [ ] Revocar el token del bot de Telegram en @BotFather (`/revoke`): quedó expuesto en la función.
 - [x] Revocar `SELECT` de `anon`/`authenticated` en `quiz_sessions` y `apply_clicks`. Probado: guardar funciona y leer está bloqueado. El revisor de seguridad de Supabase quedó limpio.
-- [ ] Configurar en Vercel `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`. Sin esas variables la app carga, pero **no guarda leads** en silencio.
-- [ ] Revisar en Vercel qué versión está en producción y si los deploys fallaban desde el 3-feb-2026.
+- [x] Configurar en Vercel `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` en todos los entornos.
+- [x] Revisar Vercel: producción (www.banqueando.co) corre `32310a9` del 4-feb-2026; los deploys posteriores fallaban por la dependencia faltante.
+- [x] Prueba de punta a punta en la preview (2026-10-13): lead y clic llegan a Supabase con todos los campos.
+- [ ] Hacer merge del PR #1 a `main` (publica en www.banqueando.co).
 - [ ] **Archivar `banqueandoapp-beta`** en GitHub: fue un sandbox y todo lo útil ya está en `main` (ver "Decisiones tomadas"). Su clave pública queda visible en el historial; rotarla si RLS no estaba bien.
 - [ ] Borrar la rama remota `v2-multi-vertical`: ya está toda incluida en `main`.
 
