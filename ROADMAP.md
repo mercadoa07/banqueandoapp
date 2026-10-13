@@ -38,9 +38,10 @@ En código (rama `fase-0-rescate`):
 
 Fuera del código (requiere acceso a Supabase / Vercel / GitHub):
 
-- [ ] **Correr la migración en Supabase antes de hacer merge.** Sin la columna `session_uuid`, el nuevo código no podría guardar leads.
-- [ ] **Auditar RLS:** listar las políticas de `quiz_sessions` y borrar cualquier `SELECT`/`UPDATE`/`DELETE` para `anon`/`public`.
-- [ ] Revisar que las columnas de `quiz_sessions` coincidan con lo que inserta `main` (`answer_*`, `user_*`, `terms_accepted`). `-beta` inserta otras columnas (`device_type`, `alternative_1_id`…).
+- [x] Reactivar el proyecto de Supabase: estaba pausado por inactividad y no se guardaba nada (reactivado el 2026-10-13).
+- [x] Auditar RLS: existía la política "Allow anonymous reads" (cualquiera podía leer los leads con la clave pública).
+- [x] Revisar columnas: el código de feb-2026 escribía en `alternatives`, `terms_accepted` y `top_match_bank`, que no existían. Ahora el código usa las columnas reales.
+- [ ] **Correr la migración en Supabase antes de hacer merge:** quita la lectura pública, agrega `top_match_bank` y crea `apply_clicks`.
 - [ ] Configurar en Vercel `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`. Sin esas variables la app carga, pero **no guarda leads** en silencio.
 - [ ] Revisar en Vercel qué versión está en producción y si los deploys fallaban desde el 3-feb-2026.
 - [ ] **Archivar `banqueandoapp-beta`** en GitHub: fue un sandbox y todo lo útil ya está en `main` (ver "Decisiones tomadas"). Su clave pública queda visible en el historial; rotarla si RLS no estaba bien.

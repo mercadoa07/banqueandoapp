@@ -14,8 +14,8 @@ export const supabase = supabaseUrl && supabaseAnonKey
 // ============================================
 // ID DE SESIÓN
 // ============================================
-// Se genera en el navegador para no tener que leer de vuelta la fila insertada:
-// con RLS correcto la clave pública solo puede insertar, no leer.
+// Se genera en el navegador (y se usa como quiz_sessions.id) para no tener que leer
+// de vuelta la fila insertada: con RLS correcto la clave pública solo puede insertar.
 export const createSessionId = () => {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
@@ -39,7 +39,11 @@ export const saveQuizSession = async ({
   if (!supabase) return false;
 
   const sessionData = {
-    session_uuid: sessionId,
+    id: sessionId,
+
+    // Dispositivo
+    device_type: getDeviceType(),
+    user_agent: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 500) : null,
 
     // Datos del usuario
     user_id: user?.id || null,
@@ -52,6 +56,8 @@ export const saveQuizSession = async ({
 
     // Vertical (cards o credit)
     vertical: vertical,
+    product_selection: answers?.product_selection || null,
+    quiz_completed: true,
 
     // Respuestas completas en JSON (backup)
     answers: answers,
@@ -63,22 +69,22 @@ export const saveQuizSession = async ({
     top_match_id: topMatch?.id || null,
     top_match_name: topMatch?.name || null,
     top_match_bank: getEntityName(topMatch),
-    top_match_score: topMatch?.score || null,
+    top_match_score: topMatch?.score ?? null,
+    top_match_reasons: topMatch?.whyWinner || topMatch?.matchReasons || [],
 
     // Alternativas
-    alternatives: alternatives?.map(a => ({
-      id: a.id,
-      name: a.name,
-      bank: getEntityName(a),
-      score: a.score
-    })) || [],
+    alternative_1_id: alternatives?.[0]?.id || null,
+    alternative_1_score: alternatives?.[0]?.score ?? null,
+    alternative_2_id: alternatives?.[1]?.id || null,
+    alternative_2_score: alternatives?.[1]?.score ?? null,
 
     // Métricas
     time_to_complete_seconds: timeToComplete,
 
-    // Términos aceptados
-    terms_accepted: user?.termsAccepted || false,
-    terms_accepted_at: user?.termsAcceptedAt || null,
+    // Consentimiento: solo true si la persona marcó la casilla
+    accepted_terms: user?.termsAccepted === true,
+    accepted_privacy: user?.termsAccepted === true,
+    accepted_at: user?.termsAcceptedAt || null,
 
     created_at: new Date().toISOString()
   };
@@ -100,7 +106,7 @@ export const trackApplyClick = async ({ sessionId, product, rank, vertical }) =>
   if (!supabase || !product) return false;
 
   const { error } = await supabase.from('apply_clicks').insert([{
-    session_uuid: sessionId || null,
+    session_id: sessionId || null,
     vertical: vertical || null,
     product_id: product.id || null,
     product_name: product.name || null,
@@ -116,6 +122,14 @@ export const trackApplyClick = async ({ sessionId, product, rank, vertical }) =>
     return false;
   }
   return true;
+};
+
+const getDeviceType = () => {
+  if (typeof navigator === 'undefined') return null;
+  const ua = navigator.userAgent;
+  if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return 'tablet';
+  if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Opera M(obi|ini)/.test(ua)) return 'mobile';
+  return 'desktop';
 };
 
 // Tarjetas usan `bank`; créditos usan `provider`.
