@@ -44,7 +44,7 @@ Fuera del código (requiere acceso a Supabase / Vercel / GitHub):
 - [x] Correr la migración en Supabase: quita la lectura pública, agrega `top_match_bank` y crea `apply_clicks` (aplicada el 2026-10-13).
 - [x] Eliminar la notificación a Telegram (trigger + función creados fuera del repo): bloqueaba el guardado si Telegram fallaba y tenía el token del bot dentro de la función.
 - [ ] Revocar el token del bot de Telegram en @BotFather (`/revoke`): quedó expuesto en la función.
-- [ ] Revocar `SELECT` de `anon`/`authenticated` en `quiz_sessions` y `apply_clicks`, para que ni siquiera vean la estructura de las tablas en GraphQL (aviso del revisor de seguridad de Supabase).
+- [x] Revocar `SELECT` de `anon`/`authenticated` en `quiz_sessions` y `apply_clicks`. Probado: guardar funciona y leer está bloqueado. El revisor de seguridad de Supabase quedó limpio.
 - [ ] Configurar en Vercel `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`. Sin esas variables la app carga, pero **no guarda leads** en silencio.
 - [ ] Revisar en Vercel qué versión está en producción y si los deploys fallaban desde el 3-feb-2026.
 - [ ] **Archivar `banqueandoapp-beta`** en GitHub: fue un sandbox y todo lo útil ya está en `main` (ver "Decisiones tomadas"). Su clave pública queda visible en el historial; rotarla si RLS no estaba bien.
