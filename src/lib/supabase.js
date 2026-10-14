@@ -132,8 +132,8 @@ const getDeviceType = () => {
   return 'desktop';
 };
 
-// Tarjetas usan `bank`; créditos usan `provider`.
-export const getEntityName = (product) => product?.bank || product?.provider || null;
+// `entity` es el campo normalizado (Fase 1); `bank`/`provider` quedan por compatibilidad.
+export const getEntityName = (product) => product?.entity || product?.bank || product?.provider || null;
 
 // ============================================
 // EXTRAER RESPUESTAS INDIVIDUALES

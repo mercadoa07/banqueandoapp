@@ -466,7 +466,7 @@ function Quiz() {
           <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-8 max-w-md mx-auto" style={{ boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' }}>
             <Sparkles className="w-12 h-12 text-amber-500 mx-auto mb-3" />
             <h1 className="text-2xl font-bold text-gray-800 mb-1">¡Encontramos tu match!</h1>
-            <p className="text-gray-500 text-sm">{vertical === 'credit' ? `Analizamos ${creditProductsData.creditProducts?.length || 53} opciones de crédito para ti` : `Analizamos ${cardsData.cards.length} tarjetas para ti`}</p>
+            <p className="text-gray-500 text-sm">{vertical === 'credit' ? `Analizamos ${creditProductsData.creditProducts.filter(p => p.active !== false).length} opciones de crédito para ti` : `Analizamos ${cardsData.cards.filter(c => c.active !== false).length} tarjetas para ti`}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">{allCards.map((card, idx) => <CardResult key={card.id} card={card} rank={idx} isTop={idx === 0} />)}</div>
           <div className="bg-amber-50 border-2 border-amber-300 rounded-xl p-4 max-w-2xl mx-auto mb-6">

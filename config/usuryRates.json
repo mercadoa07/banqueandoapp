@@ -1,0 +1,29 @@
+{
+  "description": "Tasa de usura (% EA) certificada por la Superintendencia Financiera, por mes y modalidad. Actualizar el primer día hábil de cada mes.",
+  "modalities": {
+    "consumo_ordinario": "Consumo y ordinario (incluye tarjetas de crédito)",
+    "consumo_bajo_monto": "Consumo de bajo monto",
+    "productivo_urbano": "Crédito productivo urbano",
+    "productivo_rural": "Crédito productivo rural",
+    "productivo_mayor_monto": "Crédito productivo de mayor monto",
+    "popular_productivo_urbano": "Popular productivo urbano",
+    "popular_productivo_rural": "Popular productivo rural"
+  },
+  "months": {
+    "2026-10": {
+      "validFrom": "2026-10-01",
+      "validTo": "2026-10-31",
+      "rates": {
+        "consumo_ordinario": 28.59,
+        "consumo_bajo_monto": 66.66,
+        "productivo_urbano": 57.39,
+        "productivo_rural": 30.95,
+        "productivo_mayor_monto": 41.25,
+        "popular_productivo_urbano": 87.62,
+        "popular_productivo_rural": 65.45
+      },
+      "source": "https://www.noticiasrcn.com/economia/tasa-usura-octubre-2026-1068529",
+      "notes": "IBC consumo y ordinario 19,06% EA. Septiembre 2026: usura consumo 29,24%."
+    }
+  }
+}

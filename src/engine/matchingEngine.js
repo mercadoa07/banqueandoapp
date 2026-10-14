@@ -70,7 +70,8 @@ export class MatchingEngine {
     };
     
     const userMaxIncome = incomeRanges[answers.income] || 999999999;
-    const cardMinIncome = card.requirements?.minIncome || 0;
+    // Los datos guardan el ingreso mínimo en millones (minIncomeMillions).
+    const cardMinIncome = (card.requirements?.minIncomeMillions || 0) * 1000000;
     
     return userMaxIncome >= cardMinIncome;
   }
@@ -422,14 +423,17 @@ export class CreditMatchingEngine {
 // ============================================
 // FACTORY FUNCTIONS
 // ============================================
+// Los productos con active: false (datos sin verificar o que no aplican) no entran al motor.
+const onlyActive = (list) => (Array.isArray(list) ? list : []).filter(p => p.active !== false);
+
 export function createMatchingEngine(cardsData, configData) {
   const cards = cardsData.cards || cardsData;
-  return new MatchingEngine(Array.isArray(cards) ? cards : [], configData || {});
+  return new MatchingEngine(onlyActive(cards), configData || {});
 }
 
 export function createCreditMatchingEngine(productsData, configData) {
   const products = productsData.creditProducts || productsData.businessLoans || productsData.loans || productsData;
-  return new CreditMatchingEngine(Array.isArray(products) ? products : [], configData || {});
+  return new CreditMatchingEngine(onlyActive(products), configData || {});
 }
 
 // Mantener compatibilidad con código existente
