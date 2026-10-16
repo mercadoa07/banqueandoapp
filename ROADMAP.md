@@ -74,7 +74,8 @@ Objetivo: que cada dato mostrado sea correcto, tenga fuente y fecha.
 - [ ] Verificar las tasas máximas de 30% exacto (27 créditos, probable relleno) y ADDI (68,75%).
 - [ ] Verificar la modalidad de usura de cada crédito (`usuryModalityVerified`). Hoy está inferida por tipo/categoría.
 - [ ] Revisar si factoring, confirming y arriendo (13 sin tope de usura) se recomiendan solo a negocios.
-- [ ] **Actualizador automático (scraper + revisión humana):**
+- [x] **Actualizador automático (lector con Claude + revisión humana)** — `scripts/refresh-products.mjs` + `.github/workflows/lector-productos.yml` (lunes 6 a. m.). Usa `claude-opus-5-5` con búsqueda web limitada al dominio oficial de cada entidad; solo aplica datos con frase de evidencia y URL oficial; abre un PR para aprobar. Falta: clave de API como secreto `ANTHROPIC_API_KEY` en GitHub, permitir que Actions abra PRs y medir el costo real con 3 productos.
+- [ ] (detalle del diseño original)
   - Cada producto guarda en `source` la página oficial de la que sale el dato.
   - Un job programado (GitHub Actions, semanal) descarga esas páginas y extrae tasas, cuotas, montos y requisitos a JSON. Usa selectores donde la página sea estable y un LLM donde no (PDFs, textos largos).
   - Compara contra la base actual y **abre un PR con las diferencias**. Nunca publica solo: una persona aprueba.

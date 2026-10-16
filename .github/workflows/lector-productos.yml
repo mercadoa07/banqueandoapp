@@ -1,0 +1,80 @@
+name: Lector de productos
+
+on:
+  schedule:
+    # Lunes 6:00 a. m. hora Colombia (11:00 UTC): verifica los productos vencidos (más de 90 días).
+    - cron: '0 11 * * 1'
+  workflow_dispatch:
+    inputs:
+      ids:
+        description: 'Ids separados por coma (vacío = los vencidos)'
+        required: false
+      limit:
+        description: 'Máximo de productos (vacío = sin límite)'
+        required: false
+      all:
+        description: 'Revisar todos los activos, aunque estén al día'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: lector-productos
+  cancel-in-progress: false
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+
+      - name: Verificar productos con Claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          IDS: ${{ inputs.ids }}
+          LIMIT: ${{ inputs.limit }}
+          ALL: ${{ inputs.all }}
+        run: |
+          ARGS="--report reporte-lector.md"
+          [ -n "$IDS" ] && ARGS="$ARGS --ids $IDS"
+          [ -n "$LIMIT" ] && ARGS="$ARGS --limit $LIMIT"
+          [ "$ALL" = "true" ] && ARGS="$ARGS --all"
+          node scripts/refresh-products.mjs $ARGS
+
+      # Los PR abiertos por el bot no disparan el CI, así que se valida aquí.
+      - name: Validar datos actualizados
+        run: npm run validate:data -- --report reporte-validacion.md
+        continue-on-error: true
+
+      - name: Armar descripción del PR
+        run: |
+          {
+            cat reporte-lector.md
+            echo
+            echo '---'
+            echo
+            cat reporte-validacion.md
+            echo
+            echo 'Abierto automáticamente por el lector de productos. **Revisar la evidencia de cada cambio antes de aprobar.**'
+          } > cuerpo-pr.md
+          rm reporte-lector.md reporte-validacion.md
+
+      - name: Abrir PR con los cambios
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: lector/actualizacion-productos
+          delete-branch: true
+          add-paths: config/*.json
+          commit-message: 'Lector: actualiza datos verificados de productos'
+          title: 'Lector: datos de productos verificados en el sitio oficial'
+          body-path: cuerpo-pr.md
+          labels: datos

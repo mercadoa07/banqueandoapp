@@ -63,6 +63,16 @@ Vercel despliega automáticamente cada push a `main`. Variables requeridas en Ve
 - Preguntas: `config/questions.json`
 - Tasa de usura del mes: `config/usuryRates.json` (actualizar el primer día hábil de cada mes)
 
+### Lector automático
+
+`scripts/refresh-products.mjs` verifica los productos en el sitio oficial de cada entidad con Claude (`claude-opus-5-5`, búsqueda web limitada al dominio oficial). Solo aplica un dato si trae la frase de evidencia y una URL del dominio oficial; lo que no encuentra queda para revisión manual. Corre los lunes en GitHub Actions y abre un PR con los cambios para aprobar.
+
+```bash
+ANTHROPIC_API_KEY=... node scripts/refresh-products.mjs --limit 3 --dry-run   # simulación con 3 productos
+```
+
+Requiere el secreto `ANTHROPIC_API_KEY` en GitHub (Settings → Secrets and variables → Actions).
+
 Cada producto lleva `entity`, `active`, `source` (de dónde sale el dato), `lastVerified` (fecha en que se comprobó) y `usuryModality`. Un producto con datos dudosos se marca `active: false` con el motivo en `source.notes`: no se borra.
 
 ---
