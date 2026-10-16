@@ -199,7 +199,7 @@
       "lastVerified": "2026-10-16",
       "source": {
         "url": "https://www.lineru.com/",
-        "notes": null
+        "notes": "Cobra la tasa máxima legal (su página citaba la de mayo 2026)."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -346,7 +346,7 @@
       "lastVerified": "2026-10-16",
       "source": {
         "url": "https://www.monet.com.co/",
-        "notes": null
+        "notes": "No cobra intereses pero sí costos fijos por servicio: el 0% EA no refleja el costo real (pendiente Fase 3, costo total)."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -392,11 +392,11 @@
       "applyUrl": "https://www.kredicity.com/",
       "observations": "Kredipuntos (1 punto = $1 COP). Cuenta Gold para clientes frecuentes. SoloViVE S.A.S.",
       "entity": "Kredicity",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://www.kredicity.com/",
-        "notes": null
+        "notes": "Desactivado 2026-10-16 tras revisión del lector: Su sitio dice que ya no otorga créditos: ahora es un comparador."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -492,11 +492,11 @@
       "applyUrl": "https://moni.com.co/",
       "observations": "Incluye Monicard. Origen Argentina (2013). Para sub-bancarizados. Pago servicios, recargas.",
       "entity": "Moni",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://moni.com.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-16 tras revisión del lector: moni.com.co hoy es una plataforma de criptomonedas; no ofrece créditos."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -596,7 +596,7 @@
       "lastVerified": "2026-10-16",
       "source": {
         "url": "https://yadinero.co/",
-        "notes": null
+        "notes": "Cobra la tasa máxima legal vigente."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -692,11 +692,11 @@
       "applyUrl": "https://duna.com.co/",
       "observations": "Emergencias pequeñas. Colombia Fintech.",
       "entity": "D'Una",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://duna.com.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-16 tras revisión del lector: Sitio aparentemente abandonado (© 2022) y con spam de casino."
       },
       "usuryModality": "popular_productivo_urbano",
       "usuryModalityVerified": false
@@ -1112,11 +1112,11 @@
       "applyUrl": "https://wolet.co/",
       "observations": "Billetera digital con crédito integrado. Usuarios wallet digital.",
       "entity": "Wolet",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://wolet.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-16 tras revisión del lector: wolet.co es una página \"Launching Soon\" sin productos."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -1347,11 +1347,11 @@
       "applyUrl": "https://www.treinta.co/",
       "observations": "Usa los datos de ventas registrados en la App para perfilar. Alianzas con bancos.",
       "entity": "Treinta",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://www.treinta.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-16 tras revisión del lector: treinta.co es software de gestión; no aparece ningún crédito."
       },
       "usuryModality": "popular_productivo_urbano",
       "usuryModalityVerified": false
@@ -1447,11 +1447,11 @@
       "applyUrl": "https://www.uala.com.co/",
       "observations": "Acepta PPT (Migrantes Venezolanos) y Cédula de Extranjería. Tarjeta Débito gratis.",
       "entity": "Ualá",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://www.uala.com.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-16 tras revisión del lector: Ualá Colombia no ofrece créditos hoy (solo depósito y tarjeta débito)."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false

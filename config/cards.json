@@ -381,7 +381,7 @@
       "fees": {
         "annualFee": 0,
         "monthlyFee": 31990,
-        "feeWaiverCondition": null,
+        "feeWaiverCondition": "3 meses gratis para clientes nuevos; solo se cobra en cortes con compras o saldo (sitio, 2026-10-16)",
         "internationalFeePercent": 3.5
       },
       "rates": {
@@ -1024,8 +1024,8 @@
       ],
       "fees": {
         "annualFee": 240000,
-        "monthlyFee": 0,
-        "feeWaiverCondition": "Exoneración con gasto mínimo $500K/mes",
+        "monthlyFee": 20000,
+        "feeWaiverCondition": "Cuota $0 si haces 7 compras al mes (sitio, 2026-10-16)",
         "internationalFeePercent": 2.5
       },
       "rates": {
@@ -1116,7 +1116,7 @@
       "lastVerified": null,
       "source": {
         "url": "https://www.scotiabankcolpatria.com/",
-        "notes": null
+        "notes": "Revisión 2026-10-16: el lector propuso cuota $0, pero es condicional; la cuota sin exoneración no está publicada."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1135,7 +1135,7 @@
       ],
       "fees": {
         "annualFee": 350000,
-        "monthlyFee": 36990,
+        "monthlyFee": 29200,
         "feeWaiverCondition": null,
         "internationalFeePercent": 0
       },
@@ -1246,7 +1246,7 @@
       "lastVerified": null,
       "source": {
         "url": "https://www.americanexpress.com/co/",
-        "notes": null
+        "notes": "Revisión 2026-10-16: posible cuota $36.990 con 50% de descuento, sin confirmar que sea de la Green."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1266,7 +1266,7 @@
       "fees": {
         "annualFee": 0,
         "monthlyFee": 33100,
-        "feeWaiverCondition": "Exoneración con tanqueo mínimo $150K/mes",
+        "feeWaiverCondition": "Gratis los primeros 3 meses, luego $33.100 (sitio, 2026-10-16)",
         "internationalFeePercent": 3
       },
       "rates": {
@@ -1275,7 +1275,7 @@
       },
       "rewards": {
         "type": "cashback",
-        "cashbackPercent": 10,
+        "cashbackPercent": null,
         "milesPerMillionCOP": null,
         "mileProgram": null,
         "pointsProgram": null,
@@ -1369,7 +1369,7 @@
       "lastVerified": null,
       "source": {
         "url": "https://www.bancodebogota.com/",
-        "notes": null
+        "notes": "Devolución 10% fines de semana y 5% entre semana solo en estaciones Biomax/Brío, máx. $100.000/mes."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true

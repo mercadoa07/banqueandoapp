@@ -74,8 +74,8 @@ const addUsage = (u) => {
 
 async function askClaude(p, kind, domains) {
   const tools = [
-    { type: 'web_search_20260209', name: 'web_search', max_uses: 4, allowed_domains: domains },
-    { type: 'web_fetch_20260209', name: 'web_fetch', max_uses: 4, allowed_domains: domains }
+    { type: 'web_search_20260209', name: 'web_search', max_uses: 6, allowed_domains: domains },
+    { type: 'web_fetch_20260209', name: 'web_fetch', max_uses: 6, allowed_domains: domains }
   ];
   const messages = [{ role: 'user', content: productPrompt(p, kind, domains) }];
 
