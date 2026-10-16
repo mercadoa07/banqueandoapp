@@ -1,0 +1,7 @@
+# Fin de línea único en el repo para que los cambios automáticos no reescriban archivos completos.
+*.json text eol=lf
+*.mjs  text eol=lf
+*.js   text eol=lf
+*.jsx  text eol=lf
+*.md   text eol=lf
+*.yml  text eol=lf
