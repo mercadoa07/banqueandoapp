@@ -75,14 +75,9 @@ Objetivo: que cada dato mostrado sea correcto, tenga fuente y fecha.
 - [ ] Verificar la modalidad de usura de cada crédito (`usuryModalityVerified`). Hoy está inferida por tipo/categoría.
 - [ ] Revisar si factoring, confirming y arriendo (13 sin tope de usura) se recomiendan solo a negocios.
 - [x] **Actualizador automático (lector con Claude + revisión humana)** — `scripts/refresh-products.mjs` + `.github/workflows/lector-productos.yml` (lunes 6 a. m.). Usa `claude-opus-5-5` con búsqueda web limitada al dominio oficial de cada entidad; solo aplica datos con frase de evidencia y URL oficial; abre un PR para aprobar. Falta: clave de API como secreto `ANTHROPIC_API_KEY` en GitHub, permitir que Actions abra PRs y medir el costo real con 3 productos.
-- [ ] (detalle del diseño original)
-  - Cada producto guarda en `source` la página oficial de la que sale el dato.
-  - Un job programado (GitHub Actions, semanal) descarga esas páginas y extrae tasas, cuotas, montos y requisitos a JSON. Usa selectores donde la página sea estable y un LLM donde no (PDFs, textos largos).
-  - Compara contra la base actual y **abre un PR con las diferencias**. Nunca publica solo: una persona aprueba.
-  - Cuando no puede extraer (página caída, cambió el diseño, dato detrás de un simulador), lo marca "requiere revisión manual" en vez de inventar.
-  - Job mensual aparte: trae la tasa de usura vigente y abre un PR que actualiza `config/usuryRates.json`. No hay API oficial ni dataset en datos.gov.co: se publica en comunicado de la SFC y en prensa.
-  - Respetar robots.txt y términos de cada sitio, con baja frecuencia. Donde haya API o acuerdo con la entidad, preferirlo.
-  - Fase 1: arrancar con los 10–15 productos más recomendados y ampliar desde ahí.
+  - Cuando no puede verificar (página caída, dato detrás de un simulador, sitio que no deja leer), lo deja en "revisión manual" en vez de inventar.
+  - Respeta el dominio oficial de cada entidad y corre una vez por semana. Donde haya API o acuerdo con la entidad, preferirlo.
+- [ ] Automatizar la tasa de usura mensual: un job que la busque y abra un PR sobre `config/usuryRates.json`. No hay API oficial ni dataset en datos.gov.co; se publica en comunicado de la SFC y en prensa.
 - [ ] Para lo que el scraper no cubra: revisión manual trimestral con checklist.
 - [ ] Ampliar la cobertura donde haya huecos: tarjetas de Davivienda, Banco de Bogotá, Itaú, Lulo, Falabella y nuevas fintechs.
 
