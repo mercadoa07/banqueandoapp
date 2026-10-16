@@ -119,7 +119,7 @@
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 24.3,
-          "max": 26.19
+          "max": 24.3
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -145,7 +145,7 @@
       "observations": "Cuota menor para mujeres. 100% digital. Débito automático. Open Banking (Belvo). 28K+ créditos, $52K millones.",
       "entity": "Juancho Te Presta",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
         "url": "https://juanchotepresta.com/",
         "notes": null
@@ -165,11 +165,11 @@
       ],
       "productType": "Crédito Rotativo Corto Plazo",
       "loanDetails": {
-        "minAmountMillions": 0.15,
-        "maxAmountMillions": 1.2,
+        "minAmountMillions": 0.2,
+        "maxAmountMillions": 1.5,
         "interestRateEA": {
           "min": 25,
-          "max": 30
+          "max": 28.17
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -196,7 +196,7 @@
       "observations": "50% descuento si paga <10 días. Cupo rotativo 6 meses. Puntos Lineru. Zinobe S.A.S. 200K+ usuarios.",
       "entity": "Lineru",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
         "url": "https://www.lineru.com/",
         "notes": null
@@ -218,8 +218,8 @@
         "minAmountMillions": 0.1,
         "maxAmountMillions": 1,
         "interestRateEA": {
-          "min": 23,
-          "max": 23
+          "min": 26,
+          "max": 26
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -246,9 +246,9 @@
       "observations": "Aval y firma electrónica opcionales. RapiFlex (1 cuota) y RapiPlazo (3-4 cuotas). Ampliar plazo hasta 150 días.",
       "entity": "RapiCredit",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://www.rapicredit.com/",
+        "url": "https://www.rapicredit.com/rapiflex/",
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
@@ -268,8 +268,8 @@
         "minAmountMillions": 0.1,
         "maxAmountMillions": 25,
         "interestRateEA": {
-          "min": 19.42,
-          "max": 27.87
+          "min": 19.56,
+          "max": 28.59
         },
         "disbursementTimeHours": 1,
         "approvalTimeHours": 1
@@ -296,9 +296,9 @@
       "observations": "Requiere ser usuario Nequi activo. 12M+ usuarios Nequi. Seguro vida obligatorio. También Salvavidas $100K-$500K.",
       "entity": "Nequi Propulsor",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://www.nequi.com.co/prestamo-propulsor",
+        "url": "https://www.nequi.com.co/personas/creditos/simulador-credito-de-libre-inversion-y-negocios",
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
@@ -315,10 +315,10 @@
       "productType": "Adelanto de Nómina",
       "loanDetails": {
         "minAmountMillions": 0.05,
-        "maxAmountMillions": 1,
+        "maxAmountMillions": 0.5,
         "interestRateEA": {
-          "min": 20,
-          "max": 30
+          "min": 0,
+          "max": 0
         },
         "disbursementTimeHours": 48,
         "approvalTimeHours": 72
@@ -343,7 +343,7 @@
       "observations": "0% interés 65 días. Solo empleados/pensionados. Open Banking. Y Combinator. 800K+ usuarios. $38M USD desembolsados.",
       "entity": "Monet",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
         "url": "https://www.monet.com.co/",
         "notes": null
@@ -412,7 +412,7 @@
       ],
       "productType": "Crédito Rotativo",
       "loanDetails": {
-        "minAmountMillions": 0.15,
+        "minAmountMillions": 0.3,
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 25,
@@ -563,10 +563,10 @@
       "productType": "Crédito Consumo Corto Plazo",
       "loanDetails": {
         "minAmountMillions": 0.12,
-        "maxAmountMillions": 1.5,
+        "maxAmountMillions": 2,
         "interestRateEA": {
-          "min": 25,
-          "max": 25
+          "min": 28.59,
+          "max": 28.59
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -593,7 +593,7 @@
       "observations": "El amigo que sí te presta. ON OFF Soluciones. Pereira. Mora 31.53% EA.",
       "entity": "YaDinero",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
         "url": "https://yadinero.co/",
         "notes": null
@@ -613,10 +613,10 @@
       "productType": "Microcrédito Negocios",
       "loanDetails": {
         "minAmountMillions": 0.3,
-        "maxAmountMillions": 5,
+        "maxAmountMillions": 10,
         "interestRateEA": {
-          "min": 28.71,
-          "max": 59.34
+          "min": 57.91,
+          "max": 57.91
         },
         "disbursementTimeHours": 72,
         "approvalTimeHours": 72
@@ -642,7 +642,7 @@
       "observations": "Evalúa trabajo real (fotos/videos). Acepta migrantes venezolanos. 20K+ beneficiados. Alianza Bogotá gota a gota.",
       "entity": "Quipu",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
         "url": "https://quipu.com.co/",
         "notes": null
@@ -714,8 +714,8 @@
         "minAmountMillions": 1,
         "maxAmountMillions": 140,
         "interestRateEA": {
-          "min": 20.98,
-          "max": 20.98
+          "min": 19.5,
+          "max": 29
         },
         "disbursementTimeHours": 72,
         "approvalTimeHours": 72
@@ -740,9 +740,9 @@
       "observations": "SOLO pensionados/docentes/policías con convenio Avista. 25+ oficinas, 32 departamentos. Período gracia 2 meses.",
       "entity": "Avista",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://avista.co/",
+        "url": "https://avista.co/libranza-para-pensionados/",
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
@@ -808,10 +808,10 @@
       "productType": "Crédito Libranza Libre Inversión",
       "loanDetails": {
         "minAmountMillions": 2,
-        "maxAmountMillions": 80,
+        "maxAmountMillions": 150,
         "interestRateEA": {
-          "min": 17,
-          "max": 30
+          "min": 18.86,
+          "max": 24.02
         },
         "disbursementTimeHours": 72,
         "approvalTimeHours": 48
@@ -837,9 +837,9 @@
       "observations": "SOLO pensionados/docentes/empleados públicos. Especialista en reportados. 65K+ clientes. $600K millones. App CrediAsesor. Bonos BVC $100K millones AA+.",
       "entity": "ExcelCredit",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://excelcredit.co/",
+        "url": "https://creditodigital.excelcredit.co/",
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
@@ -948,8 +948,8 @@
         "minAmountMillions": 0.1,
         "maxAmountMillions": 5,
         "interestRateEA": {
-          "min": 21.5,
-          "max": 21.5
+          "min": 16.94,
+          "max": 16.94
         },
         "disbursementTimeHours": 72,
         "approvalTimeHours": 72
@@ -974,9 +974,9 @@
       "observations": "SOLO crédito vivienda VIS/VIP. Subsidios Mi Casa Ya. CDT desde $1M. SFC, Fogafín. Tasa más alta sector según Superfinanciera.",
       "entity": "Credifamilia",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://credifamilia.com/",
+        "url": "https://credifamilia.com/credito/hipotecario",
         "notes": null
       },
       "usuryModality": "vivienda",
@@ -1177,8 +1177,8 @@
       ],
       "productType": "Crédito Digital Pymes",
       "loanDetails": {
-        "minAmountMillions": 20,
-        "maxAmountMillions": 350,
+        "minAmountMillions": 60,
+        "maxAmountMillions": 300,
         "interestRateEA": {
           "min": 9,
           "max": 13.4
@@ -1367,7 +1367,7 @@
       ],
       "productType": "Anticipo Producción",
       "loanDetails": {
-        "minAmountMillions": 0.1,
+        "minAmountMillions": 0.5,
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 20,
@@ -1467,7 +1467,7 @@
       "productType": "Nanocrédito Inclusión",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 1.4,
+        "maxAmountMillions": 0.7,
         "interestRateEA": {
           "min": 20,
           "max": 30
