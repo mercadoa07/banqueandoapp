@@ -40,6 +40,11 @@ npm run dev
 
 Sin `.env.local` la app funciona, pero no guarda leads ni clics.
 
+```bash
+npm run validate:data                 # valida productos (errores frenan, advertencias informan)
+npm run validate:data -- --check-links  # además revisa que los links respondan
+```
+
 ## 🗄️ Supabase
 
 - Correr los archivos de `supabase/migrations/` en el SQL Editor, en orden.
@@ -56,6 +61,9 @@ Vercel despliega automáticamente cada push a `main`. Variables requeridas en Ve
 - Tarjetas: `config/cards.json`
 - Créditos: `config/creditProducts.json`
 - Preguntas: `config/questions.json`
+- Tasa de usura del mes: `config/usuryRates.json` (actualizar el primer día hábil de cada mes)
+
+Cada producto lleva `entity`, `active`, `source` (de dónde sale el dato), `lastVerified` (fecha en que se comprobó) y `usuryModality`. Un producto con datos dudosos se marca `active: false` con el motivo en `source.notes`: no se borra.
 
 ---
 

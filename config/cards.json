@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "3.0",
   "lastUpdated": "2024-12-29",
   "cards": [
     {
@@ -9,20 +9,21 @@
       "bankLogo": "/logos/nu.svg",
       "image": "💜",
       "network": "Mastercard",
-      "category": ["sin_cuota", "digital", "primer_tarjeta"],
-      
+      "category": [
+        "sin_cuota",
+        "digital",
+        "primer_tarjeta"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
         "feeWaiverCondition": null,
         "internationalFeePercent": 0
       },
-      
       "rates": {
         "interestRateEA": 28.5,
         "cashAdvanceRateEA": 28.5
       },
-      
       "rewards": {
         "type": "cashback",
         "cashbackPercent": 1,
@@ -31,7 +32,6 @@
         "pointsProgram": null,
         "specialCategories": []
       },
-      
       "requirements": {
         "minIncomeMillions": 0,
         "minAge": 18,
@@ -40,7 +40,6 @@
         "acceptsFirstTimers": true,
         "acceptsReported": true
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": true,
@@ -52,7 +51,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "Sin cuota de manejo NUNCA - $0 siempre",
         "App calificada 4.8/5 en stores",
@@ -60,33 +58,71 @@
         "Control total desde la app",
         "Cashback automático del 1%"
       ],
-      
       "cons": [
-        { "text": "Sin programa de millas", "severity": "low" },
-        { "text": "Cupo inicial puede ser bajo ($500K-$2M)", "severity": "medium" },
-        { "text": "No tiene acceso a salas VIP", "severity": "low" }
+        {
+          "text": "Sin programa de millas",
+          "severity": "low"
+        },
+        {
+          "text": "Cupo inicial puede ser bajo ($500K-$2M)",
+          "severity": "medium"
+        },
+        {
+          "text": "No tiene acceso a salas VIP",
+          "severity": "low"
+        }
       ],
-      
       "painPointsSolved": [
         "cuota_alta",
         "app_mala",
         "proceso_dificil"
       ],
-      
       "matchFactors": {
-        "idealFor": ["sin_cuota", "digital", "primer_tarjeta", "simplicidad"],
-        "paymentBehavior": ["full", "sometimes"],
-        "digitalPreference": ["digital"],
-        "feeSensitivity": ["no_fee"],
-        "interests": ["technology", "gaming"],
-        "incomeRange": ["0-2", "2-4", "4-6", "6-10", "10+"],
-        "cardUsage": ["daily", "online", "services"]
+        "idealFor": [
+          "sin_cuota",
+          "digital",
+          "primer_tarjeta",
+          "simplicidad"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes"
+        ],
+        "digitalPreference": [
+          "digital"
+        ],
+        "feeSensitivity": [
+          "no_fee"
+        ],
+        "interests": [
+          "technology",
+          "gaming"
+        ],
+        "incomeRange": [
+          "0-2",
+          "2-4",
+          "4-6",
+          "6-10",
+          "10+"
+        ],
+        "cardUsage": [
+          "daily",
+          "online",
+          "services"
+        ]
       },
-      
       "applyUrl": "https://nu.com.co/tarjeta-de-credito/",
-      "moreInfoUrl": "https://nu.com.co/"
+      "moreInfoUrl": "https://nu.com.co/",
+      "entity": "Nu Colombia",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://nu.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "rappi_card",
       "name": "RappiCard Visa",
@@ -94,20 +130,21 @@
       "bankLogo": "/logos/rappi.svg",
       "image": "🧡",
       "network": "Visa",
-      "category": ["cashback", "digital", "delivery"],
-      
+      "category": [
+        "cashback",
+        "digital",
+        "delivery"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
         "feeWaiverCondition": null,
         "internationalFeePercent": 3.5
       },
-      
       "rates": {
-        "interestRateEA": 27.0,
+        "interestRateEA": 27,
         "cashAdvanceRateEA": 28.5
       },
-      
       "rewards": {
         "type": "cashback",
         "cashbackPercent": 1,
@@ -115,11 +152,18 @@
         "mileProgram": null,
         "pointsProgram": "RappiCreditos",
         "specialCategories": [
-          { "category": "Rappi", "multiplier": 3, "description": "3% cashback en Rappi" },
-          { "category": "Restaurantes", "multiplier": 2, "description": "2% en restaurantes" }
+          {
+            "category": "Rappi",
+            "multiplier": 3,
+            "description": "3% cashback en Rappi"
+          },
+          {
+            "category": "Restaurantes",
+            "multiplier": 2,
+            "description": "2% en restaurantes"
+          }
         ]
       },
-      
       "requirements": {
         "minIncomeMillions": 1,
         "minAge": 18,
@@ -128,7 +172,6 @@
         "acceptsFirstTimers": true,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": true,
@@ -140,7 +183,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "3% cashback en pedidos de Rappi",
         "2% cashback en restaurantes",
@@ -148,32 +190,70 @@
         "Sin cuota de manejo",
         "Descuentos exclusivos en Rappi"
       ],
-      
       "cons": [
-        { "text": "Máximo beneficio si usas Rappi frecuentemente", "severity": "medium" },
-        { "text": "Cashback se acumula como RappiCréditos", "severity": "low" }
+        {
+          "text": "Máximo beneficio si usas Rappi frecuentemente",
+          "severity": "medium"
+        },
+        {
+          "text": "Cashback se acumula como RappiCréditos",
+          "severity": "low"
+        }
       ],
-      
       "painPointsSolved": [
         "cuota_alta",
         "pocos_beneficios"
       ],
-      
       "matchFactors": {
-        "idealFor": ["cashback", "delivery", "digital", "jovenes"],
-        "paymentBehavior": ["full", "sometimes"],
-        "digitalPreference": ["digital", "hybrid"],
-        "feeSensitivity": ["no_fee", "flexible"],
-        "interests": ["dining", "entertainment", "technology"],
-        "incomeRange": ["2-4", "4-6", "6-10"],
-        "cardUsage": ["daily", "online", "services"],
-        "shoppingPlaces": ["rappi"]
+        "idealFor": [
+          "cashback",
+          "delivery",
+          "digital",
+          "jovenes"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes"
+        ],
+        "digitalPreference": [
+          "digital",
+          "hybrid"
+        ],
+        "feeSensitivity": [
+          "no_fee",
+          "flexible"
+        ],
+        "interests": [
+          "dining",
+          "entertainment",
+          "technology"
+        ],
+        "incomeRange": [
+          "2-4",
+          "4-6",
+          "6-10"
+        ],
+        "cardUsage": [
+          "daily",
+          "online",
+          "services"
+        ],
+        "shoppingPlaces": [
+          "rappi"
+        ]
       },
-      
       "applyUrl": "https://www.rappi.com.co/rappicard",
-      "moreInfoUrl": "https://www.rappi.com.co/rappicard"
+      "moreInfoUrl": "https://www.rappi.com.co/rappicard",
+      "entity": "RappiPay (Davivienda)",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.rappi.com.co/rappicard",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "bancolombia_ideal",
       "name": "Tarjeta de Crédito Ideal",
@@ -181,20 +261,21 @@
       "bankLogo": "/logos/bancolombia.svg",
       "image": "💚",
       "network": "Mastercard",
-      "category": ["primer_tarjeta", "tradicional", "bajo_cupo"],
-      
+      "category": [
+        "primer_tarjeta",
+        "tradicional",
+        "bajo_cupo"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 15900,
         "feeWaiverCondition": "Exoneración con compras mínimas de $200.000/mes",
-        "internationalFeePercent": 3.0
+        "internationalFeePercent": 3
       },
-      
       "rates": {
         "interestRateEA": 26.5,
         "cashAdvanceRateEA": 28.5
       },
-      
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
@@ -203,7 +284,6 @@
         "pointsProgram": "Programa Bancolombia",
         "specialCategories": []
       },
-      
       "requirements": {
         "minIncomeMillions": 0.8,
         "minAge": 18,
@@ -212,7 +292,6 @@
         "acceptsFirstTimers": true,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": false,
@@ -224,7 +303,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "Cupos desde $500.000",
         "Red de oficinas más grande del país",
@@ -232,31 +310,62 @@
         "Exoneración de cuota con uso mínimo",
         "App Bancolombia bien calificada"
       ],
-      
       "cons": [
-        { "text": "Cuota de manejo si no usas mínimo $200K/mes", "severity": "medium" },
-        { "text": "Beneficios básicos", "severity": "low" }
+        {
+          "text": "Cuota de manejo si no usas mínimo $200K/mes",
+          "severity": "medium"
+        },
+        {
+          "text": "Beneficios básicos",
+          "severity": "low"
+        }
       ],
-      
       "painPointsSolved": [
         "proceso_dificil",
         "necesito_presencial"
       ],
-      
       "matchFactors": {
-        "idealFor": ["primer_tarjeta", "tradicional", "red_oficinas"],
-        "paymentBehavior": ["full", "sometimes", "finance"],
-        "digitalPreference": ["hybrid", "traditional"],
-        "feeSensitivity": ["flexible", "moderate"],
+        "idealFor": [
+          "primer_tarjeta",
+          "tradicional",
+          "red_oficinas"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes",
+          "finance"
+        ],
+        "digitalPreference": [
+          "hybrid",
+          "traditional"
+        ],
+        "feeSensitivity": [
+          "flexible",
+          "moderate"
+        ],
         "interests": [],
-        "incomeRange": ["0-2", "2-4", "4-6"],
-        "cardUsage": ["daily", "emergency"]
+        "incomeRange": [
+          "0-2",
+          "2-4",
+          "4-6"
+        ],
+        "cardUsage": [
+          "daily",
+          "emergency"
+        ]
       },
-      
       "applyUrl": "https://www.bancolombia.com/personas/tarjetas/tarjetas-credito",
-      "moreInfoUrl": "https://www.bancolombia.com/"
+      "moreInfoUrl": "https://www.bancolombia.com/",
+      "entity": "Bancolombia",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.bancolombia.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "falabella_cmr",
       "name": "CMR Falabella Mastercard",
@@ -264,20 +373,21 @@
       "bankLogo": "/logos/falabella.svg",
       "image": "🟢",
       "network": "Mastercard",
-      "category": ["retail", "shopping", "puntos"],
-      
+      "category": [
+        "retail",
+        "shopping",
+        "puntos"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
         "feeWaiverCondition": null,
         "internationalFeePercent": 3.5
       },
-      
       "rates": {
         "interestRateEA": 28.5,
-        "cashAdvanceRateEA": 29.0
+        "cashAdvanceRateEA": 29
       },
-      
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
@@ -285,12 +395,23 @@
         "mileProgram": null,
         "pointsProgram": "CMR Puntos",
         "specialCategories": [
-          { "category": "Falabella", "multiplier": 4, "description": "4x puntos en Falabella" },
-          { "category": "Sodimac", "multiplier": 3, "description": "3x puntos en Sodimac" },
-          { "category": "Tottus", "multiplier": 3, "description": "3x puntos en Tottus" }
+          {
+            "category": "Falabella",
+            "multiplier": 4,
+            "description": "4x puntos en Falabella"
+          },
+          {
+            "category": "Sodimac",
+            "multiplier": 3,
+            "description": "3x puntos en Sodimac"
+          },
+          {
+            "category": "Tottus",
+            "multiplier": 3,
+            "description": "3x puntos en Tottus"
+          }
         ]
       },
-      
       "requirements": {
         "minIncomeMillions": 1.2,
         "minAge": 18,
@@ -299,11 +420,10 @@
         "acceptsFirstTimers": true,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": true,
-        "appRating": 4.0,
+        "appRating": 4,
         "hasLounge": false,
         "loungeVisits": 0,
         "travelInsurance": false,
@@ -311,7 +431,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "Sin cuota de manejo",
         "4X puntos en tiendas Falabella",
@@ -319,32 +438,67 @@
         "Descuentos exclusivos retail",
         "Puntos canjeables en tiendas"
       ],
-      
       "cons": [
-        { "text": "Beneficios concentrados en ecosistema Falabella", "severity": "medium" },
-        { "text": "Tasa de interés alta", "severity": "medium" }
+        {
+          "text": "Beneficios concentrados en ecosistema Falabella",
+          "severity": "medium"
+        },
+        {
+          "text": "Tasa de interés alta",
+          "severity": "medium"
+        }
       ],
-      
       "painPointsSolved": [
         "cuota_alta",
         "pocos_beneficios"
       ],
-      
       "matchFactors": {
-        "idealFor": ["shopping", "retail", "puntos"],
-        "paymentBehavior": ["full", "sometimes"],
-        "digitalPreference": ["hybrid", "traditional"],
-        "feeSensitivity": ["no_fee", "flexible"],
-        "interests": ["shopping", "family"],
-        "incomeRange": ["2-4", "4-6", "6-10"],
-        "cardUsage": ["big_purchases", "daily"],
-        "shoppingPlaces": ["falabella"]
+        "idealFor": [
+          "shopping",
+          "retail",
+          "puntos"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes"
+        ],
+        "digitalPreference": [
+          "hybrid",
+          "traditional"
+        ],
+        "feeSensitivity": [
+          "no_fee",
+          "flexible"
+        ],
+        "interests": [
+          "shopping",
+          "family"
+        ],
+        "incomeRange": [
+          "2-4",
+          "4-6",
+          "6-10"
+        ],
+        "cardUsage": [
+          "big_purchases",
+          "daily"
+        ],
+        "shoppingPlaces": [
+          "falabella"
+        ]
       },
-      
       "applyUrl": "https://www.bancofalabella.com.co/tarjetas",
-      "moreInfoUrl": "https://www.bancofalabella.com.co/"
+      "moreInfoUrl": "https://www.bancofalabella.com.co/",
+      "entity": "Banco Falabella",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.bancofalabella.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "davivienda_clasica",
       "name": "Visa Clásica",
@@ -352,20 +506,21 @@
       "bankLogo": "/logos/davivienda.svg",
       "image": "🔴",
       "network": "Visa",
-      "category": ["tradicional", "basica", "primer_tarjeta"],
-      
+      "category": [
+        "tradicional",
+        "basica",
+        "primer_tarjeta"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 17500,
         "feeWaiverCondition": "Exoneración comprando mínimo $250.000/mes",
-        "internationalFeePercent": 3.0
+        "internationalFeePercent": 3
       },
-      
       "rates": {
         "interestRateEA": 26.8,
         "cashAdvanceRateEA": 28.5
       },
-      
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
@@ -374,16 +529,14 @@
         "pointsProgram": "Programa Davivienda",
         "specialCategories": []
       },
-      
       "requirements": {
-        "minIncomeMillions": 1.0,
+        "minIncomeMillions": 1,
         "minAge": 18,
         "maxAge": 70,
         "creditHistoryRequired": false,
         "acceptsFirstTimers": true,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": false,
@@ -395,7 +548,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "Amplia red de oficinas",
         "App DaviPlata integrada",
@@ -403,32 +555,68 @@
         "Fácil aprobación",
         "Descuentos con aliados"
       ],
-      
       "cons": [
-        { "text": "Cuota de manejo si no llegas al mínimo", "severity": "medium" },
-        { "text": "Programa de puntos básico", "severity": "low" }
+        {
+          "text": "Cuota de manejo si no llegas al mínimo",
+          "severity": "medium"
+        },
+        {
+          "text": "Programa de puntos básico",
+          "severity": "low"
+        }
       ],
-      
       "painPointsSolved": [
         "proceso_dificil",
         "necesito_presencial"
       ],
-      
       "matchFactors": {
-        "idealFor": ["tradicional", "primer_tarjeta", "basica"],
-        "paymentBehavior": ["full", "sometimes", "finance"],
-        "digitalPreference": ["hybrid", "traditional"],
-        "feeSensitivity": ["flexible", "moderate"],
-        "interests": ["sports"],
-        "incomeRange": ["2-4", "4-6"],
-        "cardUsage": ["daily", "emergency"],
-        "team": ["america", "junior", "seleccion"]
+        "idealFor": [
+          "tradicional",
+          "primer_tarjeta",
+          "basica"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes",
+          "finance"
+        ],
+        "digitalPreference": [
+          "hybrid",
+          "traditional"
+        ],
+        "feeSensitivity": [
+          "flexible",
+          "moderate"
+        ],
+        "interests": [
+          "sports"
+        ],
+        "incomeRange": [
+          "2-4",
+          "4-6"
+        ],
+        "cardUsage": [
+          "daily",
+          "emergency"
+        ],
+        "team": [
+          "america",
+          "junior",
+          "seleccion"
+        ]
       },
-      
       "applyUrl": "https://www.davivienda.com/tarjetas",
-      "moreInfoUrl": "https://www.davivienda.com/"
+      "moreInfoUrl": "https://www.davivienda.com/",
+      "entity": "Davivienda",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.davivienda.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "bbva_aqua",
       "name": "Aqua Mastercard",
@@ -436,20 +624,21 @@
       "bankLogo": "/logos/bbva.svg",
       "image": "🌊",
       "network": "Mastercard",
-      "category": ["digital", "segura", "eco"],
-      
+      "category": [
+        "digital",
+        "segura",
+        "eco"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
         "feeWaiverCondition": null,
         "internationalFeePercent": 0
       },
-      
       "rates": {
         "interestRateEA": 24.9,
-        "cashAdvanceRateEA": 28.0
+        "cashAdvanceRateEA": 28
       },
-      
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
@@ -457,10 +646,13 @@
         "mileProgram": null,
         "pointsProgram": "BBVA Programa",
         "specialCategories": [
-          { "category": "Online", "multiplier": 2, "description": "2x puntos compras online" }
+          {
+            "category": "Online",
+            "multiplier": 2,
+            "description": "2x puntos compras online"
+          }
         ]
       },
-      
       "requirements": {
         "minIncomeMillions": 1.5,
         "minAge": 18,
@@ -469,7 +661,6 @@
         "acceptsFirstTimers": false,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": false,
@@ -482,7 +673,6 @@
         "priorityPass": false,
         "dynamicCVV": true
       },
-      
       "benefits": [
         "CVV dinámico - máxima seguridad",
         "Sin cuota de manejo",
@@ -490,33 +680,68 @@
         "2X puntos en compras online",
         "Tarjeta eco-friendly"
       ],
-      
       "cons": [
-        { "text": "Requiere historial crediticio", "severity": "medium" },
-        { "text": "Programa de puntos no muy generoso", "severity": "low" }
+        {
+          "text": "Requiere historial crediticio",
+          "severity": "medium"
+        },
+        {
+          "text": "Programa de puntos no muy generoso",
+          "severity": "low"
+        }
       ],
-      
       "painPointsSolved": [
         "cuota_alta",
         "seguridad",
         "comision_internacional"
       ],
-      
       "matchFactors": {
-        "idealFor": ["digital", "seguridad", "eco", "internacional"],
-        "paymentBehavior": ["full", "sometimes"],
-        "digitalPreference": ["digital", "hybrid"],
-        "feeSensitivity": ["no_fee"],
-        "interests": ["technology", "environment"],
-        "incomeRange": ["4-6", "6-10", "10+"],
-        "cardUsage": ["online", "daily"],
-        "values": ["environment"]
+        "idealFor": [
+          "digital",
+          "seguridad",
+          "eco",
+          "internacional"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes"
+        ],
+        "digitalPreference": [
+          "digital",
+          "hybrid"
+        ],
+        "feeSensitivity": [
+          "no_fee"
+        ],
+        "interests": [
+          "technology",
+          "environment"
+        ],
+        "incomeRange": [
+          "4-6",
+          "6-10",
+          "10+"
+        ],
+        "cardUsage": [
+          "online",
+          "daily"
+        ],
+        "values": [
+          "environment"
+        ]
       },
-      
       "applyUrl": "https://www.bbva.com.co/personas/tarjetas-de-credito/aqua.html",
-      "moreInfoUrl": "https://www.bbva.com.co/"
+      "moreInfoUrl": "https://www.bbva.com.co/",
+      "entity": "BBVA Colombia",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.bbva.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "avianca_lifemiles_gold",
       "name": "LifeMiles Visa Gold",
@@ -524,20 +749,21 @@
       "bankLogo": "/logos/davivienda.svg",
       "image": "✈️",
       "network": "Visa",
-      "category": ["millas", "viajes", "premium_entry"],
-      
+      "category": [
+        "millas",
+        "viajes",
+        "premium_entry"
+      ],
       "fees": {
         "annualFee": 360000,
         "monthlyFee": 30000,
         "feeWaiverCondition": null,
         "internationalFeePercent": 2.5
       },
-      
       "rates": {
         "interestRateEA": 26.5,
         "cashAdvanceRateEA": 28.5
       },
-      
       "rewards": {
         "type": "miles",
         "cashbackPercent": null,
@@ -545,20 +771,26 @@
         "mileProgram": "LifeMiles",
         "pointsProgram": null,
         "specialCategories": [
-          { "category": "Avianca", "multiplier": 3, "description": "3x millas en Avianca" },
-          { "category": "Viajes", "multiplier": 2, "description": "2x millas hoteles/rent-a-car" }
+          {
+            "category": "Avianca",
+            "multiplier": 3,
+            "description": "3x millas en Avianca"
+          },
+          {
+            "category": "Viajes",
+            "multiplier": 2,
+            "description": "2x millas hoteles/rent-a-car"
+          }
         ]
       },
-      
       "requirements": {
-        "minIncomeMillions": 3.0,
+        "minIncomeMillions": 3,
         "minAge": 18,
         "maxAge": 70,
         "creditHistoryRequired": true,
         "acceptsFirstTimers": false,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": false,
@@ -570,7 +802,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "Acumula 1 milla por cada $1.000 gastados",
         "3X millas en Avianca",
@@ -578,33 +809,70 @@
         "Seguro de viaje incluido",
         "Millas LifeMiles nunca vencen"
       ],
-      
       "cons": [
-        { "text": "Cuota de manejo alta ($30K/mes)", "severity": "high" },
-        { "text": "Requiere ingresos altos", "severity": "medium" }
+        {
+          "text": "Cuota de manejo alta ($30K/mes)",
+          "severity": "high"
+        },
+        {
+          "text": "Requiere ingresos altos",
+          "severity": "medium"
+        }
       ],
-      
       "painPointsSolved": [
         "quiero_millas",
         "viajo_frecuente"
       ],
-      
       "matchFactors": {
-        "idealFor": ["millas", "viajes", "avianca"],
-        "paymentBehavior": ["full"],
-        "digitalPreference": ["digital", "hybrid"],
-        "feeSensitivity": ["flexible"],
-        "interests": ["travel"],
-        "incomeRange": ["4-6", "6-10", "10+"],
-        "cardUsage": ["travel", "online"],
-        "travelFrequency": ["3-5", "6+"],
-        "travelDestination": ["national", "regional", "usa"]
+        "idealFor": [
+          "millas",
+          "viajes",
+          "avianca"
+        ],
+        "paymentBehavior": [
+          "full"
+        ],
+        "digitalPreference": [
+          "digital",
+          "hybrid"
+        ],
+        "feeSensitivity": [
+          "flexible"
+        ],
+        "interests": [
+          "travel"
+        ],
+        "incomeRange": [
+          "4-6",
+          "6-10",
+          "10+"
+        ],
+        "cardUsage": [
+          "travel",
+          "online"
+        ],
+        "travelFrequency": [
+          "3-5",
+          "6+"
+        ],
+        "travelDestination": [
+          "national",
+          "regional",
+          "usa"
+        ]
       },
-      
       "applyUrl": "https://www.davivienda.com/tarjetas/lifemiles",
-      "moreInfoUrl": "https://www.lifemiles.com/"
+      "moreInfoUrl": "https://www.lifemiles.com/",
+      "entity": "Davivienda",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.lifemiles.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "latam_pass_platinum",
       "name": "LATAM Pass Visa Platinum",
@@ -612,20 +880,21 @@
       "bankLogo": "/logos/bogota.svg",
       "image": "🔷",
       "network": "Visa",
-      "category": ["millas", "viajes", "premium"],
-      
+      "category": [
+        "millas",
+        "viajes",
+        "premium"
+      ],
       "fees": {
         "annualFee": 480000,
         "monthlyFee": 40000,
         "feeWaiverCondition": null,
         "internationalFeePercent": 0
       },
-      
       "rates": {
         "interestRateEA": 24.5,
-        "cashAdvanceRateEA": 28.0
+        "cashAdvanceRateEA": 28
       },
-      
       "rewards": {
         "type": "miles",
         "cashbackPercent": null,
@@ -633,24 +902,30 @@
         "mileProgram": "LATAM Pass",
         "pointsProgram": null,
         "specialCategories": [
-          { "category": "LATAM", "multiplier": 3, "description": "3x millas en LATAM" },
-          { "category": "Internacional", "multiplier": 2, "description": "2x millas compras internacionales" }
+          {
+            "category": "LATAM",
+            "multiplier": 3,
+            "description": "3x millas en LATAM"
+          },
+          {
+            "category": "Internacional",
+            "multiplier": 2,
+            "description": "2x millas compras internacionales"
+          }
         ]
       },
-      
       "requirements": {
-        "minIncomeMillions": 4.0,
+        "minIncomeMillions": 4,
         "minAge": 18,
         "maxAge": 70,
         "creditHistoryRequired": true,
         "acceptsFirstTimers": false,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": false,
-        "appRating": 4.0,
+        "appRating": 4,
         "hasLounge": true,
         "loungeVisits": 4,
         "travelInsurance": true,
@@ -658,7 +933,6 @@
         "concierge": true,
         "priorityPass": false
       },
-      
       "benefits": [
         "1.2 millas por cada $1.000",
         "Sin comisión compras internacionales",
@@ -666,35 +940,76 @@
         "Seguro de viaje premium",
         "Servicio de concierge"
       ],
-      
       "cons": [
-        { "text": "Cuota alta ($40K/mes)", "severity": "high" },
-        { "text": "Ingresos mínimos $4M", "severity": "medium" }
+        {
+          "text": "Cuota alta ($40K/mes)",
+          "severity": "high"
+        },
+        {
+          "text": "Ingresos mínimos $4M",
+          "severity": "medium"
+        }
       ],
-      
       "painPointsSolved": [
         "quiero_millas",
         "quiero_vip",
         "comision_internacional"
       ],
-      
       "matchFactors": {
-        "idealFor": ["millas", "viajes", "latam", "vip"],
-        "paymentBehavior": ["full"],
-        "digitalPreference": ["digital", "hybrid"],
-        "feeSensitivity": ["flexible"],
-        "interests": ["travel"],
-        "incomeRange": ["6-10", "10+"],
-        "cardUsage": ["travel", "online", "big_purchases"],
-        "travelFrequency": ["3-5", "6+"],
-        "travelDestination": ["regional", "usa", "europe"],
-        "travelPreference": ["miles", "vip"]
+        "idealFor": [
+          "millas",
+          "viajes",
+          "latam",
+          "vip"
+        ],
+        "paymentBehavior": [
+          "full"
+        ],
+        "digitalPreference": [
+          "digital",
+          "hybrid"
+        ],
+        "feeSensitivity": [
+          "flexible"
+        ],
+        "interests": [
+          "travel"
+        ],
+        "incomeRange": [
+          "6-10",
+          "10+"
+        ],
+        "cardUsage": [
+          "travel",
+          "online",
+          "big_purchases"
+        ],
+        "travelFrequency": [
+          "3-5",
+          "6+"
+        ],
+        "travelDestination": [
+          "regional",
+          "usa",
+          "europe"
+        ],
+        "travelPreference": [
+          "miles",
+          "vip"
+        ]
       },
-      
       "applyUrl": "https://www.bancodebogota.com/tarjetas/latam-pass",
-      "moreInfoUrl": "https://www.latampass.latam.com/"
+      "moreInfoUrl": "https://www.latampass.latam.com/",
+      "entity": "Banco de Bogotá",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.latampass.latam.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "scotiabank_platinum",
       "name": "Platinum Mastercard",
@@ -702,20 +1017,21 @@
       "bankLogo": "/logos/scotiabank.svg",
       "image": "🔵",
       "network": "Mastercard",
-      "category": ["tasa_baja", "premium_entry", "balance"],
-      
+      "category": [
+        "tasa_baja",
+        "premium_entry",
+        "balance"
+      ],
       "fees": {
         "annualFee": 240000,
         "monthlyFee": 20000,
         "feeWaiverCondition": "Exoneración con gasto mínimo $500K/mes",
         "internationalFeePercent": 2.5
       },
-      
       "rates": {
         "interestRateEA": 23.5,
-        "cashAdvanceRateEA": 26.0
+        "cashAdvanceRateEA": 26
       },
-      
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
@@ -724,7 +1040,6 @@
         "pointsProgram": "Scotia Puntos",
         "specialCategories": []
       },
-      
       "requirements": {
         "minIncomeMillions": 2.5,
         "minAge": 18,
@@ -733,7 +1048,6 @@
         "acceptsFirstTimers": false,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": false,
@@ -745,7 +1059,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "Una de las tasas más bajas del mercado (23.5%)",
         "Seguro de viaje incluido",
@@ -753,31 +1066,61 @@
         "Cuota exonerable con uso",
         "Scotia Puntos canjeables"
       ],
-      
       "cons": [
-        { "text": "App no tan buena como otros bancos", "severity": "medium" },
-        { "text": "Programa de puntos básico", "severity": "low" }
+        {
+          "text": "App no tan buena como otros bancos",
+          "severity": "medium"
+        },
+        {
+          "text": "Programa de puntos básico",
+          "severity": "low"
+        }
       ],
-      
       "painPointsSolved": [
         "tasa_alta",
         "financio_mucho"
       ],
-      
       "matchFactors": {
-        "idealFor": ["tasa_baja", "financiacion", "cuotas"],
-        "paymentBehavior": ["sometimes", "finance", "minimum"],
-        "digitalPreference": ["hybrid", "traditional"],
-        "feeSensitivity": ["flexible", "moderate"],
+        "idealFor": [
+          "tasa_baja",
+          "financiacion",
+          "cuotas"
+        ],
+        "paymentBehavior": [
+          "sometimes",
+          "finance",
+          "minimum"
+        ],
+        "digitalPreference": [
+          "hybrid",
+          "traditional"
+        ],
+        "feeSensitivity": [
+          "flexible",
+          "moderate"
+        ],
         "interests": [],
-        "incomeRange": ["4-6", "6-10"],
-        "cardUsage": ["big_purchases", "daily"]
+        "incomeRange": [
+          "4-6",
+          "6-10"
+        ],
+        "cardUsage": [
+          "big_purchases",
+          "daily"
+        ]
       },
-      
       "applyUrl": "https://www.scotiabankcolpatria.com/tarjetas",
-      "moreInfoUrl": "https://www.scotiabankcolpatria.com/"
+      "moreInfoUrl": "https://www.scotiabankcolpatria.com/",
+      "entity": "Scotiabank Colpatria",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.scotiabankcolpatria.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "amex_green",
       "name": "American Express Green",
@@ -785,20 +1128,21 @@
       "bankLogo": "/logos/bancolombia.svg",
       "image": "💳",
       "network": "American Express",
-      "category": ["premium", "viajes", "experiencias"],
-      
+      "category": [
+        "premium",
+        "viajes",
+        "experiencias"
+      ],
       "fees": {
         "annualFee": 350000,
         "monthlyFee": 29200,
         "feeWaiverCondition": null,
         "internationalFeePercent": 0
       },
-      
       "rates": {
         "interestRateEA": 25.5,
-        "cashAdvanceRateEA": 28.0
+        "cashAdvanceRateEA": 28
       },
-      
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
@@ -806,20 +1150,26 @@
         "mileProgram": null,
         "pointsProgram": "Membership Rewards",
         "specialCategories": [
-          { "category": "Viajes", "multiplier": 3, "description": "3x puntos en viajes" },
-          { "category": "Restaurantes", "multiplier": 2, "description": "2x puntos en restaurantes" }
+          {
+            "category": "Viajes",
+            "multiplier": 3,
+            "description": "3x puntos en viajes"
+          },
+          {
+            "category": "Restaurantes",
+            "multiplier": 2,
+            "description": "2x puntos en restaurantes"
+          }
         ]
       },
-      
       "requirements": {
-        "minIncomeMillions": 4.0,
+        "minIncomeMillions": 4,
         "minAge": 21,
         "maxAge": 65,
         "creditHistoryRequired": true,
         "acceptsFirstTimers": false,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": false,
@@ -831,7 +1181,6 @@
         "concierge": true,
         "priorityPass": true
       },
-      
       "benefits": [
         "Puntos transferibles a aerolíneas",
         "Acceso a salas VIP con Priority Pass",
@@ -839,33 +1188,69 @@
         "Membership Rewards flexible",
         "Experiencias exclusivas Amex"
       ],
-      
       "cons": [
-        { "text": "No se acepta en todos los comercios", "severity": "medium" },
-        { "text": "Cuota alta", "severity": "medium" }
+        {
+          "text": "No se acepta en todos los comercios",
+          "severity": "medium"
+        },
+        {
+          "text": "Cuota alta",
+          "severity": "medium"
+        }
       ],
-      
       "painPointsSolved": [
         "quiero_premium",
         "quiero_vip",
         "experiencias"
       ],
-      
       "matchFactors": {
-        "idealFor": ["premium", "viajes", "experiencias", "amex"],
-        "paymentBehavior": ["full"],
-        "digitalPreference": ["digital", "hybrid"],
-        "feeSensitivity": ["flexible"],
-        "interests": ["travel", "dining", "entertainment"],
-        "incomeRange": ["6-10", "10+"],
-        "cardUsage": ["travel", "dining", "online"],
-        "travelFrequency": ["3-5", "6+"]
+        "idealFor": [
+          "premium",
+          "viajes",
+          "experiencias",
+          "amex"
+        ],
+        "paymentBehavior": [
+          "full"
+        ],
+        "digitalPreference": [
+          "digital",
+          "hybrid"
+        ],
+        "feeSensitivity": [
+          "flexible"
+        ],
+        "interests": [
+          "travel",
+          "dining",
+          "entertainment"
+        ],
+        "incomeRange": [
+          "6-10",
+          "10+"
+        ],
+        "cardUsage": [
+          "travel",
+          "dining",
+          "online"
+        ],
+        "travelFrequency": [
+          "3-5",
+          "6+"
+        ]
       },
-      
       "applyUrl": "https://www.americanexpress.com/co/tarjetas/green-card/",
-      "moreInfoUrl": "https://www.americanexpress.com/co/"
+      "moreInfoUrl": "https://www.americanexpress.com/co/",
+      "entity": "Bancolombia",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.americanexpress.com/co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "bogota_biomax",
       "name": "Tarjeta Biomax",
@@ -873,20 +1258,21 @@
       "bankLogo": "/logos/bogota.svg",
       "image": "⛽",
       "network": "Visa",
-      "category": ["gasolina", "descuentos", "ahorro"],
-      
+      "category": [
+        "gasolina",
+        "descuentos",
+        "ahorro"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 12500,
         "feeWaiverCondition": "Exoneración con tanqueo mínimo $150K/mes",
-        "internationalFeePercent": 3.0
+        "internationalFeePercent": 3
       },
-      
       "rates": {
-        "interestRateEA": 27.0,
+        "interestRateEA": 27,
         "cashAdvanceRateEA": 28.5
       },
-      
       "rewards": {
         "type": "cashback",
         "cashbackPercent": null,
@@ -894,11 +1280,18 @@
         "mileProgram": null,
         "pointsProgram": null,
         "specialCategories": [
-          { "category": "Biomax", "multiplier": 1, "description": "$100 descuento por galón" },
-          { "category": "Peajes", "multiplier": 1, "description": "10% descuento en peajes electrónicos" }
+          {
+            "category": "Biomax",
+            "multiplier": 1,
+            "description": "$100 descuento por galón"
+          },
+          {
+            "category": "Peajes",
+            "multiplier": 1,
+            "description": "10% descuento en peajes electrónicos"
+          }
         ]
       },
-      
       "requirements": {
         "minIncomeMillions": 1.5,
         "minAge": 18,
@@ -907,7 +1300,6 @@
         "acceptsFirstTimers": false,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": false,
         "instantApproval": false,
@@ -919,7 +1311,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "$100 descuento por galón en Biomax",
         "10% descuento en peajes electrónicos",
@@ -927,31 +1318,62 @@
         "Ideal si tienes carro",
         "Ahorro real mensual si tanqueas frecuente"
       ],
-      
       "cons": [
-        { "text": "Beneficios solo en gasolina y peajes", "severity": "medium" },
-        { "text": "Requiere tanqueo mínimo mensual", "severity": "low" }
+        {
+          "text": "Beneficios solo en gasolina y peajes",
+          "severity": "medium"
+        },
+        {
+          "text": "Requiere tanqueo mínimo mensual",
+          "severity": "low"
+        }
       ],
-      
       "painPointsSolved": [
         "gasto_mucho_gasolina"
       ],
-      
       "matchFactors": {
-        "idealFor": ["gasolina", "conductores", "ahorro_combustible"],
-        "paymentBehavior": ["full", "sometimes"],
-        "digitalPreference": ["hybrid", "traditional"],
-        "feeSensitivity": ["flexible", "moderate"],
+        "idealFor": [
+          "gasolina",
+          "conductores",
+          "ahorro_combustible"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes"
+        ],
+        "digitalPreference": [
+          "hybrid",
+          "traditional"
+        ],
+        "feeSensitivity": [
+          "flexible",
+          "moderate"
+        ],
         "interests": [],
-        "incomeRange": ["2-4", "4-6", "6-10"],
-        "cardUsage": ["daily"],
-        "shoppingPlaces": ["gasolina"]
+        "incomeRange": [
+          "2-4",
+          "4-6",
+          "6-10"
+        ],
+        "cardUsage": [
+          "daily"
+        ],
+        "shoppingPlaces": [
+          "gasolina"
+        ]
       },
-      
       "applyUrl": "https://www.bancodebogota.com/tarjetas/biomax",
-      "moreInfoUrl": "https://www.bancodebogota.com/"
+      "moreInfoUrl": "https://www.bancodebogota.com/",
+      "entity": "Banco de Bogotá",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.bancodebogota.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     },
-    
     {
       "id": "exito_tuya",
       "name": "Tarjeta Tuya",
@@ -959,20 +1381,21 @@
       "bankLogo": "/logos/tuya.svg",
       "image": "🟡",
       "network": "Mastercard",
-      "category": ["supermercado", "retail", "puntos"],
-      
+      "category": [
+        "supermercado",
+        "retail",
+        "puntos"
+      ],
       "fees": {
         "annualFee": 0,
         "monthlyFee": 0,
         "feeWaiverCondition": null,
         "internationalFeePercent": 3.5
       },
-      
       "rates": {
         "interestRateEA": 28.5,
         "cashAdvanceRateEA": 29.5
       },
-      
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
@@ -980,25 +1403,35 @@
         "mileProgram": null,
         "pointsProgram": "Puntos Colombia",
         "specialCategories": [
-          { "category": "Éxito", "multiplier": 5, "description": "5x puntos en Éxito" },
-          { "category": "Carulla", "multiplier": 5, "description": "5x puntos en Carulla" },
-          { "category": "Surtimax", "multiplier": 3, "description": "3x puntos en Surtimax" }
+          {
+            "category": "Éxito",
+            "multiplier": 5,
+            "description": "5x puntos en Éxito"
+          },
+          {
+            "category": "Carulla",
+            "multiplier": 5,
+            "description": "5x puntos en Carulla"
+          },
+          {
+            "category": "Surtimax",
+            "multiplier": 3,
+            "description": "3x puntos en Surtimax"
+          }
         ]
       },
-      
       "requirements": {
-        "minIncomeMillions": 1.0,
+        "minIncomeMillions": 1,
         "minAge": 18,
         "maxAge": 70,
         "creditHistoryRequired": false,
         "acceptsFirstTimers": true,
         "acceptsReported": false
       },
-      
       "features": {
         "virtualCard": true,
         "instantApproval": true,
-        "appRating": 4.0,
+        "appRating": 4,
         "hasLounge": false,
         "loungeVisits": 0,
         "travelInsurance": false,
@@ -1006,7 +1439,6 @@
         "concierge": false,
         "priorityPass": false
       },
-      
       "benefits": [
         "Sin cuota de manejo",
         "5X Puntos Colombia en Éxito y Carulla",
@@ -1014,30 +1446,65 @@
         "Aprobación fácil y rápida",
         "Puntos canjeables en todo el ecosistema"
       ],
-      
       "cons": [
-        { "text": "Beneficios concentrados en Grupo Éxito", "severity": "medium" },
-        { "text": "Tasa de interés alta", "severity": "medium" }
+        {
+          "text": "Beneficios concentrados en Grupo Éxito",
+          "severity": "medium"
+        },
+        {
+          "text": "Tasa de interés alta",
+          "severity": "medium"
+        }
       ],
-      
       "painPointsSolved": [
         "cuota_alta",
         "compro_mucho_mercado"
       ],
-      
       "matchFactors": {
-        "idealFor": ["supermercado", "puntos_colombia", "compras_hogar"],
-        "paymentBehavior": ["full", "sometimes"],
-        "digitalPreference": ["hybrid", "traditional"],
-        "feeSensitivity": ["no_fee"],
-        "interests": ["family", "shopping"],
-        "incomeRange": ["2-4", "4-6", "6-10"],
-        "cardUsage": ["daily"],
-        "shoppingPlaces": ["exito", "carulla"]
+        "idealFor": [
+          "supermercado",
+          "puntos_colombia",
+          "compras_hogar"
+        ],
+        "paymentBehavior": [
+          "full",
+          "sometimes"
+        ],
+        "digitalPreference": [
+          "hybrid",
+          "traditional"
+        ],
+        "feeSensitivity": [
+          "no_fee"
+        ],
+        "interests": [
+          "family",
+          "shopping"
+        ],
+        "incomeRange": [
+          "2-4",
+          "4-6",
+          "6-10"
+        ],
+        "cardUsage": [
+          "daily"
+        ],
+        "shoppingPlaces": [
+          "exito",
+          "carulla"
+        ]
       },
-      
       "applyUrl": "https://www.tarjetatuya.com/",
-      "moreInfoUrl": "https://www.tarjetatuya.com/"
+      "moreInfoUrl": "https://www.tarjetatuya.com/",
+      "entity": "Tuya (Grupo Éxito)",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.tarjetatuya.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": true
     }
   ]
 }

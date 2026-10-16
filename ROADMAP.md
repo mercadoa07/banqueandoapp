@@ -58,23 +58,28 @@ Fuera del código (requiere acceso a Supabase / Vercel / GitHub):
 
 Objetivo: que cada dato mostrado sea correcto, tenga fuente y fecha.
 
-- [ ] **Esquema único** por tipo de producto (JSON Schema o zod), con campos obligatorios: `id`, `name`, `entity`, `entityType`, `applyUrl`, tasas, cuotas, requisitos, `source`, `lastVerified`.
-- [ ] Normalizar `bank`/`provider` a un solo campo `entity`.
+- [x] **Esquema único** por tipo de producto (zod, `scripts/lib/productSchema.mjs`), con `entity`, `active`, `source`, `lastVerified`, `usuryModality` y `usuryModalityVerified`. Migración en `scripts/migrate-products-v3.mjs`.
+- [x] Normalizar `bank`/`provider` a un solo campo `entity` (se conservan `bank`/`provider` por compatibilidad).
 - [ ] Unificar o borrar `businessLoans.json`.
 - [ ] **Re-verificar los 63 productos** contra la página oficial de cada entidad: tasas EA, cuota de manejo, requisitos, montos, links vivos.
-- [ ] **Validaciones automáticas** en CI:
+- [x] **Validaciones automáticas** en CI (`npm run validate:data`, `.github/workflows/ci.yml`):
   - el esquema se cumple;
-  - ninguna tasa supera la **tasa de usura** vigente (Superfinanciera, mensual);
+  - ninguna tasa supera la **tasa de usura** vigente **de su modalidad** (`config/usuryRates.json`, mensual). Error si la modalidad está verificada; advertencia si no;
   - mínimos menores que máximos;
-  - links responden 200;
+  - links responden (semanal, lunes 7 a. m.; 401/403/429 se toman como bloqueo anti-bots, no como link roto);
   - `lastVerified` tiene menos de 90 días (si no, alerta).
-- [ ] Marcar los productos que ya no existen como `active: false` en vez de borrarlos (se conserva el histórico).
+- [x] Marcar como `active: false` en vez de borrar. El motor los ignora. Desactivados el 2026-10-14 (10): Guama (sin link); R5, A2censo y CrediOrbe (tasa máx < mín); Ledn, Sosty, Unergy y Mattilda (monto mín > máx); Terrenta y Agroune (son inversión, no crédito).
+- [x] Bug: el filtro de ingreso mínimo de tarjetas nunca se aplicaba (`minIncome` vs `minIncomeMillions`).
+- [ ] **Corregir links rotos (404)** de RappiCard, Davivienda (2) y Scotiabank. Confirmar los que no responden (Amex, LATAM Pass, Tuya y 11 fintechs) con la corrida semanal.
+- [ ] Verificar las tasas máximas de 30% exacto (27 créditos, probable relleno) y ADDI (68,75%).
+- [ ] Verificar la modalidad de usura de cada crédito (`usuryModalityVerified`). Hoy está inferida por tipo/categoría.
+- [ ] Revisar si factoring, confirming y arriendo (13 sin tope de usura) se recomiendan solo a negocios.
 - [ ] **Actualizador automático (scraper + revisión humana):**
   - Cada producto guarda en `source` la página oficial de la que sale el dato.
   - Un job programado (GitHub Actions, semanal) descarga esas páginas y extrae tasas, cuotas, montos y requisitos a JSON. Usa selectores donde la página sea estable y un LLM donde no (PDFs, textos largos).
   - Compara contra la base actual y **abre un PR con las diferencias**. Nunca publica solo: una persona aprueba.
   - Cuando no puede extraer (página caída, cambió el diseño, dato detrás de un simulador), lo marca "requiere revisión manual" en vez de inventar.
-  - Job mensual aparte: trae la tasa de usura vigente de la Superfinanciera y la usa en las validaciones.
+  - Job mensual aparte: trae la tasa de usura vigente y abre un PR que actualiza `config/usuryRates.json`. No hay API oficial ni dataset en datos.gov.co: se publica en comunicado de la SFC y en prensa.
   - Respetar robots.txt y términos de cada sitio, con baja frecuencia. Donde haya API o acuerdo con la entidad, preferirlo.
   - Fase 1: arrancar con los 10–15 productos más recomendados y ampliar desde ahí.
 - [ ] Para lo que el scraper no cubra: revisión manual trimestral con checklist.

@@ -1,5 +1,5 @@
 {
-  "version": "2.1",
+  "version": "3.0",
   "lastUpdated": "2025-02-03",
   "source": "Research 51 Fintechs Colombia - Actualizado",
   "totalProducts": 51,
@@ -44,7 +44,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://preapproval.addi.com/",
-      "observations": "Solo para compras en comercios aliados. 26K+ tiendas. Cupo rotativo. 2M+ usuarios. SFC Resolución 2036/2024."
+      "observations": "Solo para compras en comercios aliados. 26K+ tiendas. Cupo rotativo. 2M+ usuarios. SFC Resolución 2036/2024.",
+      "entity": "ADDI",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://preapproval.addi.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "sistecredito_2",
@@ -58,7 +67,7 @@
       "productType": "Crédito Rotativo (Solo Compras)",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 3.0,
+        "maxAmountMillions": 3,
         "interestRateEA": {
           "min": 23.86,
           "max": 23.86
@@ -84,7 +93,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://sistecredito.com/",
-      "observations": "Solo para compras en comercios aliados. Cupo rotativo. Solo cédula. Pago Efecty (112901), Gana (441)."
+      "observations": "Solo para compras en comercios aliados. Cupo rotativo. Solo cédula. Pago Efecty (112901), Gana (441).",
+      "entity": "Sistecrédito",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://sistecredito.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "juancho_te_presta_3",
@@ -98,7 +116,7 @@
       "productType": "Crédito Consumo Libre Inversión",
       "loanDetails": {
         "minAmountMillions": 0.9,
-        "maxAmountMillions": 5.0,
+        "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 24.3,
           "max": 26.19
@@ -124,7 +142,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://juanchotepresta.com/",
-      "observations": "Cuota menor para mujeres. 100% digital. Débito automático. Open Banking (Belvo). 28K+ créditos, $52K millones."
+      "observations": "Cuota menor para mujeres. 100% digital. Débito automático. Open Banking (Belvo). 28K+ créditos, $52K millones.",
+      "entity": "Juancho Te Presta",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://juanchotepresta.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "lineru_4",
@@ -141,8 +168,8 @@
         "minAmountMillions": 0.15,
         "maxAmountMillions": 1.2,
         "interestRateEA": {
-          "min": 25.0,
-          "max": 30.0
+          "min": 25,
+          "max": 30
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -166,7 +193,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://www.lineru.com/",
-      "observations": "50% descuento si paga <10 días. Cupo rotativo 6 meses. Puntos Lineru. Zinobe S.A.S. 200K+ usuarios."
+      "observations": "50% descuento si paga <10 días. Cupo rotativo 6 meses. Puntos Lineru. Zinobe S.A.S. 200K+ usuarios.",
+      "entity": "Lineru",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.lineru.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "rapicredit_5",
@@ -180,10 +216,10 @@
       "productType": "Crédito Consumo Corto Plazo",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
-          "min": 23.0,
-          "max": 23.0
+          "min": 23,
+          "max": 23
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -207,7 +243,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://www.rapicredit.com/",
-      "observations": "Aval y firma electrónica opcionales. RapiFlex (1 cuota) y RapiPlazo (3-4 cuotas). Ampliar plazo hasta 150 días."
+      "observations": "Aval y firma electrónica opcionales. RapiFlex (1 cuota) y RapiPlazo (3-4 cuotas). Ampliar plazo hasta 150 días.",
+      "entity": "RapiCredit",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.rapicredit.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "nequi_propulsor_6",
@@ -221,7 +266,7 @@
       "productType": "Crédito Consumo Libre Inversión",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 25.0,
+        "maxAmountMillions": 25,
         "interestRateEA": {
           "min": 19.42,
           "max": 27.87
@@ -248,7 +293,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://www.nequi.com.co/prestamo-propulsor",
-      "observations": "Requiere ser usuario Nequi activo. 12M+ usuarios Nequi. Seguro vida obligatorio. También Salvavidas $100K-$500K."
+      "observations": "Requiere ser usuario Nequi activo. 12M+ usuarios Nequi. Seguro vida obligatorio. También Salvavidas $100K-$500K.",
+      "entity": "Nequi Propulsor",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.nequi.com.co/prestamo-propulsor",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "monet_7",
@@ -261,7 +315,7 @@
       "productType": "Adelanto de Nómina",
       "loanDetails": {
         "minAmountMillions": 0.05,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -286,7 +340,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://www.monet.com.co/",
-      "observations": "0% interés 65 días. Solo empleados/pensionados. Open Banking. Y Combinator. 800K+ usuarios. $38M USD desembolsados."
+      "observations": "0% interés 65 días. Solo empleados/pensionados. Open Banking. Y Combinator. 800K+ usuarios. $38M USD desembolsados.",
+      "entity": "Monet",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.monet.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "kredicity_8",
@@ -300,7 +363,7 @@
       "productType": "Crédito Consumo Corto Plazo",
       "loanDetails": {
         "minAmountMillions": 0.11,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
           "min": 24.87,
           "max": 24.87
@@ -327,7 +390,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://www.kredicity.com/",
-      "observations": "Kredipuntos (1 punto = $1 COP). Cuenta Gold para clientes frecuentes. SoloViVE S.A.S."
+      "observations": "Kredipuntos (1 punto = $1 COP). Cuenta Gold para clientes frecuentes. SoloViVE S.A.S.",
+      "entity": "Kredicity",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.kredicity.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "solventa_9",
@@ -341,9 +413,9 @@
       "productType": "Crédito Rotativo",
       "loanDetails": {
         "minAmountMillions": 0.15,
-        "maxAmountMillions": 5.0,
+        "maxAmountMillions": 5,
         "interestRateEA": {
-          "min": 25.0,
+          "min": 25,
           "max": 28.85
         },
         "disbursementTimeHours": 1,
@@ -369,7 +441,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://solventa.co/",
-      "observations": "Cupo rotativo 180 días. Presencia en Colombia, Perú, Argentina, USA. 200+ empleados."
+      "observations": "Cupo rotativo 180 días. Presencia en Colombia, Perú, Argentina, USA. 200+ empleados.",
+      "entity": "Solventa",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://solventa.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "moni_10",
@@ -382,10 +463,10 @@
       "productType": "Microcrédito",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
-          "min": 25.0,
-          "max": 25.0
+          "min": 25,
+          "max": 25
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -409,7 +490,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://moni.com.co/",
-      "observations": "Incluye Monicard. Origen Argentina (2013). Para sub-bancarizados. Pago servicios, recargas."
+      "observations": "Incluye Monicard. Origen Argentina (2013). Para sub-bancarizados. Pago servicios, recargas.",
+      "entity": "Moni",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://moni.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "credissimo_11",
@@ -422,10 +512,10 @@
       "productType": "Crédito Consumo",
       "loanDetails": {
         "minAmountMillions": 0.2,
-        "maxAmountMillions": 2.0,
+        "maxAmountMillions": 2,
         "interestRateEA": {
-          "min": 14.0,
-          "max": 23.0
+          "min": 14,
+          "max": 23
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -450,7 +540,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://credissimo.co/",
-      "observations": "Origen Bulgaria (2007). Código ético. Credissimo Plus (3-12m) y Credissimo Salario (30d). Premios Europeos FinTech."
+      "observations": "Origen Bulgaria (2007). Código ético. Credissimo Plus (3-12m) y Credissimo Salario (30d). Premios Europeos FinTech.",
+      "entity": "Credissimo",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://credissimo.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "yadinero_12",
@@ -466,8 +565,8 @@
         "minAmountMillions": 0.12,
         "maxAmountMillions": 1.5,
         "interestRateEA": {
-          "min": 25.0,
-          "max": 25.0
+          "min": 25,
+          "max": 25
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 72
@@ -491,7 +590,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://yadinero.co/",
-      "observations": "El amigo que sí te presta. ON OFF Soluciones. Pereira. Mora 31.53% EA."
+      "observations": "El amigo que sí te presta. ON OFF Soluciones. Pereira. Mora 31.53% EA.",
+      "entity": "YaDinero",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://yadinero.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "quipu_13",
@@ -505,7 +613,7 @@
       "productType": "Microcrédito Negocios",
       "loanDetails": {
         "minAmountMillions": 0.3,
-        "maxAmountMillions": 5.0,
+        "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 28.71,
           "max": 59.34
@@ -531,10 +639,19 @@
         "Micronegocios"
       ],
       "applyUrl": "https://quipu.com.co/",
-      "observations": "Evalúa trabajo real (fotos/videos). Acepta migrantes venezolanos. 20K+ beneficiados. Alianza Bogotá gota a gota."
+      "observations": "Evalúa trabajo real (fotos/videos). Acepta migrantes venezolanos. 20K+ beneficiados. Alianza Bogotá gota a gota.",
+      "entity": "Quipu",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://quipu.com.co/",
+        "notes": null
+      },
+      "usuryModality": "popular_productivo_urbano",
+      "usuryModalityVerified": false
     },
     {
-      "id": "d'una_14",
+      "id": "duna_14",
       "name": "D'Una",
       "provider": "D'Una",
       "providerType": "fintech",
@@ -545,10 +662,10 @@
       "productType": "Microcrédito",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
           "min": 22.52,
-          "max": 25.0
+          "max": 25
         },
         "disbursementTimeHours": 24,
         "approvalTimeHours": 1
@@ -573,7 +690,16 @@
         "Micronegocios"
       ],
       "applyUrl": "https://duna.com.co/",
-      "observations": "Emergencias pequeñas. Colombia Fintech."
+      "observations": "Emergencias pequeñas. Colombia Fintech.",
+      "entity": "D'Una",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://duna.com.co/",
+        "notes": null
+      },
+      "usuryModality": "popular_productivo_urbano",
+      "usuryModalityVerified": false
     },
     {
       "id": "avista_15",
@@ -585,8 +711,8 @@
       ],
       "productType": "Crédito por Libranza",
       "loanDetails": {
-        "minAmountMillions": 1.0,
-        "maxAmountMillions": 140.0,
+        "minAmountMillions": 1,
+        "maxAmountMillions": 140,
         "interestRateEA": {
           "min": 20.98,
           "max": 20.98
@@ -611,7 +737,16 @@
         "Viajes"
       ],
       "applyUrl": "https://avista.co/",
-      "observations": "SOLO pensionados/docentes/policías con convenio Avista. 25+ oficinas, 32 departamentos. Período gracia 2 meses."
+      "observations": "SOLO pensionados/docentes/policías con convenio Avista. 25+ oficinas, 32 departamentos. Período gracia 2 meses.",
+      "entity": "Avista",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://avista.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "prestagente_16",
@@ -650,7 +785,16 @@
         "Viajes"
       ],
       "applyUrl": "https://prestagente.com/",
-      "observations": "SOLO empleados con convenio libranza. Sin filas. Plan referidos. Compañía de Inversiones y Libranzas S.A.S. NIT 900.902.511."
+      "observations": "SOLO empleados con convenio libranza. Sin filas. Plan referidos. Compañía de Inversiones y Libranzas S.A.S. NIT 900.902.511.",
+      "entity": "PrestaGente",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://prestagente.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "excelcredit_17",
@@ -663,10 +807,10 @@
       ],
       "productType": "Crédito Libranza Libre Inversión",
       "loanDetails": {
-        "minAmountMillions": 2.0,
-        "maxAmountMillions": 80.0,
+        "minAmountMillions": 2,
+        "maxAmountMillions": 80,
         "interestRateEA": {
-          "min": 17.0,
+          "min": 17,
           "max": 30
         },
         "disbursementTimeHours": 72,
@@ -690,7 +834,16 @@
         "Viajes"
       ],
       "applyUrl": "https://excelcredit.co/",
-      "observations": "SOLO pensionados/docentes/empleados públicos. Especialista en reportados. 65K+ clientes. $600K millones. App CrediAsesor. Bonos BVC $100K millones AA+."
+      "observations": "SOLO pensionados/docentes/empleados públicos. Especialista en reportados. 65K+ clientes. $600K millones. App CrediAsesor. Bonos BVC $100K millones AA+.",
+      "entity": "ExcelCredit",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://excelcredit.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "mesfix_18",
@@ -726,7 +879,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://www.mesfix.com/",
-      "observations": "SOLO empresas. No genera endeudamiento. Vinculada Skandia. Felipe Tascón (fundador PayU). 5,700+ inversionistas. $10K millones rentabilidad."
+      "observations": "SOLO empresas. No genera endeudamiento. Vinculada Skandia. Felipe Tascón (fundador PayU). 5,700+ inversionistas. $10K millones rentabilidad.",
+      "entity": "Mesfix",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.mesfix.com/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "liquitech_19",
@@ -762,7 +924,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://liquitech.co/",
-      "observations": "SOLO empresas. Liquidez mediante venta facturas. Colombia Fintech."
+      "observations": "SOLO empresas. Liquidez mediante venta facturas. Colombia Fintech.",
+      "entity": "Liquitech",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://liquitech.co/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "credifamilia_20",
@@ -800,7 +971,16 @@
         "Mejoras hogar"
       ],
       "applyUrl": "https://credifamilia.com/",
-      "observations": "SOLO crédito vivienda VIS/VIP. Subsidios Mi Casa Ya. CDT desde $1M. SFC, Fogafín. Tasa más alta sector según Superfinanciera."
+      "observations": "SOLO crédito vivienda VIS/VIP. Subsidios Mi Casa Ya. CDT desde $1M. SFC, Fogafín. Tasa más alta sector según Superfinanciera.",
+      "entity": "Credifamilia",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://credifamilia.com/",
+        "notes": null
+      },
+      "usuryModality": "vivienda",
+      "usuryModalityVerified": false
     },
     {
       "id": "valcredito_21",
@@ -814,10 +994,10 @@
       "productType": "Crédito Consumo Corto Plazo",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
-          "min": 25.0,
-          "max": 28.0
+          "min": 25,
+          "max": 28
         },
         "disbursementTimeHours": 72,
         "approvalTimeHours": 72
@@ -838,7 +1018,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://valcredito.com/",
-      "observations": "Emergencias corto plazo."
+      "observations": "Emergencias corto plazo.",
+      "entity": "Valcredito",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://valcredito.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "plurall_22",
@@ -875,7 +1064,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://plurall.co/",
-      "observations": "Por investigar en detalle."
+      "observations": "Por investigar en detalle.",
+      "entity": "Plurall",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://plurall.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "wolet_23",
@@ -912,7 +1110,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://wolet.co/",
-      "observations": "Billetera digital con crédito integrado. Usuarios wallet digital."
+      "observations": "Billetera digital con crédito integrado. Usuarios wallet digital.",
+      "entity": "Wolet",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://wolet.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "guama_24",
@@ -925,7 +1132,7 @@
       "productType": "Microcrédito",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -949,7 +1156,16 @@
         "Libre inversión"
       ],
       "applyUrl": "",
-      "observations": "Microcrédito. Emergencias."
+      "observations": "Microcrédito. Emergencias.",
+      "entity": "Guama",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": null,
+        "notes": "Desactivado 2026-10-14: Sin link de la entidad (applyUrl vacío)."
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "sempli_25",
@@ -961,10 +1177,10 @@
       ],
       "productType": "Crédito Digital Pymes",
       "loanDetails": {
-        "minAmountMillions": 20.0,
-        "maxAmountMillions": 350.0,
+        "minAmountMillions": 20,
+        "maxAmountMillions": 350,
         "interestRateEA": {
-          "min": 9.0,
+          "min": 9,
           "max": 13.4
         },
         "disbursementTimeHours": 72,
@@ -986,7 +1202,16 @@
         "Expansión"
       ],
       "applyUrl": "https://sempli.co/",
-      "observations": "Líder en crédito B2B digital. Requiere facturación formal. Alianza Comfama."
+      "observations": "Líder en crédito B2B digital. Requiere facturación formal. Alianza Comfama.",
+      "entity": "Sempli",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://sempli.co/",
+        "notes": null
+      },
+      "usuryModality": "productivo_urbano",
+      "usuryModalityVerified": false
     },
     {
       "id": "finaktiva_26",
@@ -998,8 +1223,8 @@
       ],
       "productType": "Crédito Flexible / Factoring",
       "loanDetails": {
-        "minAmountMillions": 20.0,
-        "maxAmountMillions": 500.0,
+        "minAmountMillions": 20,
+        "maxAmountMillions": 500,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -1023,7 +1248,16 @@
         "Expansión"
       ],
       "applyUrl": "https://finaktiva.com/",
-      "observations": "Enfoque en empresas de alto crecimiento. Beneficios para empresas lideradas por mujeres."
+      "observations": "Enfoque en empresas de alto crecimiento. Beneficios para empresas lideradas por mujeres.",
+      "entity": "Finaktiva",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://finaktiva.com/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "omni_27",
@@ -1061,7 +1295,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://omni.lat/",
-      "observations": "Factoring 100% digital. Se enfoca en la calidad del pagador de la factura."
+      "observations": "Factoring 100% digital. Se enfoca en la calidad del pagador de la factura.",
+      "entity": "Omni",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://omni.lat/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "treinta_28",
@@ -1074,7 +1317,7 @@
       "productType": "Crédito Micronegocios",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 15.0,
+        "maxAmountMillions": 15,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -1102,7 +1345,16 @@
         "Micronegocios"
       ],
       "applyUrl": "https://www.treinta.co/",
-      "observations": "Usa los datos de ventas registrados en la App para perfilar. Alianzas con bancos."
+      "observations": "Usa los datos de ventas registrados en la App para perfilar. Alianzas con bancos.",
+      "entity": "Treinta",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.treinta.co/",
+        "notes": null
+      },
+      "usuryModality": "popular_productivo_urbano",
+      "usuryModalityVerified": false
     },
     {
       "id": "finko_29",
@@ -1143,7 +1395,16 @@
         "Micronegocios"
       ],
       "applyUrl": "https://agrofinko.com/",
-      "observations": "Operación 100% por WhatsApp. Sin papeleo. Anticipo sobre producción futura."
+      "observations": "Operación 100% por WhatsApp. Sin papeleo. Anticipo sobre producción futura.",
+      "entity": "Finko",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://agrofinko.com/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "uala_30",
@@ -1158,7 +1419,7 @@
         "minAmountMillions": 0.1,
         "maxAmountMillions": 5,
         "interestRateEA": {
-          "min": 25.0,
+          "min": 25,
           "max": 30
         },
         "disbursementTimeHours": 1,
@@ -1184,7 +1445,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://www.uala.com.co/",
-      "observations": "Acepta PPT (Migrantes Venezolanos) y Cédula de Extranjería. Tarjeta Débito gratis."
+      "observations": "Acepta PPT (Migrantes Venezolanos) y Cédula de Extranjería. Tarjeta Débito gratis.",
+      "entity": "Ualá",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.uala.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "multiprestamo_31",
@@ -1224,7 +1494,16 @@
         "Libre inversión"
       ],
       "applyUrl": "https://multiprestamo.com/",
-      "observations": "Enfoque en migrantes venezolanos y población excluida. Nanocréditos para historial."
+      "observations": "Enfoque en migrantes venezolanos y población excluida. Nanocréditos para historial.",
+      "entity": "Multiprestamo",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://multiprestamo.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "r5_32",
@@ -1236,10 +1515,10 @@
       ],
       "productType": "Crédito sobre Vehículo",
       "loanDetails": {
-        "minAmountMillions": 2.0,
-        "maxAmountMillions": 100.0,
+        "minAmountMillions": 2,
+        "maxAmountMillions": 100,
         "interestRateEA": {
-          "min": 22.0,
+          "min": 22,
           "max": 0.35
         },
         "disbursementTimeHours": 72,
@@ -1262,7 +1541,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://www.grupor5.com/",
-      "observations": "Usan el carro como garantía para bajar la tasa. Todo digital (SOAT + Crédito)."
+      "observations": "Usan el carro como garantía para bajar la tasa. Todo digital (SOAT + Crédito).",
+      "entity": "R5",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.grupor5.com/",
+        "notes": "Desactivado 2026-10-14: Tasa máxima 0.35% < mínima 22%: dato mal cargado (¿35%?)."
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "bold_33",
@@ -1302,7 +1590,16 @@
         "Micronegocios"
       ],
       "applyUrl": "https://bold.co/",
-      "observations": "Descuentan cuotas automáticamente de las ventas diarias del datáfono."
+      "observations": "Descuentan cuotas automáticamente de las ventas diarias del datáfono.",
+      "entity": "Bold",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://bold.co/",
+        "notes": null
+      },
+      "usuryModality": "popular_productivo_urbano",
+      "usuryModalityVerified": false
     },
     {
       "id": "lumni_34",
@@ -1315,7 +1612,7 @@
       "productType": "Financiación Educación (ISA)",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 100.0,
+        "maxAmountMillions": 100,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -1339,7 +1636,16 @@
         "Educación superior"
       ],
       "applyUrl": "https://lumni.net/",
-      "observations": "Modelo ISA: No pagas mientras estudias, pagas % de tu salario cuando consigues empleo."
+      "observations": "Modelo ISA: No pagas mientras estudias, pagas % de tu salario cuando consigues empleo.",
+      "entity": "Lumni",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://lumni.net/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "lucas_35",
@@ -1375,7 +1681,16 @@
         "Mejoras hogar"
       ],
       "applyUrl": "https://www.lucas.co/",
-      "observations": "Compran la casa por ti, pagas arriendo y \"ahorras\" para la cuota inicial."
+      "observations": "Compran la casa por ti, pagas arriendo y \"ahorras\" para la cuota inicial.",
+      "entity": "Lucas",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.lucas.co/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "advance_36",
@@ -1388,7 +1703,7 @@
       "productType": "Salario bajo demanda (B2B)",
       "loanDetails": {
         "minAmountMillions": 0.05,
-        "maxAmountMillions": 50.0,
+        "maxAmountMillions": 50,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -1414,7 +1729,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://www.advanceadelanta.com/",
-      "observations": "Competencia directa de Monet pero enfocado 100% en convenios con empresas grandes."
+      "observations": "Competencia directa de Monet pero enfocado 100% en convenios con empresas grandes.",
+      "entity": "Advance",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.advanceadelanta.com/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "exponencial_confirming_37",
@@ -1426,7 +1750,7 @@
       ],
       "productType": "Confirming / Factoring",
       "loanDetails": {
-        "minAmountMillions": 1.0,
+        "minAmountMillions": 1,
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 20,
@@ -1452,7 +1776,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://www.exponencialconfirming.com/",
-      "observations": "Plataforma gigante de factoring (Affirming). Conecta tesorerías de grandes empresas con Pymes."
+      "observations": "Plataforma gigante de factoring (Affirming). Conecta tesorerías de grandes empresas con Pymes.",
+      "entity": "Exponencial Confirming",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.exponencialconfirming.com/",
+        "notes": null
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "finkargo_38",
@@ -1464,8 +1797,8 @@
       ],
       "productType": "Financiación Importaciones",
       "loanDetails": {
-        "minAmountMillions": 40.0,
-        "maxAmountMillions": 2000.0,
+        "minAmountMillions": 40,
+        "maxAmountMillions": 2000,
         "interestRateEA": {
           "min": 1.5,
           "max": 2.5
@@ -1488,7 +1821,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://finkargo.com/",
-      "observations": "Pagan directamente a tu proveedor en China/USA. Analizan tu historial de importación."
+      "observations": "Pagan directamente a tu proveedor en China/USA. Analizan tu historial de importación.",
+      "entity": "Finkargo",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://finkargo.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "a2censo_39",
@@ -1500,10 +1842,10 @@
       ],
       "productType": "Financiación Colaborativa",
       "loanDetails": {
-        "minAmountMillions": 100.0,
-        "maxAmountMillions": 3000.0,
+        "minAmountMillions": 100,
+        "maxAmountMillions": 3000,
         "interestRateEA": {
-          "min": 10.0,
+          "min": 10,
           "max": 0.18
         },
         "disbursementTimeHours": 72,
@@ -1524,7 +1866,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://a2censo.com/",
-      "observations": "Plataforma de la Bolsa de Valores (BVC). Personas comunes prestan a tu Pyme."
+      "observations": "Plataforma de la Bolsa de Valores (BVC). Personas comunes prestan a tu Pyme.",
+      "entity": "A2censo",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://a2censo.com/",
+        "notes": "Desactivado 2026-10-14: Tasa máxima 0.18% < mínima 10%: dato mal cargado."
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "tul_40",
@@ -1537,7 +1888,7 @@
       "productType": "Crédito para Ferreteros",
       "loanDetails": {
         "minAmountMillions": 0.5,
-        "maxAmountMillions": 20.0,
+        "maxAmountMillions": 20,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -1563,7 +1914,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://tul.com.co/",
-      "observations": "No te dan dinero, te dan materiales de construcción para vender. Vital para ferreterías."
+      "observations": "No te dan dinero, te dan materiales de construcción para vender. Vital para ferreterías.",
+      "entity": "Tul",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://tul.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "gulungo_41",
@@ -1576,10 +1936,10 @@
       ],
       "productType": "Crédito Chatbot",
       "loanDetails": {
-        "minAmountMillions": 2.0,
-        "maxAmountMillions": 20.0,
+        "minAmountMillions": 2,
+        "maxAmountMillions": 20,
         "interestRateEA": {
-          "min": 25.0,
+          "min": 25,
           "max": 30
         },
         "disbursementTimeHours": 24,
@@ -1604,7 +1964,16 @@
         "Expansión"
       ],
       "applyUrl": "https://gulungo.com/",
-      "observations": "\"Se enfocan en la \"\"economía del rebusque\"\" formalizada. Proceso asistido por chat.\""
+      "observations": "\"Se enfocan en la \"\"economía del rebusque\"\" formalizada. Proceso asistido por chat.\"",
+      "entity": "Gulungo",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://gulungo.com/",
+        "notes": null
+      },
+      "usuryModality": "popular_productivo_urbano",
+      "usuryModalityVerified": false
     },
     {
       "id": "crediorbe_42",
@@ -1616,10 +1985,10 @@
       ],
       "productType": "Financiación Motos",
       "loanDetails": {
-        "minAmountMillions": 3.0,
-        "maxAmountMillions": 20.0,
+        "minAmountMillions": 3,
+        "maxAmountMillions": 20,
         "interestRateEA": {
-          "min": 22.0,
+          "min": 22,
           "max": 0.35
         },
         "disbursementTimeHours": 24,
@@ -1643,7 +2012,16 @@
         "Compra vehículo"
       ],
       "applyUrl": "https://crediorbe.com/",
-      "observations": "Clave para repartidores (Rappi/Uber). Financian la moto como herramienta de trabajo."
+      "observations": "Clave para repartidores (Rappi/Uber). Financian la moto como herramienta de trabajo.",
+      "entity": "CrediOrbe",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://crediorbe.com/",
+        "notes": "Desactivado 2026-10-14: Tasa máxima 0.35% < mínima 22%: dato mal cargado (¿35%?)."
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "kupi_43",
@@ -1656,7 +2034,7 @@
       "productType": "BNPL Servicios/Empleados",
       "loanDetails": {
         "minAmountMillions": 0.1,
-        "maxAmountMillions": 1.0,
+        "maxAmountMillions": 1,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -1681,7 +2059,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://kupi.com.co/",
-      "observations": "Cupo Rotativo para empleados. Compra almuerzos o servicios a cuotas."
+      "observations": "Cupo Rotativo para empleados. Compra almuerzos o servicios a cuotas.",
+      "entity": "Kupi",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://kupi.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "ledn_44",
@@ -1693,7 +2080,7 @@
       ],
       "productType": "Préstamo sobre Bitcoin",
       "loanDetails": {
-        "minAmountMillions": 100.0,
+        "minAmountMillions": 100,
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 11.9,
@@ -1722,7 +2109,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://ledn.io/",
-      "observations": "Préstamos respaldados en Bitcoin. Sin estudio de crédito. Ideal para holders."
+      "observations": "Préstamos respaldados en Bitcoin. Sin estudio de crédito. Ideal para holders.",
+      "entity": "Ledn",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://ledn.io/",
+        "notes": "Desactivado 2026-10-14: Monto mínimo 100M > máximo 5M: dato mal cargado."
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "sosty_45",
@@ -1734,7 +2130,7 @@
       ],
       "productType": "Ganadería Colaborativa",
       "loanDetails": {
-        "minAmountMillions": 10.0,
+        "minAmountMillions": 10,
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 20,
@@ -1759,7 +2155,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://www.sosty.co/",
-      "observations": "Conectan inversores de ciudad con ganaderos. El ganadero recibe vacas/capital."
+      "observations": "Conectan inversores de ciudad con ganaderos. El ganadero recibe vacas/capital.",
+      "entity": "Sosty",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://www.sosty.co/",
+        "notes": "Desactivado 2026-10-14: Monto mínimo 10M > máximo 5M: dato mal cargado."
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "unergy_46",
@@ -1771,7 +2176,7 @@
       ],
       "productType": "Financiación Solar",
       "loanDetails": {
-        "minAmountMillions": 50.0,
+        "minAmountMillions": 50,
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 20,
@@ -1795,7 +2200,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://unergy.io/",
-      "observations": "Financiación de proyectos solares mediante crowdfunding. Vendes energía, no deuda."
+      "observations": "Financiación de proyectos solares mediante crowdfunding. Vendes energía, no deuda.",
+      "entity": "Unergy",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://unergy.io/",
+        "notes": "Desactivado 2026-10-14: Monto mínimo 50M > máximo 5M: dato mal cargado."
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "finmaq_47",
@@ -1807,8 +2221,8 @@
       ],
       "productType": "Financiación Maquinaria",
       "loanDetails": {
-        "minAmountMillions": 50.0,
-        "maxAmountMillions": 2000.0,
+        "minAmountMillions": 50,
+        "maxAmountMillions": 2000,
         "interestRateEA": {
           "min": 20,
           "max": 30
@@ -1833,7 +2247,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://finmaq.com/",
-      "observations": "La máquina es la garantía. Financian a quienes los bancos rechazan pero tienen contratos."
+      "observations": "La máquina es la garantía. Financian a quienes los bancos rechazan pero tienen contratos.",
+      "entity": "FinMaq",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://finmaq.com/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "welli_48",
@@ -1845,8 +2268,8 @@
       ],
       "productType": "Crédito Procedimientos Médicos",
       "loanDetails": {
-        "minAmountMillions": 1.0,
-        "maxAmountMillions": 20.0,
+        "minAmountMillions": 1,
+        "maxAmountMillions": 20,
         "interestRateEA": {
           "min": 1.5,
           "max": 2.2
@@ -1872,7 +2295,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://welli.com.co/",
-      "observations": "Financian cirugías estéticas y tratamientos no POS directamente en la clínica. Aliado de los médicos."
+      "observations": "Financian cirugías estéticas y tratamientos no POS directamente en la clínica. Aliado de los médicos.",
+      "entity": "Welli",
+      "active": true,
+      "lastVerified": null,
+      "source": {
+        "url": "https://welli.com.co/",
+        "notes": null
+      },
+      "usuryModality": "consumo_ordinario",
+      "usuryModalityVerified": false
     },
     {
       "id": "mattilda_49",
@@ -1884,7 +2316,7 @@
       ],
       "productType": "Factoring Colegios",
       "loanDetails": {
-        "minAmountMillions": 10.0,
+        "minAmountMillions": 10,
         "maxAmountMillions": 5,
         "interestRateEA": {
           "min": 20,
@@ -1908,7 +2340,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://mattilda.io/co",
-      "observations": "Adelantan el flujo de caja de las pensiones a los colegios privados. Cobranza automatizada."
+      "observations": "Adelantan el flujo de caja de las pensiones a los colegios privados. Cobranza automatizada.",
+      "entity": "Mattilda",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://mattilda.io/co",
+        "notes": "Desactivado 2026-10-14: Monto mínimo 10M > máximo 5M: dato mal cargado."
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "terrenta_50",
@@ -1920,11 +2361,11 @@
       ],
       "productType": "Inversión en Proyectos",
       "loanDetails": {
-        "minAmountMillions": 1.0,
+        "minAmountMillions": 1,
         "maxAmountMillions": 5,
         "interestRateEA": {
-          "min": 14.0,
-          "max": 20.0
+          "min": 14,
+          "max": 20
         },
         "disbursementTimeHours": 72,
         "approvalTimeHours": 72
@@ -1947,7 +2388,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://terrenta.com/",
-      "observations": "Crowdfunding regulado. Inviertes en m2 de proyectos inmobiliarios desde montos bajos."
+      "observations": "Crowdfunding regulado. Inviertes en m2 de proyectos inmobiliarios desde montos bajos.",
+      "entity": "Terrenta",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://terrenta.com/",
+        "notes": "Desactivado 2026-10-14: Producto de inversión, no de crédito: no aplica al quiz \"necesito dinero\"."
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     },
     {
       "id": "agroune_51",
@@ -1959,11 +2409,11 @@
       ],
       "productType": "Inversión Cultivos",
       "loanDetails": {
-        "minAmountMillions": 1.0,
+        "minAmountMillions": 1,
         "maxAmountMillions": 5,
         "interestRateEA": {
-          "min": 15.0,
-          "max": 25.0
+          "min": 15,
+          "max": 25
         },
         "disbursementTimeHours": 72,
         "approvalTimeHours": 72
@@ -1986,7 +2436,16 @@
         "Emergencias"
       ],
       "applyUrl": "https://agroune.com/",
-      "observations": "Conectan inversores con cultivos de exportación (ej. Gulupa, Aguacate)."
+      "observations": "Conectan inversores con cultivos de exportación (ej. Gulupa, Aguacate).",
+      "entity": "Agroune",
+      "active": false,
+      "lastVerified": null,
+      "source": {
+        "url": "https://agroune.com/",
+        "notes": "Desactivado 2026-10-14: Producto de inversión, no de crédito: no aplica al quiz \"necesito dinero\"."
+      },
+      "usuryModality": "no_aplica",
+      "usuryModalityVerified": false
     }
   ]
 }

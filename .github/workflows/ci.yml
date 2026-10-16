@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Lunes 7:00 a. m. hora Colombia (12:00 UTC): revisión semanal de links y datos vencidos.
+    - cron: '0 12 * * 1'
+  workflow_dispatch:
+
+jobs:
+  validar-y-compilar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Validar datos de productos
+        run: npm run validate:data -- ${{ github.event_name == 'schedule' && '--check-links' || '' }}
+      - name: Compilar
+        run: npm run build
