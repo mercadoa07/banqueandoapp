@@ -18,8 +18,8 @@
         "minAmountMillions": 0.05,
         "maxAmountMillions": 5.2,
         "interestRateEA": {
-          "min": 20,
-          "max": 68.75
+          "min": 0,
+          "max": 66.56
         },
         "disbursementTimeHours": 1,
         "approvalTimeHours": 1
@@ -47,9 +47,9 @@
       "observations": "Solo para compras en comercios aliados. 26K+ tiendas. Cupo rotativo. 2M+ usuarios. SFC Resolución 2036/2024.",
       "entity": "ADDI",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://preapproval.addi.com/",
+        "url": "https://co.addi.com/creditos",
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
