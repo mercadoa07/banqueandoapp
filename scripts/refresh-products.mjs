@@ -34,10 +34,13 @@ const REPORT = opt('--report');
 const today = new Date(Date.now() - 5 * 3600 * 1000).toISOString().slice(0, 10);
 const daysSince = (d) => Math.floor((Date.parse(today) - Date.parse(d)) / 86400000);
 
-// --- Datos (se respeta CRLF + 2 espacios de los JSON del repo) ---
+// --- Datos (2 espacios; se conserva el fin de línea que ya tenga cada archivo: LF en GitHub, CRLF en Windows) ---
 const path = (p) => new URL(`../${p}`, import.meta.url);
 const read = (p) => JSON.parse(readFileSync(path(p), 'utf8'));
-const write = (p, data) => writeFileSync(path(p), JSON.stringify(data, null, 2).replace(/\n/g, '\r\n') + '\r\n', 'utf8');
+const write = (p, data) => {
+  const eol = readFileSync(path(p), 'utf8').includes('\r\n') ? '\r\n' : '\n';
+  writeFileSync(path(p), JSON.stringify(data, null, 2).replace(/\n/g, eol) + eol, 'utf8');
+};
 const files = {
   card: { file: 'config/cards.json', key: 'cards' },
   credit: { file: 'config/creditProducts.json', key: 'creditProducts' }
