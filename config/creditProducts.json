@@ -50,10 +50,10 @@
       "lastVerified": "2026-10-16",
       "source": {
         "url": "https://co.addi.com/creditos",
-        "notes": null
+        "notes": "Modalidad verificada 2026-10-16: co.addi.com/tasas-tarifas dice \"Créditos de consumo de bajo monto: Hasta 66,56% E.A.\"."
       },
-      "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModality": "consumo_bajo_monto",
+      "usuryModalityVerified": true
     },
     {
       "id": "sistecredito_2",
