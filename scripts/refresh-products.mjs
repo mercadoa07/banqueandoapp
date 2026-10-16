@@ -206,3 +206,5 @@ const report = lines.join('\n');
 console.log('\n' + report);
 if (REPORT) writeFileSync(REPORT, report, 'utf8');
 if (process.env.GITHUB_STEP_SUMMARY) appendFileSync(process.env.GITHUB_STEP_SUMMARY, report + '\n');
+// Si fallaron todos (clave inválida, sin saldo, API caída), la corrida debe verse en rojo.
+if (failures.length === queue.length) process.exit(1);
