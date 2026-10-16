@@ -71,7 +71,7 @@ Vercel despliega automáticamente cada push a `main`. Variables requeridas en Ve
 ANTHROPIC_API_KEY=... node scripts/refresh-products.mjs --limit 3 --dry-run   # simulación con 3 productos
 ```
 
-Requiere el secreto `ANTHROPIC_API_KEY` en GitHub (Settings → Secrets and variables → Actions).
+Requiere la clave de API como secreto en GitHub (`BANQUEANDO` o `ANTHROPIC_API_KEY`) (Settings → Secrets and variables → Actions).
 
 Cada producto lleva `entity`, `active`, `source` (de dónde sale el dato), `lastVerified` (fecha en que se comprobó) y `usuryModality`. Un producto con datos dudosos se marca `active: false` con el motivo en `source.notes`: no se borra.
 

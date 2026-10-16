@@ -39,7 +39,7 @@ jobs:
 
       - name: Verificar productos con Claude
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY || secrets.BANQUEANDO }}  # la clave está guardada como BANQUEANDO
           IDS: ${{ inputs.ids }}
           LIMIT: ${{ inputs.limit }}
           ALL: ${{ inputs.all }}
