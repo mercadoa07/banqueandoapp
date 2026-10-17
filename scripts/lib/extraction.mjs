@@ -95,7 +95,11 @@ Reglas de los datos (son estrictas):
 - Porcentajes como número: 28.5 para 28,5%. Tasas en efectivo anual (EA). Si la página solo da la tasa mes vencido (MV), repórtala en interestRateMonthly y no conviertas.
 - Si la tasa es un rango ("desde X% hasta Y%"), usa interestRateEAMin e interestRateEAMax; si es una sola, interestRateEA (en créditos con tasa única, repórtala en ambos: mínimo y máximo).
 - Cuotas de manejo en pesos (19900 para $19.900). Ingreso mínimo y montos de crédito en millones de pesos (1.3 para $1.300.000).
-- Si la cuota de manejo es $0 escrito explícitamente, repórtala como 0.
+- Si la cuota de manejo es $0 escrito explícitamente y sin condiciones, repórtala como 0. Si el $0 depende de algo (un número de compras, un monto mínimo, solo los primeros meses), reporta la cuota que se cobra cuando no se cumple la condición; si esa cifra no aparece, omite el campo. En ambos casos explica la condición en notes.
+- cashbackPercent solo si la devolución aplica a compras en general. Si es solo en ciertos comercios o días (por ejemplo, gasolina en una cadena), omítelo y explícalo en notes.
+- No reportes la tasa de usura o "tasa máxima legal" como tasa del producto, salvo que la página diga expresamente que ese producto cobra esa tasa.
+- Si el producto no cobra intereses pero sí cargos fijos (por servicio, plataforma, fianza), no reportes tasas; describe los cargos en notes.
+- Si la página no permite asociar con certeza una cifra a este producto (por ejemplo, una tabla comparativa sin nombres), omite el campo.
 - Si una tasa o un monto no aparece, omite ese campo. Es mejor omitir que adivinar.
 - stillOffered: "si" si el sitio lo ofrece hoy, "no" si dice que se descontinuó o no existe, "no_claro" si no lo encontraste.
 - officialPageUrl: la página oficial del producto. applyUrl: la página donde se solicita, si existe.

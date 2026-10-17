@@ -268,12 +268,12 @@
       ],
       "fees": {
         "annualFee": 0,
-        "monthlyFee": 15900,
+        "monthlyFee": 18500,
         "feeWaiverCondition": "Exoneración con compras mínimas de $200.000/mes",
         "internationalFeePercent": 3
       },
       "rates": {
-        "interestRateEA": 26.5,
+        "interestRateEA": 28.0967,
         "cashAdvanceRateEA": 28.5
       },
       "rewards": {
@@ -358,9 +358,9 @@
       "moreInfoUrl": "https://www.bancolombia.com/",
       "entity": "Bancolombia",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://www.bancolombia.com/",
+        "url": "https://www.bancolombia.com/personas/tarjetas-de-credito/mastercard/ideal",
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
@@ -380,8 +380,8 @@
       ],
       "fees": {
         "annualFee": 0,
-        "monthlyFee": 0,
-        "feeWaiverCondition": null,
+        "monthlyFee": 31990,
+        "feeWaiverCondition": "3 meses gratis para clientes nuevos; solo se cobra en cortes con compras o saldo (sitio, 2026-10-16)",
         "internationalFeePercent": 3.5
       },
       "rates": {
@@ -887,12 +887,12 @@
       ],
       "fees": {
         "annualFee": 480000,
-        "monthlyFee": 40000,
+        "monthlyFee": 44400,
         "feeWaiverCondition": null,
         "internationalFeePercent": 0
       },
       "rates": {
-        "interestRateEA": 24.5,
+        "interestRateEA": 24.98,
         "cashAdvanceRateEA": 28
       },
       "rewards": {
@@ -1002,9 +1002,9 @@
       "moreInfoUrl": "https://www.latampass.latam.com/",
       "entity": "Banco de Bogotá",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-16",
       "source": {
-        "url": "https://www.latampass.latam.com/",
+        "url": "https://www.bancodebogota.com/personas/tarjetas-de-credito/platinum-latam-pass",
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
@@ -1025,7 +1025,7 @@
       "fees": {
         "annualFee": 240000,
         "monthlyFee": 20000,
-        "feeWaiverCondition": "Exoneración con gasto mínimo $500K/mes",
+        "feeWaiverCondition": "Cuota $0 si haces 7 compras al mes (sitio, 2026-10-16)",
         "internationalFeePercent": 2.5
       },
       "rates": {
@@ -1116,7 +1116,7 @@
       "lastVerified": null,
       "source": {
         "url": "https://www.scotiabankcolpatria.com/",
-        "notes": null
+        "notes": "Revisión 2026-10-16: el lector propuso cuota $0, pero es condicional; la cuota sin exoneración no está publicada."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1246,7 +1246,7 @@
       "lastVerified": null,
       "source": {
         "url": "https://www.americanexpress.com/co/",
-        "notes": null
+        "notes": "Revisión 2026-10-16: posible cuota $36.990 con 50% de descuento, sin confirmar que sea de la Green."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1265,8 +1265,8 @@
       ],
       "fees": {
         "annualFee": 0,
-        "monthlyFee": 12500,
-        "feeWaiverCondition": "Exoneración con tanqueo mínimo $150K/mes",
+        "monthlyFee": 33100,
+        "feeWaiverCondition": "Gratis los primeros 3 meses, luego $33.100 (sitio, 2026-10-16)",
         "internationalFeePercent": 3
       },
       "rates": {
@@ -1369,7 +1369,7 @@
       "lastVerified": null,
       "source": {
         "url": "https://www.bancodebogota.com/",
-        "notes": null
+        "notes": "Devolución 10% fines de semana y 5% entre semana solo en estaciones Biomax/Brío, máx. $100.000/mes."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
