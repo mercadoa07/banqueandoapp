@@ -107,13 +107,16 @@ Objetivo: que la recomendación sea defendible y útil, no solo un orden por pun
 
 **Mejoras del algoritmo**
 - [ ] **Separar elegibilidad dura y preferencias.** Requisitos que descalifican (ingreso mínimo, reportado, relación con Bold) contra puntos por gusto. Mostrar "por qué no te recomendamos X".
-- [ ] **Costo real en pesos:**
-  - créditos: cuota mensual estimada y costo total con tasa EA, plazo y monto;
-  - tarjetas: cuota de manejo anual + intereses según cómo paga + beneficios valorizados con su gasto real.
-- [ ] **Capacidad de pago:** usar ingreso y `monthly_debt_payment` para no recomendar créditos cuya cuota supere ~30–40% del ingreso libre.
-- [ ] **Probabilidad de aprobación** (alta / media / baja) según historial, formalidad y requisitos, separada del "qué tan bueno es el producto".
-- [ ] **Ahorro honesto:** comparar contra lo que el usuario paga hoy (preguntarlo) y no contra un promedio fijo. Mostrar el supuesto.
-- [ ] **Diversidad en el top 3:** no tres productos casi iguales. Por ejemplo, el mejor costo, la aprobación más fácil y el más rápido.
+- [x] **Costo real en pesos** (`src/engine/finance.js`):
+  - créditos: cuota mensual estimada (rango con tasa mínima y máxima), monto, plazo e intereses totales;
+  - tarjetas: beneficio neto anual = cashback + millas − cuota de manejo del año (puede ser negativo).
+- [ ] Tarjetas: sumar intereses según cómo paga (pago total / a cuotas).
+- [x] **Capacidad de pago:** 40% del ingreso (o 15% de las ventas en negocios) menos `monthly_debt_payment`. Si la cuota no cabe, baja el puntaje y lo advierte.
+- [x] **Probabilidad de aprobación** (alta / media / baja) según historial, formalidad y lo que acepta cada producto.
+- [x] **Ahorro honesto:** se quitó la "cuota promedio" de $25.000 que inflaba el ahorro; se muestra el beneficio neto con su desglose.
+- [ ] Preguntar cuánto paga hoy de cuota de manejo quien quiere cambiar de tarjeta, para mostrar el ahorro real del cambio.
+- [x] **Top 3 variado en créditos:** mejor match, menor costo (entre los que prestan lo pedido) y el más rápido o más fácil de aprobar.
+- [x] Bugs: "Sin cuota de manejo" premiaba tarjetas con cuota mensual; "$0 con condiciones" en tarjetas que cobran.
 - [ ] Pesos 100% configurables y versionados. Guardar la `engineVersion` en cada sesión.
 - [ ] Más adelante: calibrar pesos con datos reales de clics en "Aplicar" y aprobaciones reportadas.
 

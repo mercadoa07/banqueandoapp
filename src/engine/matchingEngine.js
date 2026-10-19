@@ -1,10 +1,15 @@
 /**
- * BANQUEANDO - MATCHING ENGINE v4.0 (MULTI-VERTICAL)
+ * BANQUEANDO - MATCHING ENGINE v5.0 (MULTI-VERTICAL)
  * Soporta: Tarjetas (cards) y Crédito Unificado (credit)
+ * v5: beneficio neto real en tarjetas; cuota, capacidad de pago, probabilidad
+ *     de aprobación y top 3 variado en créditos.
  */
+import { annualFeeCost, cardAnnualBreakdown, estimateLoan, paymentCapacity, approvalLikelihood } from './finance.js';
+
+export const ENGINE_VERSION = '5.0';
 
 // ============================================
-// CARDS MATCHING ENGINE (sin cambios)
+// CARDS MATCHING ENGINE
 // ============================================
 export class MatchingEngine {
   constructor(cards, config) {
@@ -25,7 +30,7 @@ export class MatchingEngine {
         matchReasons: scoreResult.reasons,
         benefits: benefits,
         cons: card.cons || [],
-        personalizedSavings: this.calculateSavings(card, answers)
+        ...this.calculateSavings(card, answers)
       };
     });
 
@@ -90,7 +95,8 @@ export class MatchingEngine {
       }
     }
     
-    if (answers.fee_sensitivity === 'no_fee' && card.fees?.annualFee === 0) {
+    // Cuota de manejo real: la anual o la mensual × 12 (antes solo miraba la anual y premiaba tarjetas que sí cobran).
+    if (answers.fee_sensitivity === 'no_fee' && annualFeeCost(card) === 0) {
       score += 20;
       reasons.push('Sin cuota de manejo');
     }
@@ -122,20 +128,11 @@ export class MatchingEngine {
     return card.benefits?.slice(0, 5) || [];
   }
 
+  // Beneficio neto anual: lo que devuelve (cashback + millas) menos lo que cuesta la cuota de manejo.
+  // Puede ser negativo. Antes se sumaba siempre una "cuota promedio" de $25.000/mes que la persona quizá no paga.
   calculateSavings(card, answers) {
-    const monthlySpend = answers.monthly_spend || 1500000;
-    const annualSpend = monthlySpend * 12;
-    let savings = 0;
-
-    if (card.rewards?.cashbackPercent) {
-      savings += annualSpend * (card.rewards.cashbackPercent / 100);
-    }
-    
-    const avgFee = 25000 * 12;
-    const cardFee = card.fees?.annualFee || 0;
-    savings += avgFee - cardFee;
-    
-    return Math.max(Math.floor(savings), 0);
+    const breakdown = cardAnnualBreakdown(card, Number(answers.monthly_spend) || undefined);
+    return { personalizedSavings: breakdown.total, annualBreakdown: breakdown };
   }
 
   generateComparativeReasons(topCards, _answers) {
@@ -143,11 +140,11 @@ export class MatchingEngine {
     const [winner, ...alts] = topCards;
     
     const winnerReasons = [];
-    if (winner.fees?.annualFee === 0 && alts.some(a => a.fees?.annualFee > 0)) {
+    if (annualFeeCost(winner) === 0 && alts.some(a => annualFeeCost(a) > 0)) {
       winnerReasons.push('Sin cuota de manejo');
     }
     if (winner.personalizedSavings > (alts[0]?.personalizedSavings || 0) + 50000) {
-      winnerReasons.push('Mayor ahorro anual');
+      winnerReasons.push('Mayor beneficio neto al año');
     }
     if (!winnerReasons.length) winnerReasons.push('Mejor match para tu perfil');
     
@@ -180,6 +177,8 @@ export class CreditMatchingEngine {
       useFallback = true;
     }
 
+    const capacity = paymentCapacity(answers);
+
     // Calcular score para cada producto
     const scored = eligible.map(product => {
       let { score, reasons } = this.calculateScore(product, answers);
@@ -189,17 +188,44 @@ export class CreditMatchingEngine {
         score = Math.max(score - 20, 30); // Mínimo 30%
         reasons = ['Opción disponible aunque no cumples todos los requisitos', ...reasons];
       }
+
+      // Cuota estimada vs. lo que podría pagar al mes (40% del ingreso, o 15% de las ventas, menos sus deudas).
+      const loanEstimate = estimateLoan(product, answers);
+      const warnings = [];
+      let affordability = 'sin_datos';
+      if (loanEstimate && capacity !== null) {
+        if (loanEstimate.paymentHigh <= capacity) affordability = 'ok';
+        else if (loanEstimate.paymentLow <= capacity) {
+          affordability = 'ajustada';
+          score -= 10;
+          warnings.push('La cuota podría quedar justa para tu capacidad de pago');
+        } else {
+          affordability = 'excede';
+          score -= 25;
+          warnings.push('La cuota estimada supera lo que podrías pagar al mes');
+        }
+      }
+
+      const approval = approvalLikelihood(product, answers);
+      if (approval === 'baja') score -= 10;
+      const millions = loanEstimate ? String(loanEstimate.principal / 1e6).replace('.', ',') : '';
+      if (loanEstimate?.cappedToMax) warnings.push(`Presta hasta $${millions}M: menos de lo que pediste`);
+      if (loanEstimate?.raisedToMin) warnings.push(`Presta desde $${millions}M: más de lo que pediste`);
       
       return { 
         ...product, 
         score: Math.min(Math.max(score, 0), 100), 
-        matchReasons: reasons 
+        matchReasons: reasons,
+        loanEstimate,
+        affordability,
+        approval,
+        warnings
       };
     });
 
-    // Ordenar por score
+    // Ordenar por score y armar un top 3 variado (no tres productos casi iguales)
     const sorted = scored.sort((a, b) => b.score - a.score);
-    const top = sorted.slice(0, 3);
+    const top = this.pickDiverseTop(sorted);
 
     // Generar razones comparativas
     const topWithReasons = this.generateComparativeReasons(top, answers);
@@ -209,6 +235,42 @@ export class CreditMatchingEngine {
       alternatives: topWithReasons.slice(1),
       allResults: sorted
     };
+  }
+
+  /**
+   * Top 3 variado: el mejor puntaje, luego el de menor costo y luego el más rápido
+   * (o el más fácil de aprobar), buscando entre los 10 mejores. Evita opciones que la persona
+   * no podría pagar salvo que no haya otras. Cada alternativa lleva el porqué en pickLabel.
+   */
+  pickDiverseTop(sorted) {
+    if (sorted.length <= 1) return sorted.map(p => ({ ...p, pickLabel: 'Mejor match' }));
+    const [winner, ...rest] = sorted;
+    const minScore = winner.score - 35;
+    let pool = rest.slice(0, 10).filter(p => p.score >= minScore);
+    const affordable = pool.filter(p => p.affordability !== 'excede');
+    if (affordable.length >= 2) pool = affordable;
+
+    const picks = [{ ...winner, pickLabel: 'Mejor match' }];
+    const taken = new Set([winner.id]);
+    const take = (candidates, label) => {
+      const p = candidates.find(c => !taken.has(c.id));
+      if (p) { taken.add(p.id); picks.push({ ...p, pickLabel: label }); }
+    };
+    // Costo comparable: misma plata pedida. Los que prestan menos de lo pedido no compiten por "menor costo"
+    // (su cuota es menor solo porque prestan menos).
+    const cost = (p) => p.loanEstimate?.paymentHigh ?? p.loanDetails?.interestRateEA?.max ?? Infinity;
+    const fullAmount = pool.filter(p => !p.loanEstimate?.cappedToMax);
+    const APPROVAL_RANK = { alta: 2, media: 1, baja: 0 };
+
+    if (fullAmount.length) take([...fullAmount].sort((a, b) => cost(a) - cost(b) || b.score - a.score), 'Menor costo');
+    const fastest = [...pool].filter(p => p.loanDetails?.disbursementTimeHours != null)
+      .sort((a, b) => a.loanDetails.disbursementTimeHours - b.loanDetails.disbursementTimeHours || b.score - a.score);
+    const winnerHours = winner.loanDetails?.disbursementTimeHours ?? Infinity;
+    if (fastest.length && fastest.find(p => !taken.has(p.id))?.loanDetails.disbursementTimeHours < winnerHours) take(fastest, 'Desembolso más rápido');
+    else take([...pool].sort((a, b) => (APPROVAL_RANK[b.approval] - APPROVAL_RANK[a.approval]) || b.score - a.score), 'Más fácil de aprobar');
+    // Si el grupo era chico, completar por puntaje.
+    while (picks.length < 3 && rest.some(p => !taken.has(p.id))) take(rest, 'Alternativa');
+    return picks;
   }
 
   checkEligibility(product, answers) {
@@ -414,7 +476,7 @@ export class CreditMatchingEngine {
       { ...winner, whyWinner: winnerReasons.slice(0, 4) },
       ...alts.map(a => ({ 
         ...a, 
-        whyConsider: a.matchReasons?.slice(0, 2) || ['Alternativa viable'] 
+        whyConsider: [a.pickLabel, ...(a.matchReasons?.slice(0, 1) || [])].filter(Boolean)
       }))
     ];
   }

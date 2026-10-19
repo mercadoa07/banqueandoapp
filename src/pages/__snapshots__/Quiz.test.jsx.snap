@@ -3,8 +3,8 @@
 exports[`quiz de crédito > recorre el flujo completo y muestra la entidad de cada crédito 1`] = `
 [
   "ADDI",
+  "Credissimo",
   "Juancho Te Presta",
-  "Lineru",
 ]
 `;
 

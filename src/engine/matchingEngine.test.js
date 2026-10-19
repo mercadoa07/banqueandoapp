@@ -5,6 +5,7 @@ import { describe, it, expect } from 'vitest';
 import cardsData from '../../config/cards.json';
 import creditData from '../../config/creditProducts.json';
 import { createMatchingEngine, createCreditMatchingEngine } from './matchingEngine.js';
+import { CARD_PROFILES, CREDIT_PROFILES } from './goldenProfiles.js';
 
 const cards = createMatchingEngine(cardsData, {});
 const credit = createCreditMatchingEngine(creditData, {});
@@ -14,28 +15,11 @@ const summarize = (r) => ({
     id: p.id,
     score: p.score,
     reasons: p.whyWinner || p.whyConsider || [],
-    ...(p.personalizedSavings !== undefined && { savings: p.personalizedSavings })
+    ...(p.personalizedSavings !== undefined && { savings: p.personalizedSavings }),
+    ...(p.pickLabel && { pick: p.pickLabel, approval: p.approval, affordability: p.affordability, payment: p.loanEstimate && [p.loanEstimate.paymentLow, p.loanEstimate.paymentHigh] })
   })),
   eligible: r.allResults.length
 });
-
-const CARD_PROFILES = {
-  'primera tarjeta, ingreso bajo, sin cuota': { product_selection: 'nueva_tarjeta', income: '0-2', credit_history: 'none', payment_behavior: 'full', fee_sensitivity: 'no_fee', digital_preference: 'digital', interests: ['technology'], monthly_spend: 800000 },
-  'viajero frecuente, ingreso alto': { product_selection: 'nueva_tarjeta', income: '10+', payment_behavior: 'full', fee_sensitivity: 'value_benefits', interests: ['travel'], travel_frequency: 'frequent', monthly_spend: 6000000 },
-  'financia compras, ingreso medio': { product_selection: 'nueva_tarjeta', income: '4-6', payment_behavior: 'finance', fee_sensitivity: 'low_fee', interests: ['shopping'], monthly_spend: 2500000 },
-  'cambiar tarjeta de Bancolombia por cuota alta': { product_selection: 'cambiar_tarjeta', income: '2-4', current_card_bank: 'bancolombia', current_card_pain: ['cuota_alta', 'app_mala'], payment_behavior: 'sometimes', fee_sensitivity: 'no_fee' },
-  'reportado en centrales': { product_selection: 'nueva_tarjeta', income: '2-4', credit_history: 'reported', payment_behavior: 'full' },
-  'sin responder ingreso': { product_selection: 'nueva_tarjeta', income: 'skip', payment_behavior: 'full', fee_sensitivity: 'no_fee' }
-};
-
-const CREDIT_PROFILES = {
-  'emergencia personal, urgente, independiente': { product_selection: 'necesito_credito', credit_destination: 'personal', loan_purpose: ['emergencia_personal'], loan_amount: '1-5M', loan_urgency: 'inmediato', employment_status: 'independiente', priority_preference: 'prioridad_velocidad', process_preference: 'proceso_digital' },
-  'consolidar deuda, busca tasa': { product_selection: 'necesito_credito', credit_destination: 'personal', loan_purpose: ['consolidar_deuda'], loan_amount: '10-30M', loan_urgency: 'normal', employment_status: 'empleado', priority_preference: 'prioridad_tasa' },
-  'reportado, monto pequeño': { product_selection: 'necesito_credito', credit_destination: 'personal', loan_purpose: ['emergencia_personal'], loan_amount: '0-1M', loan_urgency: 'urgente', credit_history: 'historial_reportado' },
-  'pyme formal, capital de trabajo': { product_selection: 'necesito_credito', credit_destination: 'negocio', loan_purpose: ['capital_trabajo'], loan_amount: '50-100M', loan_urgency: 'normal', business_formalization: 'formal', priority_preference: 'prioridad_balance' },
-  'micronegocio informal, inventario': { product_selection: 'necesito_credito', credit_destination: 'negocio', loan_purpose: ['inventario'], loan_amount: '1-5M', loan_urgency: 'urgente', business_formalization: 'informal', credit_history: 'sin_historial' },
-  'cliente Bold': { product_selection: 'necesito_credito', credit_destination: 'negocio', loan_purpose: ['capital_trabajo'], loan_amount: '5-10M', entity_relationships: ['rel_bold'], business_formalization: 'formal' }
-};
 
 describe('motor de tarjetas — perfiles dorados', () => {
   for (const [name, answers] of Object.entries(CARD_PROFILES)) {
@@ -72,6 +56,32 @@ describe('reglas del motor', () => {
   it('sin relación con Bold no recomienda productos que la exigen', () => {
     const r = credit.getTopResults({ credit_destination: 'negocio' });
     r.allResults.forEach(p => expect(p.requirements?.requiresBold || p.requirements?.requiresBoldDatafono).toBeFalsy());
+  });
+
+  it('si la cuota supera la capacidad de pago, lo advierte y no lo pone como mejor opción si hay alternativas', () => {
+    const r = credit.getTopResults(CREDIT_PROFILES['pide más de lo que puede pagar']);
+    const excede = r.allResults.filter(p => p.affordability === 'excede');
+    expect(excede.length).toBeGreaterThan(0);
+    excede.forEach(p => expect(p.warnings).toContain('La cuota estimada supera lo que podrías pagar al mes'));
+    if (r.allResults.some(p => p.affordability !== 'excede')) expect(r.topMatch.affordability).not.toBe('excede');
+  });
+
+  it('el top 3 de crédito es variado y cada alternativa dice por qué está', () => {
+    for (const a of Object.values(CREDIT_PROFILES)) {
+      const r = credit.getTopResults(a);
+      const ids = [r.topMatch, ...r.alternatives].map(p => p.id);
+      expect(new Set(ids).size).toBe(ids.length);
+      r.alternatives.forEach(p => expect(p.whyConsider[0]).toBe(p.pickLabel));
+      // "Menor costo" nunca es un producto que presta menos de lo pedido, si había otros que sí prestaban todo.
+      const cheap = r.alternatives.find(p => p.pickLabel === 'Menor costo');
+      if (cheap && r.allResults.slice(1, 11).some(p => !p.loanEstimate?.cappedToMax && p.id !== r.topMatch.id)) expect(cheap.loanEstimate?.cappedToMax).toBeFalsy();
+    }
+  });
+
+  it('el beneficio neto de las tarjetas descuenta la cuota de manejo', () => {
+    const r = cards.getTopResults({ income: '10+', monthly_spend: 1000000 });
+    r.allResults.filter(c => !c.rewards?.cashbackPercent && !c.rewards?.milesPerMillionCOP && (c.fees.monthlyFee || c.fees.annualFee))
+      .forEach(c => expect(c.personalizedSavings).toBeLessThan(0));
   });
 
   it('los puntajes quedan entre 0 y 100', () => {
