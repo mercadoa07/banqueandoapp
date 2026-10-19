@@ -1,7 +1,7 @@
 // Recorre el quiz completo como lo haría una persona. Protege el flujo durante la reorganización:
 // mismas pantallas, mismos resultados, mismos datos enviados a Supabase.
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import Quiz from './Quiz.jsx';
 import { saveQuizSession, trackApplyClick } from '../lib/supabase.js';
 

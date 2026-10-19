@@ -41,6 +41,8 @@ npm run dev
 Sin `.env.local` la app funciona, pero no guarda leads ni clics.
 
 ```bash
+npm test                              # pruebas (motor, quiz completo, página de inicio)
+npm run lint                          # revisión de código
 npm run validate:data                 # valida productos (errores frenan, advertencias informan)
 npm run validate:data -- --check-links  # además revisa que los links respondan
 ```

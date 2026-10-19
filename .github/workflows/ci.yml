@@ -21,5 +21,9 @@ jobs:
       - run: npm ci
       - name: Validar datos de productos
         run: npm run validate:data -- ${{ github.event_name == 'schedule' && '--check-links' || '' }}
+      - name: Revisar código (ESLint)
+        run: npm run lint
+      - name: Pruebas
+        run: npm test
       - name: Compilar
         run: npm run build
