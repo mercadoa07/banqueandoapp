@@ -87,10 +87,11 @@ Objetivo: que cada dato mostrado sea correcto, tenga fuente y fecha.
 
 Objetivo: poder cambiar cosas sin miedo a romperlas.
 
-- [ ] Partir `Quiz.jsx` en: flujo del quiz, pregunta, registro, resultados, tarjeta de resultado y modales. Partir `Landing.jsx` en secciones.
-- [ ] Mover el estado del quiz a un hook (`useQuiz`) separado de la UI.
-- [ ] Motor de recomendación como **funciones puras** sin `console.log`, en `src/engine/`, que lean de verdad los pesos de `matchingConfig.json`.
-- [ ] Herramientas: ESLint + Prettier, Vitest y GitHub Actions (lint + tests + build + validación de datos en cada PR).
+- [x] Partir `Quiz.jsx` (609 → 67 líneas) en `src/components/quiz/` (pasos, tarjeta de resultado, tipos de pregunta, modales) y `Landing.jsx` (686 → 26) en 7 secciones en `src/components/landing/`.
+- [x] Estado y acciones del quiz en `src/hooks/useQuiz.js`; lógica pura en `src/lib/validation.js`, `src/lib/questions.js` y `src/engine/savings.js`.
+- [x] Herramientas: ESLint, Vitest + Testing Library y GitHub Actions (lint + pruebas + build + validación de datos en cada PR). 45 pruebas: 12 perfiles dorados del motor, reglas, quiz completo de punta a punta, página de inicio idéntica, utilidades.
+- [x] El quiz se carga aparte (`React.lazy`): la página de inicio baja de 569 KB a 203 KB de JavaScript.
+- [ ] Motor de recomendación como funciones puras que lean los pesos de `matchingConfig.json` (cambia resultados: va con la Fase 3).
 - [ ] Opcional: migrar a TypeScript empezando por el engine y los tipos de producto.
 - [ ] Dejar de editar desde la web de GitHub: ramas y PR con preview de Vercel.
 

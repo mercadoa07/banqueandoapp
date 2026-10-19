@@ -118,7 +118,7 @@ export class MatchingEngine {
     return { score: Math.min(score, 100), reasons };
   }
 
-  extractBenefits(card, answers) {
+  extractBenefits(card, _answers) {
     return card.benefits?.slice(0, 5) || [];
   }
 
@@ -138,7 +138,7 @@ export class MatchingEngine {
     return Math.max(Math.floor(savings), 0);
   }
 
-  generateComparativeReasons(topCards, answers) {
+  generateComparativeReasons(topCards, _answers) {
     if (topCards.length < 2) return topCards;
     const [winner, ...alts] = topCards;
     
@@ -384,7 +384,7 @@ export class CreditMatchingEngine {
     return { score: Math.max(score, 10), reasons };
   }
 
-  generateComparativeReasons(topProducts, answers) {
+  generateComparativeReasons(topProducts, _answers) {
     if (topProducts.length === 0) return [];
     if (topProducts.length === 1) {
       return [{ ...topProducts[0], whyWinner: topProducts[0].matchReasons || ['Mejor opción disponible'] }];

@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing';
-import Quiz from './pages/Quiz';
+
+// El quiz (productos, motor y Supabase) se descarga solo al entrar a /quiz:
+// la página de inicio carga más rápido.
+const Quiz = lazy(() => import('./pages/Quiz'));
+
+const Loading = () => (
+  <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center">
+    <img src="/logo.png" alt="Banqueando" className="w-20 h-20 object-contain animate-pulse" />
+  </div>
+);
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/quiz" element={<Quiz />} />
+        <Route path="/quiz" element={<Suspense fallback={<Loading />}><Quiz /></Suspense>} />
       </Routes>
     </BrowserRouter>
   );
