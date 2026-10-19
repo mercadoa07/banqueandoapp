@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { normalizePhone, isValidEmail } from './validation.js';
 import { getVisibleQuestions } from './questions.js';
 import { getEntityName, createSessionId } from './supabase.js';
-import { calculateSavingsBreakdown } from '../engine/savings.js';
+import { formatCOP } from './format.js';
 
 describe('normalizePhone', () => {
   it.each([
@@ -54,12 +54,10 @@ describe('createSessionId', () => {
   });
 });
 
-describe('calculateSavingsBreakdown', () => {
-  it('suma ahorro de cuota y cashback', () => {
-    const b = calculateSavingsBreakdown({ fees: { monthlyFee: 0 }, rewards: { cashbackPercent: 1 } }, 1000000);
-    expect(b.map(x => x.amount)).toEqual([300000, 120000]);
-  });
-  it('sin ahorro de cuota si la tarjeta cobra más que el promedio', () => {
-    expect(calculateSavingsBreakdown({ fees: { monthlyFee: 40000 }, rewards: {} })).toEqual([]);
+describe('formatCOP', () => {
+  it('usa puntos de miles y signo para negativos', () => {
+    expect(formatCOP(1234567)).toBe('$1.234.567');
+    expect(formatCOP(-120000)).toBe('-$120.000');
+    expect(formatCOP(0)).toBe('$0');
   });
 });

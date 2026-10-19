@@ -9,9 +9,6 @@
 // ============================================================
 
 export const SAVINGS_CONFIG = {
-  // Cuota de manejo promedio del mercado (COP/mes)
-  averageMonthlyFee: 25000,
-  
   // Valor de millas en USD
   mileValues: {
     lifemiles: 0.01,    // Avianca LifeMiles
@@ -19,6 +16,9 @@ export const SAVINGS_CONFIG = {
     generic: 0.005      // Puntos genéricos
   },
   
+  // Gasto mensual con tarjeta que se asume si no lo responde (COP)
+  defaultMonthlySpend: 1500000,
+
   // TRM fija para conversiones
   trm: 3800
 };
@@ -44,13 +44,13 @@ export const LEGAL_TEXTS = {
   
   // Desglose del ahorro (tooltip/modal)
   savingsBreakdown: {
-    title: "¿Cómo calculamos tu ahorro?",
+    title: "¿Cómo calculamos el beneficio neto?",
     items: [
-      "Cuota de manejo: Comparamos vs promedio del mercado ($25.000/mes)",
-      "Cashback: Basado en tu gasto mensual × % de devolución",
-      "Millas: Valoradas a $0.01 USD (TRM $3.800)"
+      "Cashback: tu gasto mensual × % de devolución × 12 meses",
+      "Millas: valoradas a US$0,01 cada una (TRM $3.800)",
+      "Menos la cuota de manejo de todo el año, si no la exoneras"
     ],
-    footer: "Este es un estimado. El ahorro real depende de tu uso y las condiciones vigentes de cada banco."
+    footer: "Es un estimado con tu gasto mensual. Si cumples las condiciones para exonerar la cuota de manejo, el beneficio es mayor. Puntos de otros programas no se valoran."
   },
   
   // Popup antes de redirigir a aplicar

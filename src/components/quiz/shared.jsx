@@ -1,7 +1,8 @@
 import React from 'react';
 import { X } from 'lucide-react';
 import { LEGAL_TEXTS, LEGAL_URLS } from '../../constants/legal.js';
-import { calculateSavingsBreakdown } from '../../engine/savings.js';
+import { cardAnnualBreakdown } from '../../engine/finance.js';
+import { formatCOP } from '../../lib/format.js';
 import { getEntityName } from '../../lib/supabase.js';
 
 export const CARD_SHADOW = { boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' };
@@ -27,8 +28,7 @@ export const LegalFooter = ({ variant = 'general' }) => (
 );
 
 export const SavingsBreakdownModal = ({ card, monthlySpend, onClose }) => {
-  const breakdown = calculateSavingsBreakdown(card, monthlySpend);
-  const total = breakdown.reduce((sum, item) => sum + item.amount, 0);
+  const { items: breakdown, total } = cardAnnualBreakdown(card, monthlySpend);
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
@@ -40,12 +40,12 @@ export const SavingsBreakdownModal = ({ card, monthlySpend, onClose }) => {
           {breakdown.map((item, idx) => (
             <div key={idx} className="flex justify-between items-center py-2 border-b border-gray-100">
               <span className="text-sm text-gray-600">{item.concept}</span>
-              <span className="font-semibold text-green-600">+${item.amount.toLocaleString()}</span>
+              <span className={`font-semibold ${item.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>{item.amount > 0 ? '+' : ''}{formatCOP(item.amount)}</span>
             </div>
           ))}
           <div className="flex justify-between items-center py-2 bg-green-50 px-3 rounded-lg">
-            <span className="font-bold text-gray-800">Total estimado</span>
-            <span className="font-bold text-green-600 text-lg">${total.toLocaleString()}/año</span>
+            <span className="font-bold text-gray-800">Beneficio neto estimado</span>
+            <span className={`font-bold text-lg ${total < 0 ? 'text-red-600' : 'text-green-600'}`}>{formatCOP(total)}/año</span>
           </div>
         </div>
         <p className="text-xs text-gray-400 italic">{LEGAL_TEXTS.savingsBreakdown.footer}</p>
