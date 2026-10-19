@@ -110,11 +110,11 @@ Objetivo: que la recomendación sea defendible y útil, no solo un orden por pun
 - [x] **Costo real en pesos** (`src/engine/finance.js`):
   - créditos: cuota mensual estimada (rango con tasa mínima y máxima), monto, plazo e intereses totales;
   - tarjetas: beneficio neto anual = cashback + millas − cuota de manejo del año (puede ser negativo).
-- [ ] Tarjetas: sumar intereses según cómo paga (pago total / a cuotas).
+- [x] Tarjetas: intereses según cómo paga (saldo financiado promedio × tasa EA) y, si financia, la tasa baja pesa más en el ranking.
 - [x] **Capacidad de pago:** 40% del ingreso (o 15% de las ventas en negocios) menos `monthly_debt_payment`. Si la cuota no cabe, baja el puntaje y lo advierte.
 - [x] **Probabilidad de aprobación** (alta / media / baja) según historial, formalidad y lo que acepta cada producto.
 - [x] **Ahorro honesto:** se quitó la "cuota promedio" de $25.000 que inflaba el ahorro; se muestra el beneficio neto con su desglose.
-- [ ] Preguntar cuánto paga hoy de cuota de manejo quien quiere cambiar de tarjeta, para mostrar el ahorro real del cambio.
+- [x] Pregunta nueva "¿Cuánto pagas hoy de cuota de manejo?" (solo al cambiar de tarjeta): muestra el ahorro real del cambio.
 - [x] **Top 3 variado en créditos:** mejor match, menor costo (entre los que prestan lo pedido) y el más rápido o más fácil de aprobar.
 - [x] Bugs: "Sin cuota de manejo" premiaba tarjetas con cuota mensual; "$0 con condiciones" en tarjetas que cobran.
 - [ ] Pesos 100% configurables y versionados. Guardar la `engineVersion` en cada sesión.

@@ -4,7 +4,7 @@
  * v5: beneficio neto real en tarjetas; cuota, capacidad de pago, probabilidad
  *     de aprobación y top 3 variado en créditos.
  */
-import { annualFeeCost, cardAnnualBreakdown, estimateLoan, paymentCapacity, approvalLikelihood } from './finance.js';
+import { annualFeeCost, cardAnnualBreakdown, switchSavings, estimateLoan, paymentCapacity, approvalLikelihood } from './finance.js';
 
 export const ENGINE_VERSION = '5.0';
 
@@ -95,6 +95,16 @@ export class MatchingEngine {
       }
     }
     
+    // Quien financia paga intereses: la tasa pesa más. Hasta +15 puntos para tasas bajas (30% EA = 0 puntos).
+    if (answers.payment_behavior === 'finance' || answers.payment_behavior === 'minimum') {
+      const rate = card.rates?.interestRateEA;
+      if (rate) {
+        const bonus = Math.min(Math.max((30 - rate) * 2, 0), 15);
+        score += bonus;
+        if (bonus >= 8) reasons.push('Tasa más baja para financiar');
+      }
+    }
+
     // Cuota de manejo real: la anual o la mensual × 12 (antes solo miraba la anual y premiaba tarjetas que sí cobran).
     if (answers.fee_sensitivity === 'no_fee' && annualFeeCost(card) === 0) {
       score += 20;
@@ -128,11 +138,12 @@ export class MatchingEngine {
     return card.benefits?.slice(0, 5) || [];
   }
 
-  // Beneficio neto anual: lo que devuelve (cashback + millas) menos lo que cuesta la cuota de manejo.
+  // Beneficio neto anual: lo que devuelve (cashback + millas) menos cuota de manejo e intereses si financia.
   // Puede ser negativo. Antes se sumaba siempre una "cuota promedio" de $25.000/mes que la persona quizá no paga.
   calculateSavings(card, answers) {
-    const breakdown = cardAnnualBreakdown(card, Number(answers.monthly_spend) || undefined);
-    return { personalizedSavings: breakdown.total, annualBreakdown: breakdown };
+    const breakdown = cardAnnualBreakdown(card, Number(answers.monthly_spend) || undefined, { paymentBehavior: answers.payment_behavior });
+    const vsCurrent = answers.product_selection === 'cambiar_tarjeta' ? switchSavings(card, answers.current_card_fee) : null;
+    return { personalizedSavings: breakdown.total, annualBreakdown: breakdown, switchSavings: vsCurrent };
   }
 
   generateComparativeReasons(topCards, _answers) {

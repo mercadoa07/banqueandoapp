@@ -28,7 +28,8 @@ export const LegalFooter = ({ variant = 'general' }) => (
 );
 
 export const SavingsBreakdownModal = ({ card, monthlySpend, onClose }) => {
-  const { items: breakdown, total } = cardAnnualBreakdown(card, monthlySpend);
+  // El motor ya lo calculó con el gasto y la forma de pago de la persona; si no, se calcula aquí.
+  const { items: breakdown, total } = card.annualBreakdown || cardAnnualBreakdown(card, monthlySpend);
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">

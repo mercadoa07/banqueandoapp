@@ -121,6 +121,15 @@ const mileValueCOP = (program) => {
   return SAVINGS_CONFIG.mileValues[key] * SAVINGS_CONFIG.trm;
 };
 
+// Cuota de manejo mensual que dice pagar hoy quien quiere cambiar de tarjeta (punto medio del rango).
+export const CURRENT_FEE_MONTHLY = {
+  fee_0: 0, fee_0_15k: 10000, fee_15_25k: 20000, fee_25_40k: 32500, fee_40k_plus: 45000
+};
+
+// Saldo que suele quedar financiado, como múltiplo del gasto mensual, según cómo paga la tarjeta.
+// Supuesto simple y visible: pago total 0; a veces financia ½ mes; casi siempre 1½ meses; paga el mínimo 3 meses.
+export const FINANCED_BALANCE_MONTHS = { full: 0, sometimes: 0.5, finance: 1.5, minimum: 3 };
+
 // Costo anual de la cuota de manejo (sin exoneración). annualFee ya es el total del año cuando viene.
 export const annualFeeCost = (card) => card.fees?.annualFee || (card.fees?.monthlyFee || 0) * 12;
 
@@ -128,7 +137,7 @@ export const annualFeeCost = (card) => card.fees?.annualFee || (card.fees?.month
  * Lo que la tarjeta le devuelve en el año (cashback + millas) menos lo que cuesta su cuota de manejo.
  * Puede ser negativo. Antes se comparaba contra una cuota "promedio" de $25.000 que la persona quizá no paga.
  */
-export function cardAnnualBreakdown(card, monthlySpend = SAVINGS_CONFIG.defaultMonthlySpend) {
+export function cardAnnualBreakdown(card, monthlySpend = SAVINGS_CONFIG.defaultMonthlySpend, { paymentBehavior } = {}) {
   const items = [];
   const yearlySpend = monthlySpend * 12;
   const cashback = card.rewards?.cashbackPercent;
@@ -139,7 +148,22 @@ export function cardAnnualBreakdown(card, monthlySpend = SAVINGS_CONFIG.defaultM
     items.push({ concept: `Millas ${card.rewards.mileProgram || ''} (${Math.round(miles).toLocaleString('es-CO')} al año)`.replace('  ', ' '), amount: Math.round(miles * mileValueCOP(card.rewards.mileProgram)) });
   }
   const fee = annualFeeCost(card);
-  if (fee > 0) items.push({ concept: `Cuota de manejo ($${(card.fees.monthlyFee || Math.round(fee / 12)).toLocaleString('es-CO')}/mes × 12)`, amount: -fee });
+  if (fee > 0) items.push({ concept: `Cuota de manejo (${(card.fees.monthlyFee || Math.round(fee / 12)).toLocaleString('es-CO')}/mes × 12)`, amount: -fee });
+  // Intereses: solo si financia. Saldo financiado promedio × tasa EA de la tarjeta.
+  const months = FINANCED_BALANCE_MONTHS[paymentBehavior] || 0;
+  const rate = card.rates?.interestRateEA || 0;
+  const interest = Math.round(monthlySpend * months * rate / 100);
+  if (interest > 0) items.push({ concept: `Intereses por financiar (≈${months} ${months === 1 ? 'mes' : 'meses'} de gasto al ${rate}% EA)`, amount: -interest });
   const total = items.reduce((s, x) => s + x.amount, 0);
-  return { items, total, feeCost: fee };
+  return { items, total, feeCost: fee, interestCost: interest };
+}
+
+/**
+ * Cuánto se ahorra en cuota de manejo al año cambiándose a esta tarjeta, según lo que dice pagar hoy.
+ * null si no respondió o dijo "No sé". Puede ser negativo (la nueva cobra más).
+ */
+export function switchSavings(card, currentFeeAnswer) {
+  const current = CURRENT_FEE_MONTHLY[currentFeeAnswer];
+  if (current === undefined) return null;
+  return current * 12 - annualFeeCost(card);
 }

@@ -84,6 +84,11 @@ function CardDetails({ card, isTop, onShowSavings }) {
           {isTop && <button onClick={onShowSavings} className="text-emerald-600 hover:text-emerald-800 p-1"><Info className="w-5 h-5" /></button>}
         </div>
       </div>
+      {card.switchSavings != null && card.switchSavings !== 0 && (
+        <p className={`text-xs text-center mb-3 ${card.switchSavings > 0 ? 'text-emerald-700' : 'text-red-600'}`}>
+          {card.switchSavings > 0 ? `Frente a tu tarjeta actual ahorras ${formatCOP(card.switchSavings)} al año en cuota de manejo` : `Frente a tu tarjeta actual pagarías ${formatCOP(-card.switchSavings)} más al año en cuota de manejo`}
+        </p>
+      )}
     </>
   );
 }

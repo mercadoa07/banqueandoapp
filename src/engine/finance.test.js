@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { monthlyPayment, monthlyRateFromEA, estimateLoan, paymentCapacity, approvalLikelihood, cardAnnualBreakdown, annualFeeCost } from './finance.js';
+import { monthlyPayment, monthlyRateFromEA, estimateLoan, paymentCapacity, approvalLikelihood, cardAnnualBreakdown, annualFeeCost, switchSavings } from './finance.js';
 
 describe('monthlyPayment (cuota fija)', () => {
   it('sin interés es capital / meses', () => expect(monthlyPayment(1200000, 0, 12)).toBe(100000));
@@ -70,5 +70,24 @@ describe('cardAnnualBreakdown (beneficio neto)', () => {
   it('annualFee ya es el total del año; si no viene, mensual × 12', () => {
     expect(annualFeeCost({ fees: { monthlyFee: 30000, annualFee: 360000 } })).toBe(360000);
     expect(annualFeeCost({ fees: { monthlyFee: 18500, annualFee: 0 } })).toBe(222000);
+  });
+});
+
+describe('intereses por financiar y ahorro frente a la tarjeta actual', () => {
+  const card = { fees: { monthlyFee: 0, annualFee: 0 }, rates: { interestRateEA: 28 }, rewards: { cashbackPercent: 1 } };
+  it('quien paga el total no paga intereses', () => {
+    expect(cardAnnualBreakdown(card, 1e6, { paymentBehavior: 'full' }).interestCost).toBe(0);
+  });
+  it('quien financia paga saldo promedio × tasa EA', () => {
+    // casi siempre financia: 1,5 meses de gasto (1,5M) × 28% = 420.000 al año
+    const b = cardAnnualBreakdown(card, 1e6, { paymentBehavior: 'finance' });
+    expect(b.interestCost).toBe(420000);
+    expect(b.total).toBe(120000 - 420000);
+  });
+  it('ahorro en cuota al cambiarse, según lo que paga hoy', () => {
+    expect(switchSavings({ fees: { monthlyFee: 0, annualFee: 0 } }, 'fee_15_25k')).toBe(240000);
+    expect(switchSavings({ fees: { monthlyFee: 30000, annualFee: 360000 } }, 'fee_15_25k')).toBe(-120000);
+    expect(switchSavings({ fees: { monthlyFee: 0 } }, 'fee_unknown')).toBeNull();
+    expect(switchSavings({ fees: { monthlyFee: 0 } }, undefined)).toBeNull();
   });
 });
