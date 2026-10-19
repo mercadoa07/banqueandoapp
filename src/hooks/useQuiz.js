@@ -1,6 +1,6 @@
 // Estado y acciones del quiz, separados de la presentación.
 // Pasos: landing → prequiz → quiz → login → calculating → results
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import cardsData from '../../config/cards.json';
 import creditProductsData from '../../config/creditProducts.json';
 import questionsData from '../../config/questions.json';
@@ -9,6 +9,7 @@ import { createMatchingEngine, createCreditMatchingEngine } from '../engine/matc
 import { saveQuizSession, trackApplyClick, createSessionId } from '../lib/supabase.js';
 import { getVisibleQuestions } from '../lib/questions.js';
 import { normalizePhone, isValidEmail } from '../lib/validation.js';
+import { trackEvent } from '../lib/analytics.js';
 
 const CALCULATING_DELAY_MS = 1500;
 const EMPTY_FORM = { phone: '', email: '', name: '', age: '', gender: '', city: '', termsAccepted: false };
@@ -29,8 +30,18 @@ export function useQuiz() {
   const [applyTarget, setApplyTarget] = useState(null); // { card, rank } del popup "Solicitar"
   const quizStartTime = useRef(null);
   const sessionIdRef = useRef(null);
+  const [visitId] = useState(() => createSessionId()); // id anónimo de esta visita (tabla quiz_events)
+  const track = (event, data) => trackEvent(visitId, event, { vertical, ...data });
 
   const visibleQuestions = getVisibleQuestions(questionsData, vertical, answers);
+  const currentQ = visibleQuestions[currentQuestion];
+
+  // Registrar cada pregunta vista y la llegada al formulario (para el embudo del tablero).
+  const currentQuestionId = currentQ?.id;
+  useEffect(() => {
+    if (step === 'quiz' && currentQuestionId) trackEvent(visitId, 'question_view', { vertical, step: currentQuestion, questionId: currentQuestionId });
+    if (step === 'login') trackEvent(visitId, 'registration_view', { vertical });
+  }, [step, currentQuestion, currentQuestionId, vertical, visitId]);
 
   const setFormField = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
   const phoneIsValid = normalizePhone(form.phone) !== null;
@@ -38,9 +49,10 @@ export function useQuiz() {
 
   const handleAnswer = (questionId, value) => setAnswers(prev => ({ ...prev, [questionId]: value }));
 
-  const startQuiz = () => { quizStartTime.current = Date.now(); setStep('prequiz'); };
+  const startQuiz = () => { quizStartTime.current = Date.now(); track('quiz_start'); setStep('prequiz'); };
 
   const choosePreQuizOption = (option) => {
+    trackEvent(visitId, 'vertical_selected', { vertical: option.vertical });
     setVertical(option.vertical);
     setAnswers({ product_selection: option.value });
     quizStartTime.current = Date.now();
@@ -61,6 +73,7 @@ export function useQuiz() {
     setStep('results');
     const timeToComplete = quizStartTime.current ? Math.round((Date.now() - quizStartTime.current) / 1000) : null;
     sessionIdRef.current = createSessionId();
+    track('results_view', { sessionId: sessionIdRef.current });
     try {
       await saveQuizSession({ sessionId: sessionIdRef.current, answers: quizAnswers, topMatch: matchResults.topMatch, alternatives: matchResults.alternatives, timeToComplete, vertical, user: currentUser });
     } catch (error) { console.error('[Quiz] Error guardando sesión:', error); }
@@ -102,7 +115,7 @@ export function useQuiz() {
 
   return {
     step, setStep, vertical, answers, results, user,
-    questionsData, visibleQuestions, currentQuestion, currentQ: visibleQuestions[currentQuestion],
+    questionsData, visibleQuestions, currentQuestion, currentQ,
     form, setFormField, phoneIsValid, canSubmitForm,
     applyTarget,
     activeCount: {

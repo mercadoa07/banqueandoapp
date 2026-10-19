@@ -5,6 +5,7 @@ import Landing from './pages/Landing';
 // El quiz (productos, motor y Supabase) se descarga solo al entrar a /quiz:
 // la página de inicio carga más rápido.
 const Quiz = lazy(() => import('./pages/Quiz'));
+const Admin = lazy(() => import('./pages/Admin'));
 
 const Loading = () => (
   <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 flex items-center justify-center">
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/quiz" element={<Suspense fallback={<Loading />}><Quiz /></Suspense>} />
+        <Route path="/admin" element={<Suspense fallback={<Loading />}><Admin /></Suspense>} />
       </Routes>
     </BrowserRouter>
   );
