@@ -127,8 +127,8 @@ Objetivo: que la recomendación sea defendible y útil, no solo un orden por pun
 Objetivo: convertir el tráfico en valor medible.
 
 **Medición**
-- [ ] Registrar el embudo: visita → inicio del quiz → pregunta en que abandona → registro → resultado → clic en "Aplicar" (por producto).
-- [ ] Dashboard interno de leads y conversión, en el servidor y no en el navegador.
+- [x] Registrar el embudo (tabla `quiz_events`, anónima): inicio → producto → cada pregunta → formulario → resultados → clic en Solicitar.
+- [x] Tablero interno en `/admin`: KPIs, embudo, productos con más clics, leads por día, abandono por pregunta y leads recientes. Entrada con enlace al correo; solo el admin puede leer (RLS).
 
 **Monetización y operación**
 - [ ] Acuerdos de afiliación / CPA con fintechs y bancos (links con tracking por producto).
