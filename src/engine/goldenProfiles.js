@@ -3,7 +3,7 @@ export const CARD_PROFILES = {
   'primera tarjeta, ingreso bajo, sin cuota': { product_selection: 'nueva_tarjeta', income: '0-2', credit_history: 'none', payment_behavior: 'full', fee_sensitivity: 'no_fee', digital_preference: 'digital', interests: ['technology'], monthly_spend: 800000 },
   'viajero frecuente, ingreso alto': { product_selection: 'nueva_tarjeta', income: '10+', payment_behavior: 'full', fee_sensitivity: 'value_benefits', interests: ['travel'], travel_frequency: 'frequent', monthly_spend: 6000000 },
   'financia compras, ingreso medio': { product_selection: 'nueva_tarjeta', income: '4-6', payment_behavior: 'finance', fee_sensitivity: 'low_fee', interests: ['shopping'], monthly_spend: 2500000 },
-  'cambiar tarjeta de Bancolombia por cuota alta': { product_selection: 'cambiar_tarjeta', income: '2-4', current_card_bank: 'bancolombia', current_card_pain: ['cuota_alta', 'app_mala'], payment_behavior: 'sometimes', fee_sensitivity: 'no_fee' },
+  'cambiar tarjeta de Bancolombia por cuota alta': { product_selection: 'cambiar_tarjeta', income: '2-4', current_card_bank: 'bancolombia', current_card_fee: 'fee_15_25k', current_card_pain: ['cuota_alta', 'app_mala'], payment_behavior: 'sometimes', fee_sensitivity: 'no_fee' },
   'reportado en centrales': { product_selection: 'nueva_tarjeta', income: '2-4', credit_history: 'reported', payment_behavior: 'full' },
   'sin responder ingreso': { product_selection: 'nueva_tarjeta', income: 'skip', payment_behavior: 'full', fee_sensitivity: 'no_fee' }
 };

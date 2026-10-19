@@ -48,7 +48,8 @@ export const LEGAL_TEXTS = {
     items: [
       "Cashback: tu gasto mensual × % de devolución × 12 meses",
       "Millas: valoradas a US$0,01 cada una (TRM $3.800)",
-      "Menos la cuota de manejo de todo el año, si no la exoneras"
+      "Menos la cuota de manejo de todo el año, si no la exoneras",
+      "Menos los intereses, si financias tus compras (según cómo dijiste que pagas)"
     ],
     footer: "Es un estimado con tu gasto mensual. Si cumples las condiciones para exonerar la cuota de manejo, el beneficio es mayor. Puntos de otros programas no se valoran."
   },

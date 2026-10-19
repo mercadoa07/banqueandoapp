@@ -16,6 +16,7 @@ const summarize = (r) => ({
     score: p.score,
     reasons: p.whyWinner || p.whyConsider || [],
     ...(p.personalizedSavings !== undefined && { savings: p.personalizedSavings }),
+    ...(p.switchSavings != null && { vsCurrent: p.switchSavings }),
     ...(p.pickLabel && { pick: p.pickLabel, approval: p.approval, affordability: p.affordability, payment: p.loanEstimate && [p.loanEstimate.paymentLow, p.loanEstimate.paymentHigh] })
   })),
   eligible: r.allResults.length

@@ -386,24 +386,27 @@ exports[`motor de tarjetas — perfiles dorados > cambiar tarjeta de Bancolombia
       "reasons": [
         "Mejor match para tu perfil",
       ],
-      "savings": 180000,
+      "savings": -33750,
       "score": 95,
+      "vsCurrent": 240000,
     },
     {
       "id": "rappi_card",
       "reasons": [
         "Alternativa viable",
       ],
-      "savings": 180000,
+      "savings": -22500,
       "score": 90,
+      "vsCurrent": 240000,
     },
     {
       "id": "bbva_aqua",
       "reasons": [
         "Alternativa viable",
       ],
-      "savings": 0,
+      "savings": -186750,
       "score": 90,
+      "vsCurrent": 240000,
     },
   ],
 }
@@ -414,28 +417,28 @@ exports[`motor de tarjetas — perfiles dorados > financia compras, ingreso medi
   "eligible": 12,
   "top": [
     {
-      "id": "bancolombia_ideal",
+      "id": "scotiabank_platinum",
       "reasons": [
-        "Mejor match para tu perfil",
+        "Mayor beneficio neto al año",
       ],
-      "savings": -222000,
-      "score": 65,
+      "savings": -1121250,
+      "score": 78,
     },
     {
       "id": "davivienda_clasica",
       "reasons": [
         "Alternativa viable",
       ],
-      "savings": -210000,
-      "score": 65,
+      "savings": -1215000,
+      "score": 71.4,
     },
     {
-      "id": "scotiabank_platinum",
+      "id": "bancolombia_ideal",
       "reasons": [
         "Alternativa viable",
       ],
-      "savings": -240000,
-      "score": 65,
+      "savings": -1275626,
+      "score": 68.8066,
     },
   ],
 }
