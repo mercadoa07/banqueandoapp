@@ -3,6 +3,7 @@
 import { describe, it, expect } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+import { allGuidePaths } from './lib/guides.js';
 
 const root = path.resolve(__dirname, '..');
 const read = (f) => fs.readFileSync(path.join(root, f), 'utf8');
@@ -34,7 +35,9 @@ describe('compartir y Google', () => {
     const app = read('src/App.jsx');
     const locs = [...read('public/sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => new URL(m[1]).pathname);
     expect(locs.length).toBeGreaterThan(3);
-    for (const p of locs) expect(app.includes(`path="${p}"`), p).toBe(true);
+    const guides = allGuidePaths();
+    for (const p of locs) expect(app.includes(`path="${p}"`) || guides.includes(p), p).toBe(true);
+    for (const g of guides) expect(locs, `falta ${g} en el mapa del sitio`).toContain(g);
     expect(locs).not.toContain('/admin');
     const robots = read('public/robots.txt');
     expect(robots).toMatch(/Disallow: \/admin/);
