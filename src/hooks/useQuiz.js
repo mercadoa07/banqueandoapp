@@ -1,6 +1,6 @@
 // Estado y acciones del quiz, separados de la presentación.
 // Pasos: landing → prequiz → quiz → login → calculating → results
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import cardsData from '../../config/cards.json';
 import creditProductsData from '../../config/creditProducts.json';
 import questionsData from '../../config/questions.json';
@@ -12,7 +12,8 @@ import { normalizePhone, isValidEmail } from '../lib/validation.js';
 import { trackEvent } from '../lib/analytics.js';
 
 const CALCULATING_DELAY_MS = 1500;
-const EMPTY_FORM = { phone: '', email: '', name: '', age: '', gender: '', city: '', termsAccepted: false, marketingAccepted: false };
+const AUTO_ADVANCE_MS = 300;
+const EMPTY_FORM = { phone: '', email: '', name: '', age: '', gender: '', city: '', detail: '', termsAccepted: false, marketingAccepted: false };
 
 export function useQuiz() {
   const engines = useMemo(() => ({
@@ -30,6 +31,7 @@ export function useQuiz() {
   const [results, setResults] = useState(null);
   const [user, setUser] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
+  const [advanceFrom, setAdvanceFrom] = useState(null); // índice de la pregunta que espera avanzar sola
   const [applyTarget, setApplyTarget] = useState(null); // { card, rank } del popup "Solicitar"
   const quizStartTime = useRef(null);
   const sessionIdRef = useRef(null);
@@ -38,6 +40,11 @@ export function useQuiz() {
 
   const visibleQuestions = getVisibleQuestions(questionsData, vertical, answers);
   const currentQ = visibleQuestions[currentQuestion];
+  // Contador honesto: antes de saber el destino del crédito, se cuenta la ruta más larga (negocio)
+  // para que el total no salte de 7 a 11 en la segunda pregunta.
+  const displayTotal = vertical === 'credit' && !answers.credit_destination
+    ? getVisibleQuestions(questionsData, vertical, { ...answers, credit_destination: 'negocio' }).length
+    : visibleQuestions.length;
 
   // Registrar cada pregunta vista y la llegada al formulario (para el embudo del tablero).
   const currentQuestionId = currentQ?.id;
@@ -58,7 +65,15 @@ export function useQuiz() {
   const phoneIsValid = normalizePhone(form.phone) !== null;
   const canSubmitForm = phoneIsValid && isValidEmail(form.email) && form.termsAccepted;
 
-  const handleAnswer = (questionId, value) => setAnswers(prev => ({ ...prev, [questionId]: value }));
+  // Algunas opciones fijan además otras respuestas (`sets` en questions.json): por ejemplo,
+  // "lo necesito ya" deja urgencia inmediata y prioridad velocidad, que es lo que lee el motor.
+  const handleAnswer = (questionId, value) => {
+    const question = visibleQuestions.find(q => q.id === questionId);
+    const option = question?.type === 'single' ? question.options?.find(o => o.value === value) : null;
+    setAnswers(prev => ({ ...prev, [questionId]: value, ...(option?.sets || {}) }));
+    // Una sola respuesta: avanza solo (sin tocar "Siguiente").
+    if (question?.type === 'single') setAdvanceFrom(currentQuestion);
+  };
 
   const startQuiz = () => { quizStartTime.current = Date.now(); track('quiz_start'); setStep('prequiz'); };
 
@@ -70,7 +85,20 @@ export function useQuiz() {
     setStep('quiz');
   };
 
-  const nextQuestion = () => (currentQuestion < visibleQuestions.length - 1 ? setCurrentQuestion(prev => prev + 1) : setStep('login'));
+  const totalQuestions = visibleQuestions.length;
+  const nextQuestion = useCallback(
+    () => (currentQuestion < totalQuestions - 1 ? setCurrentQuestion(prev => prev + 1) : setStep('login')),
+    [currentQuestion, totalQuestions]
+  );
+
+  // Avance automático tras una respuesta única. Espera un instante para que se vea la opción
+  // marcada, y se cancela si la persona ya avanzó o retrocedió por su cuenta.
+  useEffect(() => {
+    if (advanceFrom === null || step !== 'quiz') return;
+    if (advanceFrom !== currentQuestion) { setAdvanceFrom(null); return; }
+    const timer = setTimeout(() => { setAdvanceFrom(null); nextQuestion(); }, AUTO_ADVANCE_MS);
+    return () => clearTimeout(timer);
+  }, [advanceFrom, step, currentQuestion, nextQuestion]);
   const prevQuestion = () => currentQuestion > 0 && setCurrentQuestion(prev => prev - 1);
 
   const calculateResults = async (quizAnswers, currentUser) => {
@@ -103,8 +131,11 @@ export function useQuiz() {
       marketingAccepted: form.marketingAccepted === true
     };
     setUser(newUser);
+    // El detalle opcional del formulario se guarda con las respuestas (columna answer_loan_purpose_detail).
+    const detail = form.detail.trim();
+    const finalAnswers = detail ? { ...answers, loan_purpose_detail: detail } : answers;
     setStep('calculating');
-    setTimeout(() => calculateResults(answers, newUser), CALCULATING_DELAY_MS);
+    setTimeout(() => calculateResults(finalAnswers, newUser), CALCULATING_DELAY_MS);
   };
 
   const openApply = (card, rank) => setApplyTarget({ card, rank });
@@ -127,7 +158,7 @@ export function useQuiz() {
 
   return {
     step, setStep, vertical, answers, results, user,
-    questionsData, visibleQuestions, currentQuestion, currentQ,
+    questionsData, visibleQuestions, displayTotal, currentQuestion, currentQ,
     form, setFormField, phoneIsValid, canSubmitForm,
     applyTarget,
     activeCount: {

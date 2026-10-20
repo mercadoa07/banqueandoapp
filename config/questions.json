@@ -179,39 +179,6 @@
         ]
       },
       {
-        "id": "current_cards",
-        "section": "basic",
-        "showIf": {
-          "field": "product_selection",
-          "equals": "nueva_tarjeta"
-        },
-        "question": "¿Actualmente tienes tarjeta de crédito?",
-        "type": "single",
-        "required": true,
-        "options": [
-          {
-            "value": "none",
-            "label": "No, será mi primera tarjeta",
-            "emoji": "🆕"
-          },
-          {
-            "value": "1",
-            "label": "Sí, tengo 1 tarjeta",
-            "emoji": "1️⃣"
-          },
-          {
-            "value": "2-3",
-            "label": "Sí, tengo 2-3 tarjetas",
-            "emoji": "2️⃣"
-          },
-          {
-            "value": "3+",
-            "label": "Sí, tengo más de 3 tarjetas",
-            "emoji": "3️⃣"
-          }
-        ]
-      },
-      {
         "id": "current_card_bank",
         "section": "pain_points",
         "showIf": {
@@ -616,6 +583,32 @@
     ],
     "credit": [
       {
+        "id": "credit_destination",
+        "section": "necesidad",
+        "phase": 2,
+        "question": "¿Este crédito es para tu negocio o para uso personal?",
+        "subtitle": "Esto nos ayuda a mostrarte las opciones correctas",
+        "type": "single",
+        "required": true,
+        "options": [
+          {
+            "value": "negocio",
+            "label": "Para mi negocio o emprendimiento",
+            "emoji": "🏢"
+          },
+          {
+            "value": "personal",
+            "label": "Para uso personal (aunque tenga negocio)",
+            "emoji": "👤"
+          },
+          {
+            "value": "iniciar_negocio",
+            "label": "Para iniciar un negocio que aún no existe",
+            "emoji": "🚀"
+          }
+        ]
+      },
+      {
         "id": "loan_purpose",
         "section": "necesidad",
         "phase": 1,
@@ -724,59 +717,40 @@
         ]
       },
       {
-        "id": "loan_urgency",
+        "id": "urgency_priority",
         "section": "necesidad",
         "phase": 1,
-        "question": "¿Qué tan urgente lo necesitas?",
-        "subtitle": "Esto nos ayuda a priorizar opciones con desembolso rápido",
+        "question": "¿Qué pesa más para ti?",
+        "subtitle": "Las opciones más rápidas suelen costar más",
         "type": "single",
         "required": true,
         "options": [
           {
-            "value": "inmediato",
-            "label": "Lo necesito hoy o mañana",
-            "emoji": "🔥"
+            "value": "rapido",
+            "label": "Lo necesito ya (hoy o mañana), aunque cueste más",
+            "emoji": "🔥",
+            "sets": {
+              "loan_urgency": "inmediato",
+              "priority_preference": "prioridad_velocidad"
+            }
           },
           {
-            "value": "urgente",
-            "label": "Esta semana",
-            "emoji": "⚡"
+            "value": "balance",
+            "label": "En unos días, con un buen balance entre rapidez y costo",
+            "emoji": "⚖️",
+            "sets": {
+              "loan_urgency": "urgente",
+              "priority_preference": "prioridad_balance"
+            }
           },
           {
-            "value": "normal",
-            "label": "En 2 semanas está bien",
-            "emoji": "📅"
-          },
-          {
-            "value": "flexible",
-            "label": "No tengo afán, quiero la mejor opción",
-            "emoji": "🧘"
-          }
-        ]
-      },
-      {
-        "id": "credit_destination",
-        "section": "necesidad",
-        "phase": 2,
-        "question": "¿Este crédito es para tu negocio o para uso personal?",
-        "subtitle": "Esto nos ayuda a mostrarte las opciones correctas",
-        "type": "single",
-        "required": true,
-        "options": [
-          {
-            "value": "negocio",
-            "label": "Para mi negocio o emprendimiento",
-            "emoji": "🏢"
-          },
-          {
-            "value": "personal",
-            "label": "Para uso personal (aunque tenga negocio)",
-            "emoji": "👤"
-          },
-          {
-            "value": "iniciar_negocio",
-            "label": "Para iniciar un negocio que aún no existe",
-            "emoji": "🚀"
+            "value": "barato",
+            "label": "Sin afán: quiero la tasa más baja",
+            "emoji": "💰",
+            "sets": {
+              "loan_urgency": "normal",
+              "priority_preference": "prioridad_tasa"
+            }
           }
         ]
       },
@@ -812,41 +786,6 @@
             "value": "empresa",
             "label": "Empresa constituida (SAS, SA, LTDA)",
             "emoji": "🏢"
-          }
-        ]
-      },
-      {
-        "id": "business_age",
-        "section": "perfil_negocio",
-        "phase": 2,
-        "showIf": {
-          "field": "credit_destination",
-          "equals": "negocio"
-        },
-        "question": "¿Cuánto tiempo lleva operando tu negocio?",
-        "subtitle": "La antigüedad afecta las opciones disponibles",
-        "type": "single",
-        "required": true,
-        "options": [
-          {
-            "value": "0-6m",
-            "label": "Menos de 6 meses",
-            "emoji": "🌱"
-          },
-          {
-            "value": "6-12m",
-            "label": "6 meses a 1 año",
-            "emoji": "📈"
-          },
-          {
-            "value": "1-2y",
-            "label": "1 a 2 años",
-            "emoji": "💼"
-          },
-          {
-            "value": "2y+",
-            "label": "Más de 2 años",
-            "emoji": "🏛️"
           }
         ]
       },
@@ -1180,171 +1119,35 @@
         }
       },
       {
-        "id": "available_documents",
+        "id": "uses_bold",
         "section": "elegibilidad",
         "phase": 3,
-        "question": "Si te solicitaran documentos, ¿cuáles tienes disponibles?",
-        "subtitle": "Selecciona todos los que tengas",
-        "type": "multiple",
-        "required": true,
-        "options": [
-          {
-            "value": "doc_cedula",
-            "label": "Cédula de ciudadanía",
-            "emoji": "🪪"
-          },
-          {
-            "value": "doc_extractos",
-            "label": "Extractos bancarios (últimos 3-6 meses)",
-            "emoji": "🏦"
-          },
-          {
-            "value": "doc_laboral",
-            "label": "Certificado laboral o contrato de trabajo",
-            "emoji": "📋"
-          },
-          {
-            "value": "doc_renta",
-            "label": "Declaración de renta",
-            "emoji": "📄"
-          },
-          {
-            "value": "doc_camara",
-            "label": "Cámara de Comercio",
-            "emoji": "🏢"
-          },
-          {
-            "value": "doc_rut",
-            "label": "RUT",
-            "emoji": "📑"
-          },
-          {
-            "value": "doc_estados_fin",
-            "label": "Estados financieros del negocio",
-            "emoji": "📊"
-          }
-        ]
-      },
-      {
-        "id": "entity_relationships",
-        "section": "elegibilidad",
-        "phase": 3,
-        "question": "¿Con cuáles de estas entidades tienes algún tipo de relación?",
-        "subtitle": "Cuenta bancaria, billetera digital, datáfono, etc.",
-        "type": "multiple",
+        "question": "¿Vendes con datáfono Bold?",
+        "subtitle": "Bold tiene crédito para sus comercios",
+        "type": "single",
         "required": false,
+        "showIf": {
+          "field": "credit_destination",
+          "equals": "negocio"
+        },
         "options": [
           {
-            "value": "rel_nequi",
-            "label": "Nequi",
-            "emoji": "💜"
+            "value": "si",
+            "label": "Sí, uso Bold",
+            "emoji": "✅",
+            "sets": {
+              "entity_relationships": [
+                "rel_bold"
+              ]
+            }
           },
           {
-            "value": "rel_daviplata",
-            "label": "Daviplata",
-            "emoji": "❤️"
-          },
-          {
-            "value": "rel_bold",
-            "label": "Bold (datáfono)",
-            "emoji": "⚡"
-          },
-          {
-            "value": "rel_bancolombia",
-            "label": "Bancolombia",
-            "emoji": "💚"
-          },
-          {
-            "value": "rel_davivienda",
-            "label": "Davivienda",
-            "emoji": "🔴"
-          },
-          {
-            "value": "rel_bbva",
-            "label": "BBVA",
-            "emoji": "🔵"
-          },
-          {
-            "value": "rel_nu",
-            "label": "Nubank",
-            "emoji": "💜"
-          },
-          {
-            "value": "rel_rappi",
-            "label": "Rappipay",
-            "emoji": "🧡"
-          },
-          {
-            "value": "rel_bogota",
-            "label": "Banco de Bogotá",
-            "emoji": "🟡"
-          },
-          {
-            "value": "rel_scotia",
-            "label": "Scotiabank Colpatria",
-            "emoji": "🔴"
-          },
-          {
-            "value": "rel_ninguna",
-            "label": "Ninguna de las anteriores",
-            "emoji": "➖"
-          }
-        ]
-      },
-      {
-        "id": "priority_preference",
-        "section": "preferencias",
-        "phase": 4,
-        "question": "¿Qué es más importante para ti?",
-        "subtitle": "Esto nos ayuda a ordenar tus resultados",
-        "type": "single",
-        "required": true,
-        "options": [
-          {
-            "value": "prioridad_velocidad",
-            "label": "Que me lo aprueben rápido, aunque cueste más",
-            "emoji": "⚡"
-          },
-          {
-            "value": "prioridad_tasa",
-            "label": "Conseguir la mejor tasa, aunque tarde más",
-            "emoji": "💰"
-          },
-          {
-            "value": "prioridad_balance",
-            "label": "Un balance entre rapidez y buena tasa",
-            "emoji": "⚖️"
-          }
-        ]
-      },
-      {
-        "id": "process_preference",
-        "section": "preferencias",
-        "phase": 4,
-        "question": "¿Cómo prefieres hacer el proceso?",
-        "subtitle": "Cada entidad tiene diferentes canales",
-        "type": "single",
-        "required": true,
-        "options": [
-          {
-            "value": "proceso_digital",
-            "label": "100% digital - No quiero ir a ninguna oficina",
-            "emoji": "📱"
-          },
-          {
-            "value": "proceso_hibrido",
-            "label": "Digital pero con asesor disponible si lo necesito",
-            "emoji": "💬"
-          },
-          {
-            "value": "proceso_presencial",
-            "label": "Prefiero ir a una oficina y hablar con alguien",
-            "emoji": "🏦"
-          },
-          {
-            "value": "proceso_cualquiera",
-            "label": "Me da igual",
-            "emoji": "🤷"
+            "value": "no",
+            "label": "No",
+            "emoji": "➖",
+            "sets": {
+              "entity_relationships": []
+            }
           }
         ]
       },
@@ -1383,28 +1186,6 @@
             "emoji": "🤔"
           }
         ]
-      },
-      {
-        "id": "about_you",
-        "section": "preferencias",
-        "phase": 4,
-        "question": "Cuéntanos brevemente, ¿a qué te dedicas?",
-        "subtitle": "Esto nos ayuda a entender mejor tu situación (opcional)",
-        "type": "text",
-        "required": false,
-        "maxLength": 280,
-        "placeholder": "Ej: Tengo una tienda de ropa en el centro de Medellín, vendo al por mayor y al detal..."
-      },
-      {
-        "id": "loan_purpose_detail",
-        "section": "preferencias",
-        "phase": 4,
-        "question": "¿Para qué vas a usar el dinero específicamente?",
-        "subtitle": "Cuéntanos con más detalle (opcional)",
-        "type": "text",
-        "required": false,
-        "maxLength": 280,
-        "placeholder": "Ej: Necesito comprar mercancía para la temporada de diciembre porque tengo varios pedidos confirmados..."
       }
     ]
   },

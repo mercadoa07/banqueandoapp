@@ -17,7 +17,6 @@ exports[`motor de crédito — perfiles dorados > capital de trabajo, negocio in
         "Desembolso en menos de 24 horas",
         "Aprobación express",
         "Acepta trabajadores informales",
-        "100% digital",
       ],
       "score": 100,
     },
@@ -34,7 +33,7 @@ exports[`motor de crédito — perfiles dorados > capital de trabajo, negocio in
         "Menor costo",
         "Desembolso en menos de 24 horas",
       ],
-      "score": 80,
+      "score": 70,
     },
     {
       "affordability": "ok",
@@ -123,11 +122,12 @@ exports[`motor de crédito — perfiles dorados > compra específica, personal 1
       ],
       "pick": "Mejor match",
       "reasons": [
+        "Desembolso rápido (1-3 días)",
         "Buen balance rapidez/tasa",
         "Pensado para lo que necesitas",
         "Ideal para personas naturales",
       ],
-      "score": 88,
+      "score": 98,
     },
     {
       "affordability": "ok",
@@ -140,9 +140,9 @@ exports[`motor de crédito — perfiles dorados > compra específica, personal 1
       "pick": "Menor costo",
       "reasons": [
         "Menor costo",
-        "Buen balance rapidez/tasa",
+        "Desembolso rápido (1-3 días)",
       ],
-      "score": 65,
+      "score": 75,
     },
     {
       "affordability": "ok",
@@ -155,9 +155,9 @@ exports[`motor de crédito — perfiles dorados > compra específica, personal 1
       "pick": "Desembolso más rápido",
       "reasons": [
         "Desembolso más rápido",
-        "Buen balance rapidez/tasa",
+        "Desembolso rápido (1-3 días)",
       ],
-      "score": 75,
+      "score": 85,
     },
   ],
 }
@@ -234,7 +234,7 @@ exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, 
         "Desembolso en menos de 24 horas",
         "Aprobación express",
         "Acepta trabajadores informales",
-        "100% digital",
+        "Ideal para personas naturales",
       ],
       "score": 100,
     },
@@ -251,7 +251,7 @@ exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, 
         "Menor costo",
         "Desembolso en menos de 24 horas",
       ],
-      "score": 90,
+      "score": 80,
     },
     {
       "affordability": "ok",
@@ -395,11 +395,12 @@ exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabaj
       ],
       "pick": "Mejor match",
       "reasons": [
+        "Desembolso rápido (1-3 días)",
         "Buen balance rapidez/tasa",
         "Pensado para lo que necesitas",
         "Diseñado para negocios",
       ],
-      "score": 88,
+      "score": 98,
     },
     {
       "affordability": "ok",
@@ -412,9 +413,9 @@ exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabaj
       "pick": "Menor costo",
       "reasons": [
         "Menor costo",
-        "Buen balance rapidez/tasa",
+        "Desembolso rápido (1-3 días)",
       ],
-      "score": 78,
+      "score": 88,
     },
     {
       "affordability": "ok",
@@ -427,9 +428,9 @@ exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabaj
       "pick": "Desembolso más rápido",
       "reasons": [
         "Desembolso más rápido",
-        "Buen balance rapidez/tasa",
+        "Desembolso rápido (1-3 días)",
       ],
-      "score": 73,
+      "score": 83,
     },
   ],
 }
