@@ -339,7 +339,7 @@
           },
           {
             "value": "pocos_beneficios",
-            "label": "Pocos beneficios o rewards",
+            "label": "Pocos beneficios o recompensas",
             "emoji": "😒"
           },
           {
@@ -408,7 +408,7 @@
         "id": "monthly_spend",
         "section": "financial",
         "question": "¿Cuánto gastas mensualmente con tarjeta?",
-        "subtitle": "Esto nos ayuda a calcular tu potencial de rewards",
+        "subtitle": "Esto nos ayuda a calcular cuánto te puede devolver cada tarjeta",
         "type": "slider",
         "required": true,
         "min": 200000,

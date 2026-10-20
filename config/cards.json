@@ -4,32 +4,31 @@
   "cards": [
     {
       "id": "nu_classic",
-      "name": "Nu Tarjeta de Crédito",
+      "name": "Nu Tarjeta de Crédito Morada",
       "bank": "Nu Colombia",
       "bankLogo": "/logos/nu.svg",
       "image": "💜",
       "network": "Mastercard",
       "category": [
-        "sin_cuota",
         "digital",
         "primer_tarjeta"
       ],
       "fees": {
         "annualFee": 0,
-        "monthlyFee": 0,
-        "feeWaiverCondition": null,
-        "internationalFeePercent": 0
+        "monthlyFee": 17000,
+        "feeWaiverCondition": "Desde $3.000 hasta $31.000 al mes según la oferta que recibas. $0 si no usas la tarjeta ni tienes deuda. El Plan Abre Caminos no tiene cuota de manejo.",
+        "internationalFeePercent": 0.45
       },
       "rates": {
-        "interestRateEA": 28.5,
-        "cashAdvanceRateEA": 28.5
+        "interestRateEA": 28.59,
+        "cashAdvanceRateEA": 28.59
       },
       "rewards": {
-        "type": "cashback",
-        "cashbackPercent": 1,
+        "type": "points",
+        "cashbackPercent": null,
         "milesPerMillionCOP": null,
         "mileProgram": null,
-        "pointsProgram": null,
+        "pointsProgram": "Nu Plus",
         "specialCategories": []
       },
       "requirements": {
@@ -52,20 +51,20 @@
         "priorityPass": false
       },
       "benefits": [
-        "Sin cuota de manejo NUNCA - $0 siempre",
-        "App calificada 4.8/5 en stores",
-        "Tarjeta virtual instantánea",
-        "Control total desde la app",
-        "Cashback automático del 1%"
+        "Cuota de manejo solo si la usas: $0 si no tienes compras ni deuda",
+        "Puntos Nu Plus que se convierten en dinero o abonan a la deuda",
+        "Compras a 12 cuotas con 0% de interés en comercios aliados",
+        "Tarjeta virtual y control total desde la app",
+        "Plan Abre Caminos si no tienes historial (cupo con garantía)"
       ],
       "cons": [
         {
-          "text": "Sin programa de millas",
-          "severity": "low"
+          "text": "Cuota de manejo de $3.000 a $31.000 al mes si la usas",
+          "severity": "medium"
         },
         {
-          "text": "Cupo inicial puede ser bajo ($500K-$2M)",
-          "severity": "medium"
+          "text": "Sin programa de millas",
+          "severity": "low"
         },
         {
           "text": "No tiene acceso a salas VIP",
@@ -73,16 +72,15 @@
         }
       ],
       "painPointsSolved": [
-        "cuota_alta",
         "app_mala",
         "proceso_dificil"
       ],
       "matchFactors": {
         "idealFor": [
-          "sin_cuota",
           "digital",
           "primer_tarjeta",
-          "simplicidad"
+          "simplicidad",
+          "construir_historial"
         ],
         "paymentBehavior": [
           "full",
@@ -92,7 +90,8 @@
           "digital"
         ],
         "feeSensitivity": [
-          "no_fee"
+          "flexible",
+          "moderate"
         ],
         "interests": [
           "technology",
@@ -115,10 +114,10 @@
       "moreInfoUrl": "https://nu.com.co/",
       "entity": "Nu Colombia",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://nu.com.co/",
-        "notes": "Enlace corregido 2026-10-20"
+        "url": "https://nu.com.co/contratos-y-tarifas/morada",
+        "notes": "Verificado 2026-10-20 en contratos y tarifas (actualizados el 5-oct-2026): cuota $3.000–$31.000/mes según oferta, tasa 28,59% EA, compras internacionales 0,45%. Antes figuraba \"sin cuota nunca\" y 1% de cashback, que no es cierto."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true

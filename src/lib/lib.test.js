@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { normalizePhone, isValidEmail } from './validation.js';
 import { getVisibleQuestions } from './questions.js';
 import { getEntityName, createSessionId } from './supabase.js';
-import { formatCOP } from './format.js';
+import { formatCOP, formatMillions } from './format.js';
 
 describe('normalizePhone', () => {
   it.each([
@@ -59,5 +59,14 @@ describe('formatCOP', () => {
     expect(formatCOP(1234567)).toBe('$1.234.567');
     expect(formatCOP(-120000)).toBe('-$120.000');
     expect(formatCOP(0)).toBe('$0');
+  });
+});
+
+describe('formatMillions', () => {
+  it('muestra en pesos lo que es menos de un millón y en millones lo demás', () => {
+    expect(formatMillions(0.05)).toBe('$50.000');
+    expect(formatMillions(5.2)).toBe('$5,2M');
+    expect(formatMillions(25)).toBe('$25M');
+    expect(formatMillions(null)).toBe('?');
   });
 });

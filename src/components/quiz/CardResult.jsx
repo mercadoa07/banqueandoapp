@@ -2,7 +2,7 @@ import React from 'react';
 import { Award, BadgeDollarSign, CreditCard, CheckCircle2, Info, Sparkles, DollarSign, AlertCircle } from 'lucide-react';
 import { getEntityName } from '../../lib/supabase.js';
 import { annualFeeCost } from '../../engine/finance.js';
-import { formatCOP } from '../../lib/format.js';
+import { formatCOP, formatMillions } from '../../lib/format.js';
 
 const RANK_LABELS = ['MEJOR MATCH', 'ALTERNATIVA', 'OPCIÓN'];
 const RANK_COLORS = ['border-cyan-400 bg-gradient-to-br from-cyan-50/50 to-purple-50/50', 'border-gray-200 bg-white', 'border-gray-200 bg-white'];
@@ -59,7 +59,7 @@ function CreditDetails({ card }) {
           <div><p className="text-xs text-gray-500">Tasa</p><p className="font-bold text-gray-800 text-sm">{rateLabel}</p></div>
           <div><p className="text-xs text-gray-500">Desembolso</p><p className="font-bold text-gray-800 text-sm">{disbursementLabel(card.loanDetails?.disbursementTimeHours)}</p></div>
         </div>
-        <div className="mt-2 pt-2 border-t border-gray-200 text-center"><p className="text-xs text-gray-500">Monto</p><p className="font-semibold text-gray-700 text-sm">${card.loanDetails?.minAmountMillions || 0}M - ${card.loanDetails?.maxAmountMillions || '?'}M</p></div>
+        <div className="mt-2 pt-2 border-t border-gray-200 text-center"><p className="text-xs text-gray-500">Monto</p><p className="font-semibold text-gray-700 text-sm">{formatMillions(card.loanDetails?.minAmountMillions)} – {formatMillions(card.loanDetails?.maxAmountMillions)}</p></div>
       </div>
       <div className="bg-purple-50 rounded-xl p-3 mb-3 border border-purple-100">
         <p className="text-xs text-gray-500 mb-1">Tipo de crédito</p>

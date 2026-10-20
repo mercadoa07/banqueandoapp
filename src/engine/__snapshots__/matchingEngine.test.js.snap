@@ -1,130 +1,118 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`motor de crédito — perfiles dorados > capital de trabajo, negocio informal, urgente 1`] = `
+{
+  "eligible": 9,
+  "top": [
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "solventa_9",
+      "payment": [
+        281539,
+        286032,
+      ],
+      "pick": "Mejor match",
+      "reasons": [
+        "Desembolso en menos de 24 horas",
+        "Aprobación express",
+        "Acepta trabajadores informales",
+        "100% digital",
+      ],
+      "score": 100,
+    },
+    {
+      "affordability": "ok",
+      "approval": "media",
+      "id": "nequi_propulsor_6",
+      "payment": [
+        275038,
+        285732,
+      ],
+      "pick": "Menor costo",
+      "reasons": [
+        "Menor costo",
+        "Desembolso en menos de 24 horas",
+      ],
+      "score": 80,
+    },
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "bold_33",
+      "payment": [
+        275570,
+        287358,
+      ],
+      "pick": "Más fácil de aprobar",
+      "reasons": [
+        "Más fácil de aprobar",
+        "Desembolso en menos de 24 horas",
+      ],
+      "score": 100,
+    },
+  ],
+}
+`;
+
 exports[`motor de crédito — perfiles dorados > cliente Bold 1`] = `
 {
-  "eligible": 28,
+  "eligible": 7,
   "top": [
     {
       "affordability": "sin_datos",
       "approval": "media",
-      "id": "quipu_13",
+      "id": "bold_33",
       "payment": [
-        793611,
-        793611,
+        459284,
+        478930,
       ],
       "pick": "Mejor match",
       "reasons": [
-        "Ideal para tu necesidad",
+        "Pensado para lo que necesitas",
         "Diseñado para negocios",
+        "Desembolso más rápido",
       ],
       "score": 63,
     },
     {
       "affordability": "sin_datos",
       "approval": "media",
-      "id": "excelcredit_17",
+      "id": "finaktiva_26",
       "payment": [
-        685469,
-        700953,
+        1837136,
+        1915719,
       ],
       "pick": "Menor costo",
       "reasons": [
         "Menor costo",
+        "Pensado para lo que necesitas",
       ],
-      "score": 40,
+      "score": 53,
     },
     {
       "affordability": "sin_datos",
       "approval": "media",
-      "id": "addi_1",
+      "id": "sempli_25",
       "payment": [
-        433333,
-        565161,
+        5237322,
+        5348943,
       ],
-      "pick": "Desembolso más rápido",
+      "pick": "Más fácil de aprobar",
       "reasons": [
-        "Desembolso más rápido",
+        "Más fácil de aprobar",
+        "Pensado para lo que necesitas",
       ],
-      "score": 40,
+      "score": 53,
     },
   ],
 }
 `;
 
-exports[`motor de crédito — perfiles dorados > consolidar deuda, busca tasa 1`] = `
+exports[`motor de crédito — perfiles dorados > compra específica, personal 1`] = `
 {
-  "eligible": 28,
+  "eligible": 14,
   "top": [
-    {
-      "affordability": "ok",
-      "approval": "alta",
-      "id": "avista_15",
-      "payment": [
-        722521,
-        803006,
-      ],
-      "pick": "Mejor match",
-      "reasons": [
-        "Tasa razonable",
-        "Ideal para tu necesidad",
-      ],
-      "score": 73,
-    },
-    {
-      "affordability": "ok",
-      "approval": "alta",
-      "id": "welli_48",
-      "payment": [
-        568408,
-        574408,
-      ],
-      "pick": "Menor costo",
-      "reasons": [
-        "Menor costo",
-        "Tasa competitiva desde 1.5% EA",
-      ],
-      "score": 70,
-    },
-    {
-      "affordability": "ok",
-      "approval": "alta",
-      "id": "nequi_propulsor_6",
-      "payment": [
-        723032,
-        799553,
-      ],
-      "pick": "Desembolso más rápido",
-      "reasons": [
-        "Desembolso más rápido",
-        "Tasa razonable",
-      ],
-      "score": 70,
-    },
-  ],
-}
-`;
-
-exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, independiente 1`] = `
-{
-  "eligible": 28,
-  "top": [
-    {
-      "affordability": "ok",
-      "approval": "alta",
-      "id": "addi_1",
-      "payment": [
-        250000,
-        326055,
-      ],
-      "pick": "Mejor match",
-      "reasons": [
-        "Desembolso en menos de 24 horas",
-        "Aprobación express",
-        "Ideal para tu necesidad",
-        "Acepta trabajadores informales",
-      ],
-      "score": 100,
-    },
     {
       "affordability": "ok",
       "approval": "alta",
@@ -133,12 +121,137 @@ exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, 
         280192,
         280192,
       ],
+      "pick": "Mejor match",
+      "reasons": [
+        "Buen balance rapidez/tasa",
+        "Pensado para lo que necesitas",
+        "Ideal para personas naturales",
+      ],
+      "score": 88,
+    },
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "prestagente_16",
+      "payment": [
+        275038,
+        280203,
+      ],
       "pick": "Menor costo",
       "reasons": [
         "Menor costo",
-        "Ideal para tu necesidad",
+        "Buen balance rapidez/tasa",
       ],
-      "score": 88,
+      "score": 65,
+    },
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "nequi_propulsor_6",
+      "payment": [
+        275038,
+        285732,
+      ],
+      "pick": "Desembolso más rápido",
+      "reasons": [
+        "Desembolso más rápido",
+        "Buen balance rapidez/tasa",
+      ],
+      "score": 75,
+    },
+  ],
+}
+`;
+
+exports[`motor de crédito — perfiles dorados > consolidar deuda, empleado, busca tasa 1`] = `
+{
+  "eligible": 11,
+  "top": [
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "nequi_propulsor_6",
+      "payment": [
+        723032,
+        799553,
+      ],
+      "pick": "Mejor match",
+      "reasons": [
+        "Tasa razonable",
+        "Ideal para personas naturales",
+        "Desembolso más rápido",
+      ],
+      "score": 70,
+    },
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "excelcredit_17",
+      "payment": [
+        717068,
+        760931,
+      ],
+      "pick": "Menor costo",
+      "reasons": [
+        "Menor costo",
+        "Tasa razonable",
+      ],
+      "score": 60,
+    },
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "avista_15",
+      "payment": [
+        722521,
+        803006,
+      ],
+      "pick": "Más fácil de aprobar",
+      "reasons": [
+        "Más fácil de aprobar",
+        "Tasa razonable",
+      ],
+      "score": 60,
+    },
+  ],
+}
+`;
+
+exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, independiente 1`] = `
+{
+  "eligible": 6,
+  "top": [
+    {
+      "affordability": "ok",
+      "approval": "alta",
+      "id": "solventa_9",
+      "payment": [
+        281539,
+        286032,
+      ],
+      "pick": "Mejor match",
+      "reasons": [
+        "Desembolso en menos de 24 horas",
+        "Aprobación express",
+        "Acepta trabajadores informales",
+        "100% digital",
+      ],
+      "score": 100,
+    },
+    {
+      "affordability": "ok",
+      "approval": "media",
+      "id": "nequi_propulsor_6",
+      "payment": [
+        275038,
+        285732,
+      ],
+      "pick": "Menor costo",
+      "reasons": [
+        "Menor costo",
+        "Desembolso en menos de 24 horas",
+      ],
+      "score": 90,
     },
     {
       "affordability": "ok",
@@ -161,7 +274,7 @@ exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, 
 
 exports[`motor de crédito — perfiles dorados > micronegocio informal, inventario 1`] = `
 {
-  "eligible": 28,
+  "eligible": 9,
   "top": [
     {
       "affordability": "ok",
@@ -174,7 +287,7 @@ exports[`motor de crédito — perfiles dorados > micronegocio informal, inventa
       "pick": "Mejor match",
       "reasons": [
         "Desembolso rápido (1-3 días)",
-        "Ideal para tu necesidad",
+        "Pensado para lo que necesitas",
         "Acepta trabajadores informales",
         "No requiere historial crediticio",
       ],
@@ -183,10 +296,10 @@ exports[`motor de crédito — perfiles dorados > micronegocio informal, inventa
     {
       "affordability": "ok",
       "approval": "media",
-      "id": "credifamilia_20",
+      "id": "solventa_9",
       "payment": [
-        271840,
-        271840,
+        281539,
+        286032,
       ],
       "pick": "Menor costo",
       "reasons": [
@@ -198,17 +311,17 @@ exports[`motor de crédito — perfiles dorados > micronegocio informal, inventa
     {
       "affordability": "ok",
       "approval": "media",
-      "id": "addi_1",
+      "id": "bold_33",
       "payment": [
-        250000,
-        326055,
+        275570,
+        287358,
       ],
       "pick": "Desembolso más rápido",
       "reasons": [
         "Desembolso más rápido",
         "Desembolso rápido (1-3 días)",
       ],
-      "score": 85,
+      "score": 100,
     },
   ],
 }
@@ -216,7 +329,7 @@ exports[`motor de crédito — perfiles dorados > micronegocio informal, inventa
 
 exports[`motor de crédito — perfiles dorados > pide más de lo que puede pagar 1`] = `
 {
-  "eligible": 28,
+  "eligible": 14,
   "top": [
     {
       "affordability": "ok",
@@ -228,41 +341,41 @@ exports[`motor de crédito — perfiles dorados > pide más de lo que puede paga
       ],
       "pick": "Mejor match",
       "reasons": [
-        "Ideal para tu necesidad",
+        "Pensado para lo que necesitas",
         "Ideal para personas naturales",
         "Mejor tasa del grupo",
       ],
       "score": 48,
     },
     {
-      "affordability": "ok",
+      "affordability": "ajustada",
       "approval": "alta",
-      "id": "solventa_9",
+      "id": "addi_1",
       "payment": [
-        888925,
-        896694,
+        866667,
+        1003073,
       ],
       "pick": "Desembolso más rápido",
       "reasons": [
         "Desembolso más rápido",
-        "Ideal para tu necesidad",
+        "Pensado para lo que necesitas",
       ],
-      "score": 48,
+      "score": 38,
     },
     {
       "affordability": "ok",
       "approval": "alta",
-      "id": "lineru_4",
+      "id": "kupi_43",
       "payment": [
-        266678,
-        268601,
+        175710,
+        179796,
       ],
       "pick": "Alternativa",
       "reasons": [
         "Alternativa",
-        "Ideal para tu necesidad",
+        "Pensado para lo que necesitas",
       ],
-      "score": 48,
+      "score": 38,
     },
   ],
 }
@@ -270,7 +383,7 @@ exports[`motor de crédito — perfiles dorados > pide más de lo que puede paga
 
 exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabajo 1`] = `
 {
-  "eligible": 28,
+  "eligible": 7,
   "top": [
     {
       "affordability": "ok",
@@ -283,7 +396,7 @@ exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabaj
       "pick": "Mejor match",
       "reasons": [
         "Buen balance rapidez/tasa",
-        "Ideal para tu necesidad",
+        "Pensado para lo que necesitas",
         "Diseñado para negocios",
       ],
       "score": 88,
@@ -301,22 +414,22 @@ exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabaj
         "Menor costo",
         "Buen balance rapidez/tasa",
       ],
-      "score": 65,
+      "score": 78,
     },
     {
       "affordability": "ok",
       "approval": "alta",
-      "id": "advance_36",
+      "id": "bold_33",
       "payment": [
-        3199147,
-        3397131,
+        319915,
+        339713,
       ],
       "pick": "Desembolso más rápido",
       "reasons": [
         "Desembolso más rápido",
         "Buen balance rapidez/tasa",
       ],
-      "score": 65,
+      "score": 73,
     },
   ],
 }
@@ -324,40 +437,8 @@ exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabaj
 
 exports[`motor de crédito — perfiles dorados > reportado, monto pequeño 1`] = `
 {
-  "eligible": 20,
+  "eligible": 5,
   "top": [
-    {
-      "affordability": "ok",
-      "approval": "media",
-      "id": "addi_1",
-      "payment": [
-        83333,
-        96449,
-      ],
-      "pick": "Mejor match",
-      "reasons": [
-        "Desembolso rápido (1-3 días)",
-        "Ideal para tu necesidad",
-        "Acepta reportados en DataCrédito",
-        "Ideal para personas naturales",
-      ],
-      "score": 98,
-    },
-    {
-      "affordability": "ok",
-      "approval": "media",
-      "id": "monet_7",
-      "payment": [
-        83333,
-        83333,
-      ],
-      "pick": "Menor costo",
-      "reasons": [
-        "Menor costo",
-        "Desembolso rápido (1-3 días)",
-      ],
-      "score": 98,
-    },
     {
       "affordability": "ok",
       "approval": "media",
@@ -366,12 +447,44 @@ exports[`motor de crédito — perfiles dorados > reportado, monto pequeño 1`] 
         88893,
         89534,
       ],
-      "pick": "Más fácil de aprobar",
+      "pick": "Mejor match",
       "reasons": [
-        "Más fácil de aprobar",
+        "Desembolso rápido (1-3 días)",
+        "Acepta trabajadores informales",
+        "Acepta reportados en DataCrédito",
+        "Ideal para personas naturales",
+      ],
+      "score": 100,
+    },
+    {
+      "affordability": "ok",
+      "approval": "media",
+      "id": "rapicredit_5",
+      "payment": [
+        89096,
+        89096,
+      ],
+      "pick": "Menor costo",
+      "reasons": [
+        "Menor costo",
         "Desembolso rápido (1-3 días)",
       ],
-      "score": 98,
+      "score": 100,
+    },
+    {
+      "affordability": "ok",
+      "approval": "media",
+      "id": "solventa_9",
+      "payment": [
+        88893,
+        89669,
+      ],
+      "pick": "Desembolso más rápido",
+      "reasons": [
+        "Desembolso más rápido",
+        "Desembolso rápido (1-3 días)",
+      ],
+      "score": 100,
     },
   ],
 }
@@ -382,18 +495,11 @@ exports[`motor de tarjetas — perfiles dorados > cambiar tarjeta de Bancolombia
   "eligible": 10,
   "top": [
     {
-      "id": "nu_classic",
-      "reasons": [
-        "Mejor match para tu perfil",
-      ],
-      "savings": -33750,
-      "score": 95,
-      "vsCurrent": 240000,
-    },
-    {
       "id": "rappi_card",
       "reasons": [
-        "Alternativa viable",
+        "Mayor beneficio neto al año",
+        "Buena tasa para financiar",
+        "Sin cuota de manejo",
       ],
       "savings": -22500,
       "score": 90,
@@ -402,10 +508,21 @@ exports[`motor de tarjetas — perfiles dorados > cambiar tarjeta de Bancolombia
     {
       "id": "bbva_aqua",
       "reasons": [
-        "Alternativa viable",
+        "Buena tasa para financiar",
+        "Sin cuota de manejo",
       ],
       "savings": -186750,
-      "score": 90,
+      "score": 86,
+      "vsCurrent": 240000,
+    },
+    {
+      "id": "exito_tuya",
+      "reasons": [
+        "Buena tasa para financiar",
+        "Sin cuota de manejo",
+      ],
+      "savings": -213750,
+      "score": 86,
       "vsCurrent": 240000,
     },
   ],
@@ -420,6 +537,8 @@ exports[`motor de tarjetas — perfiles dorados > financia compras, ingreso medi
       "id": "scotiabank_platinum",
       "reasons": [
         "Mayor beneficio neto al año",
+        "Buena tasa para financiar",
+        "Tasa más baja para financiar",
       ],
       "savings": -1121250,
       "score": 78,
@@ -427,7 +546,7 @@ exports[`motor de tarjetas — perfiles dorados > financia compras, ingreso medi
     {
       "id": "davivienda_clasica",
       "reasons": [
-        "Alternativa viable",
+        "Buena tasa para financiar",
       ],
       "savings": -1215000,
       "score": 71.4,
@@ -435,7 +554,7 @@ exports[`motor de tarjetas — perfiles dorados > financia compras, ingreso medi
     {
       "id": "bancolombia_ideal",
       "reasons": [
-        "Alternativa viable",
+        "Buena tasa para financiar",
       ],
       "savings": -1275626,
       "score": 68.8066,
@@ -449,17 +568,11 @@ exports[`motor de tarjetas — perfiles dorados > primera tarjeta, ingreso bajo,
   "eligible": 8,
   "top": [
     {
-      "id": "nu_classic",
-      "reasons": [
-        "Mejor match para tu perfil",
-      ],
-      "savings": 96000,
-      "score": 100,
-    },
-    {
       "id": "rappi_card",
       "reasons": [
-        "Alternativa viable",
+        "Mayor beneficio neto al año",
+        "Optimizada para pago total",
+        "Sin cuota de manejo",
       ],
       "savings": 96000,
       "score": 100,
@@ -467,10 +580,93 @@ exports[`motor de tarjetas — perfiles dorados > primera tarjeta, ingreso bajo,
     {
       "id": "bbva_aqua",
       "reasons": [
-        "Alternativa viable",
+        "Optimizada para pago total",
+        "Sin cuota de manejo",
       ],
       "savings": 0,
       "score": 100,
+    },
+    {
+      "id": "exito_tuya",
+      "reasons": [
+        "Optimizada para pago total",
+        "Sin cuota de manejo",
+      ],
+      "savings": 0,
+      "score": 85,
+    },
+  ],
+}
+`;
+
+exports[`motor de tarjetas — perfiles dorados > quiere cashback, compra en Rappi 1`] = `
+{
+  "eligible": 12,
+  "top": [
+    {
+      "id": "rappi_card",
+      "reasons": [
+        "Sin cuota de manejo",
+        "Mayor beneficio neto al año",
+        "Optimizada para pago total",
+      ],
+      "savings": 144000,
+      "score": 100,
+    },
+    {
+      "id": "bbva_aqua",
+      "reasons": [
+        "Optimizada para pago total",
+        "Sin cuota de manejo",
+      ],
+      "savings": 0,
+      "score": 100,
+    },
+    {
+      "id": "avianca_lifemiles_gold",
+      "reasons": [
+        "Optimizada para pago total",
+      ],
+      "savings": 187200,
+      "score": 89,
+    },
+  ],
+}
+`;
+
+exports[`motor de tarjetas — perfiles dorados > quiere millas, paga el total, ingreso medio 1`] = `
+{
+  "eligible": 10,
+  "top": [
+    {
+      "id": "latam_pass_platinum",
+      "reasons": [
+        "Optimizada para pago total",
+        "Acumula millas LATAM Pass",
+      ],
+      "savings": 340800,
+      "score": 100,
+      "vsCurrent": -360000,
+    },
+    {
+      "id": "avianca_lifemiles_gold",
+      "reasons": [
+        "Optimizada para pago total",
+        "Acumula millas LifeMiles",
+      ],
+      "savings": 324000,
+      "score": 100,
+      "vsCurrent": -240000,
+    },
+    {
+      "id": "rappi_card",
+      "reasons": [
+        "Optimizada para pago total",
+        "Beneficios donde más compras",
+      ],
+      "savings": 180000,
+      "score": 100,
+      "vsCurrent": 120000,
     },
   ],
 }
@@ -483,8 +679,8 @@ exports[`motor de tarjetas — perfiles dorados > reportado en centrales 1`] = `
     {
       "id": "nu_classic",
       "reasons": [],
-      "savings": 180000,
-      "score": 65,
+      "savings": -204000,
+      "score": 61,
     },
   ],
 }
@@ -495,25 +691,29 @@ exports[`motor de tarjetas — perfiles dorados > sin responder ingreso 1`] = `
   "eligible": 12,
   "top": [
     {
-      "id": "nu_classic",
-      "reasons": [
-        "Mejor match para tu perfil",
-      ],
-      "savings": 180000,
-      "score": 85,
-    },
-    {
       "id": "rappi_card",
       "reasons": [
-        "Alternativa viable",
+        "Mayor beneficio neto al año",
+        "Optimizada para pago total",
+        "Sin cuota de manejo",
       ],
       "savings": 180000,
-      "score": 85,
+      "score": 89,
     },
     {
       "id": "bbva_aqua",
       "reasons": [
-        "Alternativa viable",
+        "Optimizada para pago total",
+        "Sin cuota de manejo",
+      ],
+      "savings": 0,
+      "score": 85,
+    },
+    {
+      "id": "exito_tuya",
+      "reasons": [
+        "Optimizada para pago total",
+        "Sin cuota de manejo",
       ],
       "savings": 0,
       "score": 85,
@@ -527,28 +727,31 @@ exports[`motor de tarjetas — perfiles dorados > viajero frecuente, ingreso alt
   "eligible": 12,
   "top": [
     {
-      "id": "avianca_lifemiles_gold",
-      "reasons": [
-        "Mejor match para tu perfil",
-      ],
-      "savings": 2376000,
-      "score": 70,
-    },
-    {
       "id": "latam_pass_platinum",
       "reasons": [
-        "Alternativa viable",
+        "Mayor beneficio neto al año",
+        "Optimizada para pago total",
+        "Beneficios de viaje premium",
       ],
       "savings": 2803200,
-      "score": 70,
+      "score": 100,
+    },
+    {
+      "id": "avianca_lifemiles_gold",
+      "reasons": [
+        "Optimizada para pago total",
+      ],
+      "savings": 2376000,
+      "score": 100,
     },
     {
       "id": "amex_green",
       "reasons": [
-        "Alternativa viable",
+        "Optimizada para pago total",
+        "Beneficios de viaje premium",
       ],
       "savings": -350000,
-      "score": 70,
+      "score": 98,
     },
   ],
 }
