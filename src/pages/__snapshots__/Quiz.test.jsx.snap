@@ -3,8 +3,8 @@
 exports[`quiz de crédito > recorre el flujo completo y muestra la entidad de cada crédito 1`] = `
 [
   "ADDI",
-  "Credissimo",
-  "Juancho Te Presta",
+  "Sistecrédito",
+  "Lineru",
 ]
 `;
 
@@ -12,6 +12,6 @@ exports[`quiz de tarjetas > recorre el flujo completo, guarda la sesión y regis
 [
   "Nu Tarjeta de Crédito",
   "RappiCard Visa",
-  "Aqua Mastercard",
+  "Aqua Visa",
 ]
 `;

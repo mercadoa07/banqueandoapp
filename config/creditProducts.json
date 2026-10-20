@@ -144,11 +144,11 @@
       "applyUrl": "https://juanchotepresta.com/",
       "observations": "Cuota menor para mujeres. 100% digital. Débito automático. Open Banking (Belvo). 28K+ créditos, $52K millones.",
       "entity": "Juancho Te Presta",
-      "active": true,
+      "active": false,
       "lastVerified": "2026-10-16",
       "source": {
         "url": "https://juanchotepresta.com/",
-        "notes": null
+        "notes": "Desactivado 2026-10-20: el dominio no responde. Revisar si la entidad sigue operando."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -542,11 +542,11 @@
       "applyUrl": "https://credissimo.co/",
       "observations": "Origen Bulgaria (2007). Código ético. Credissimo Plus (3-12m) y Credissimo Salario (30d). Premios Europeos FinTech.",
       "entity": "Credissimo",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://credissimo.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-20: el servidor no responde. Revisar si la entidad sigue operando."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -1020,11 +1020,11 @@
       "applyUrl": "https://valcredito.com/",
       "observations": "Emergencias corto plazo.",
       "entity": "Valcredito",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://valcredito.com/",
-        "notes": null
+        "notes": "Desactivado 2026-10-20: el dominio ya no existe. Revisar si la entidad sigue operando."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -1066,11 +1066,11 @@
       "applyUrl": "https://plurall.co/",
       "observations": "Por investigar en detalle.",
       "entity": "Plurall",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://plurall.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-20: el sitio tiene un certificado no válido. Revisar si la entidad sigue operando."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": false
@@ -1297,11 +1297,11 @@
       "applyUrl": "https://omni.lat/",
       "observations": "Factoring 100% digital. Se enfoca en la calidad del pagador de la factura.",
       "entity": "Omni",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://omni.lat/",
-        "notes": null
+        "notes": "Desactivado 2026-10-20: el sitio no establece conexión segura. Revisar si la entidad sigue operando."
       },
       "usuryModality": "no_aplica",
       "usuryModalityVerified": false
@@ -1683,11 +1683,11 @@
       "applyUrl": "https://www.lucas.co/",
       "observations": "Compran la casa por ti, pagas arriendo y \"ahorras\" para la cuota inicial.",
       "entity": "Lucas",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://www.lucas.co/",
-        "notes": null
+        "notes": "Desactivado 2026-10-20: el dominio no tiene sitio. Revisar si la entidad sigue operando."
       },
       "usuryModality": "no_aplica",
       "usuryModalityVerified": false
@@ -1728,14 +1728,14 @@
         "Libre inversión",
         "Emergencias"
       ],
-      "applyUrl": "https://www.advanceadelanta.com/",
+      "applyUrl": "https://adelantatupago.com/",
       "observations": "Competencia directa de Monet pero enfocado 100% en convenios con empresas grandes.",
       "entity": "Advance",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.advanceadelanta.com/",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20: el sitio se mudó a adelantatupago.com."
       },
       "usuryModality": "no_aplica",
       "usuryModalityVerified": false
@@ -1966,11 +1966,11 @@
       "applyUrl": "https://gulungo.com/",
       "observations": "\"Se enfocan en la \"\"economía del rebusque\"\" formalizada. Proceso asistido por chat.\"",
       "entity": "Gulungo",
-      "active": true,
+      "active": false,
       "lastVerified": null,
       "source": {
         "url": "https://gulungo.com/",
-        "notes": null
+        "notes": "Desactivado 2026-10-20: el certificado de seguridad del sitio está vencido. Revisar si la entidad sigue operando."
       },
       "usuryModality": "popular_productivo_urbano",
       "usuryModalityVerified": false
