@@ -56,7 +56,7 @@ export default function Quiz() {
     <QuestionStep
       question={question}
       index={quiz.currentQuestion}
-      total={quiz.visibleQuestions.length}
+      total={quiz.displayTotal}
       sections={quiz.questionsData.sections?.[vertical] || []}
       value={question ? answers[question.id] : undefined}
       onAnswer={(value) => actions.handleAnswer(question.id, value)}

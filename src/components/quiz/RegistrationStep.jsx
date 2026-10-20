@@ -58,6 +58,12 @@ export default function RegistrationStep({ vertical, form, setFormField, phoneIs
             <label className="block text-gray-700 font-medium mb-2 text-sm"><User className="w-4 h-4 inline mr-2" />Tu nombre</label>
             <input type="text" autoComplete="name" value={form.name} onChange={(e) => setFormField('name', e.target.value)} placeholder="Ej: Juan Pérez" className={INPUT_CLASS} />
           </div>
+          {vertical === 'credit' && (
+            <div>
+              <label className="block text-gray-700 font-medium mb-2 text-sm">¿Para qué vas a usar el dinero? <span className="text-gray-400 font-normal">(opcional)</span></label>
+              <textarea value={form.detail} onChange={(e) => setFormField('detail', e.target.value)} maxLength={280} rows={2} placeholder="Ej: comprar mercancía para diciembre" className={`${INPUT_CLASS} resize-none`} />
+            </div>
+          )}
           <div className="space-y-3">
             {/* Dos autorizaciones separadas (Ley 1581): la del servicio es obligatoria; la de ofertas, opcional. */}
             <label className="flex items-start gap-3 cursor-pointer">

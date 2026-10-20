@@ -41,7 +41,12 @@ describe('perfiles válidos y recomendaciones que tienen sentido', () => {
   const walk = (o) => {
     if (Array.isArray(o)) return o.forEach(walk);
     if (o && typeof o === 'object') {
-      if (o.id && Array.isArray(o.options)) validValues[o.id] = new Set([...(validValues[o.id] || []), ...o.options.map(x => x.value)]);
+      if (o.id && Array.isArray(o.options)) {
+        const add = (field, values) => { validValues[field] = new Set([...(validValues[field] || []), ...values]); };
+        add(o.id, o.options.map(x => x.value));
+        // Respuestas que fija una opción (sets): también son valores que el quiz produce.
+        o.options.forEach(x => Object.entries(x.sets || {}).forEach(([field, v]) => add(field, [].concat(v))));
+      }
       Object.values(o).forEach(walk);
     }
   };
@@ -50,8 +55,9 @@ describe('perfiles válidos y recomendaciones que tienen sentido', () => {
   it('los perfiles dorados solo usan respuestas que existen en el quiz', () => {
     for (const [name, answers] of [...Object.entries(CARD_PROFILES), ...Object.entries(CREDIT_PROFILES)]) {
       for (const [field, value] of Object.entries(answers)) {
-        if (!validValues[field]) continue; // deslizadores y montos libres
-        for (const v of [].concat(value)) expect(validValues[field].has(v), `${name}: ${field}=${v}`).toBe(true);
+        if (['monthly_spend', 'monthly_debt_payment'].includes(field)) continue; // deslizadores
+        expect(validValues[field], `${name}: ${field} no es una pregunta del quiz`).toBeTruthy();
+        for (const v of [].concat(value)) expect(validValues[field]?.has(v), `${name}: ${field}=${v}`).toBe(true);
       }
     }
   });

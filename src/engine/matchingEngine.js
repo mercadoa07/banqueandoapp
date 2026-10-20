@@ -419,14 +419,6 @@ export class CreditMatchingEngine {
       reasons.push('No requiere historial crediticio');
     }
     
-    // +10 puntos: Proceso digital (la mayoría de fintechs son digitales)
-    if (answers.process_preference === 'proceso_digital') {
-      score += 10;
-      if (!reasons.includes('100% digital')) {
-        reasons.push('100% digital');
-      }
-    }
-    
     // +10 puntos: Match por categoría
     if (product.category && Array.isArray(product.category)) {
       if (answers.credit_destination === 'personal' && product.category.includes('personal')) {

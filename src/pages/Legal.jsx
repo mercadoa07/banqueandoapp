@@ -261,7 +261,7 @@ export function HowWeRecommend() {
         <List items={[
           'Primero dejamos solo los créditos que sirven para lo que pediste. Por ejemplo, una compra a cuotas en tiendas no aparece si necesitas efectivo para tu negocio; la libranza solo aparece si eres empleado o pensionado; el factoring solo si tu negocio factura formalmente.',
           'También descartamos los productos que no aceptan personas reportadas (si nos dijiste que lo estás) o que exigen ser cliente de una entidad con la que no tienes relación.',
-          'A los que quedan les damos puntos según qué tan urgente es, tu formalidad, tu historial crediticio, cómo prefieres hacer el proceso, lo que más te importa (tasa, rapidez o facilidad) y si el producto está pensado justo para tu propósito.',
+          'A los que quedan les damos puntos según qué tan urgente es, tu formalidad, tu historial crediticio, lo que más te importa (tasa, rapidez o facilidad) y si el producto está pensado justo para tu propósito.',
           'Estimamos la cuota mensual con el monto y el plazo que elegiste, usando el rango de tasas que publica cada entidad.',
           <>Comparamos esa cuota con tu capacidad de pago: hasta el {incomePct}% de tus ingresos (o el {salesPct}% de las ventas de tu negocio), menos lo que ya pagas en deudas. Si la cuota no cabe, el producto baja en la lista y te avisamos.</>,
           'Estimamos qué tan probable es la aprobación (alta, media o baja) con tu historial crediticio, tus ingresos y los requisitos del producto.',
