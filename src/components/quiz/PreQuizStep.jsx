@@ -16,9 +16,9 @@ export default function PreQuizStep({ preQuiz, onChoose, onBack }) {
           </div>
           <div className="space-y-4">
             {options.map((option) => (
-              <button key={option.value} onClick={() => onChoose(option)} className="w-full p-5 rounded-2xl border-2 border-gray-100 text-left transition-all hover:border-cyan-400 hover:bg-gradient-to-r hover:from-cyan-50 hover:to-purple-50 hover:shadow-lg group">
+              <button key={option.value} onClick={() => onChoose(option)} className="w-full p-5 rounded-2xl border-2 border-gray-100 text-left transition-all hover:border-ink hover:bg-paper hover:shadow-lg group">
                 <div className="flex items-center">
-                  <div className="bg-gradient-to-br from-cyan-100 to-purple-100 p-3 rounded-xl mr-4 group-hover:from-cyan-200 group-hover:to-purple-200"><span className="text-2xl">{option.emoji}</span></div>
+                  <div className="bg-paper p-3 rounded-xl mr-4"><span className="text-2xl">{option.emoji}</span></div>
                   <div className="flex-1"><h3 className="font-bold text-gray-800 text-lg mb-1">{option.label}</h3><p className="text-gray-500 text-sm">{option.description}</p></div>
                   <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-cyan-500" />
                 </div>

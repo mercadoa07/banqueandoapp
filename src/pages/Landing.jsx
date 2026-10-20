@@ -2,23 +2,23 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import HeroSection from '../components/landing/HeroSection.jsx';
-import StatsSection from '../components/landing/StatsSection.jsx';
-import ProblemSection from '../components/landing/ProblemSection.jsx';
-import HowItWorksSection from '../components/landing/HowItWorksSection.jsx';
-import BenefitsSection from '../components/landing/BenefitsSection.jsx';
+import EntitiesStrip from '../components/landing/EntitiesStrip.jsx';
+import TrustBand from '../components/landing/TrustBand.jsx';
+import ChoicesSection from '../components/landing/ChoicesSection.jsx';
 import FaqSection from '../components/landing/FaqSection.jsx';
-import FinalCtaSection from '../components/landing/FinalCtaSection.jsx';
 
+// Página de inicio (rediseño 2026-10-20): portada con un resultado real de ejemplo,
+// entidades, franja oscura de confianza, entrada al quiz y preguntas frecuentes.
 const Landing = () => (
-  <div className="min-h-screen bg-white">
+  <div className="min-h-screen bg-paper text-ink">
     <Navbar />
-    <HeroSection />
-    <StatsSection />
-    <ProblemSection />
-    <HowItWorksSection />
-    <BenefitsSection />
-    <FaqSection />
-    <FinalCtaSection />
+    <main>
+      <HeroSection />
+      <EntitiesStrip />
+      <TrustBand />
+      <ChoicesSection />
+      <FaqSection />
+    </main>
     <Footer />
   </div>
 );
