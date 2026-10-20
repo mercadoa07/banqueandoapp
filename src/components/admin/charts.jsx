@@ -86,11 +86,11 @@ const VERTICAL_LABEL = { cards: 'Tarjeta', credit: 'Crédito' };
 export function LeadsTable({ rows }) {
   return (
     <section className={`${CARD} overflow-x-auto`}>
-      <Header title="Leads recientes" subtitle="Los 25 más nuevos del periodo. Datos personales: no compartir." />
+      <Header title="Leads recientes" subtitle="Los 25 más nuevos del periodo. Datos personales: no compartir. Solo se les puede enviar ofertas a quienes dicen Sí en Ofertas." />
       {!rows.length ? <p className="text-sm text-gray-400">Sin leads en este periodo</p> : (
-        <table className="w-full text-sm text-left min-w-[720px]">
+        <table className="w-full text-sm text-left min-w-[780px]">
           <thead className="text-gray-500">
-            <tr><th className="py-2">Fecha</th><th>Nombre</th><th>WhatsApp</th><th>Email</th><th>Producto</th><th>Recomendado</th><th className="text-center">Clic</th></tr>
+            <tr><th className="py-2">Fecha</th><th>Nombre</th><th>WhatsApp</th><th>Email</th><th>Producto</th><th>Recomendado</th><th className="text-center">Clic</th><th className="text-center">Ofertas</th></tr>
           </thead>
           <tbody className="text-gray-700">
             {rows.map(r => (
@@ -102,6 +102,7 @@ export function LeadsTable({ rows }) {
                 <td>{VERTICAL_LABEL[r.vertical] || r.vertical || '—'}</td>
                 <td>{r.top_match_name || '—'}{r.top_match_bank && <span className="text-gray-400"> · {r.top_match_bank}</span>}</td>
                 <td className="text-center">{r.clicked ? 'Sí' : '—'}</td>
+                <td className="text-center">{r.accepted_marketing ? 'Sí' : 'No'}</td>
               </tr>
             ))}
           </tbody>

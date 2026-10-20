@@ -12,7 +12,7 @@ import { normalizePhone, isValidEmail } from '../lib/validation.js';
 import { trackEvent } from '../lib/analytics.js';
 
 const CALCULATING_DELAY_MS = 1500;
-const EMPTY_FORM = { phone: '', email: '', name: '', age: '', gender: '', city: '', termsAccepted: false };
+const EMPTY_FORM = { phone: '', email: '', name: '', age: '', gender: '', city: '', termsAccepted: false, marketingAccepted: false };
 
 export function useQuiz() {
   const engines = useMemo(() => ({
@@ -88,7 +88,8 @@ export function useQuiz() {
     const newUser = {
       id: null, email, phone, age, gender, city,
       user_metadata: { name: form.name.trim() || null, phone, age, gender, city },
-      termsAccepted: true, termsAcceptedAt: new Date().toISOString()
+      termsAccepted: true, termsAcceptedAt: new Date().toISOString(),
+      marketingAccepted: form.marketingAccepted === true
     };
     setUser(newUser);
     setStep('calculating');

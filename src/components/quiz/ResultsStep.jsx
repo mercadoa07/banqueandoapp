@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AlertCircle, Sparkles, User } from 'lucide-react';
 import CardResult from './CardResult.jsx';
 import { ApplyPopup, LegalFooter, SavingsBreakdownModal, CARD_SHADOW, PAGE_BG } from './shared.jsx';
+import { LEGAL_TEXTS, LEGAL_URLS } from '../../constants/legal.js';
 
 const DISCLAIMERS = {
   credit: [
@@ -54,6 +55,10 @@ export default function ResultsStep({ results, vertical, user, answers, activeCo
           <ul className="text-xs text-amber-700 space-y-1">
             {DISCLAIMERS[verticalKey].map(([title, text]) => <li key={title}>• <strong>{title}</strong> {text}</li>)}
           </ul>
+          <p className="text-xs text-amber-800 mt-3 pt-3 border-t border-amber-200">
+            {LEGAL_TEXTS.notAdvice} El orden depende solo de tus respuestas: ninguna entidad paga por aparecer.{' '}
+            <a href={LEGAL_URLS.howWeRecommend} target="_blank" rel="noopener noreferrer" className="underline font-medium">Cómo recomendamos</a>
+          </p>
         </div>
         <div className="text-center mb-6"><button onClick={onReset} className="text-cyan-600 hover:text-cyan-800 font-medium">← Volver a empezar</button></div>
         <LegalFooter />

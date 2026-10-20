@@ -19,9 +19,10 @@ export const LegalFooter = ({ variant = 'general' }) => (
         <><p>• {LEGAL_TEXTS.generalFooter.line1}</p><p>• {LEGAL_TEXTS.generalFooter.line2}</p><p>• {LEGAL_TEXTS.generalFooter.line3}</p></>
       )}
       <p className="mt-3 font-medium">{LEGAL_TEXTS.generalFooter.copyright}</p>
-      <div className="flex justify-center gap-4 mt-2">
-        <a href={LEGAL_URLS.privacy} className="text-cyan-600 hover:text-cyan-700">Política de Privacidad</a>
-        <a href={LEGAL_URLS.terms} className="text-cyan-600 hover:text-cyan-700">Términos y Condiciones</a>
+      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-2">
+        <a href={LEGAL_URLS.privacy} className="text-cyan-600 hover:text-cyan-700">Política de datos</a>
+        <a href={LEGAL_URLS.terms} className="text-cyan-600 hover:text-cyan-700">Términos</a>
+        <a href={LEGAL_URLS.howWeRecommend} className="text-cyan-600 hover:text-cyan-700">Cómo recomendamos</a>
       </div>
     </div>
   </div>

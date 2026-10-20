@@ -16,7 +16,7 @@ export default function FaqSection() {
         {[
           {
             q: "¿Realmente es gratis? ¿Cómo se sostienen?",
-            a: "100% gratis para ti. Los bancos y fintechs nos pagan una comisión si decides aplicar a través de nosotros (tú pagas lo mismo que si fueras directo). Esto nos permite ser independientes y recomendarte LO QUE REALMENTE TE CONVIENE, no lo que más nos paga."
+            a: "Sí, es gratis para ti. Hoy ninguna entidad nos paga. Si en el futuro recibimos una comisión cuando alguien solicita un producto, lo diremos junto a ese producto, tú pagarás lo mismo que si fueras directo y no cambiará el orden de los resultados: el orden depende solo de tus respuestas."
           },
           {
             q: "¿En qué se diferencian de otros comparadores?",
@@ -24,19 +24,19 @@ export default function FaqSection() {
           },
           {
             q: "¿Mis datos están seguros? ¿Comparten mi información?",
-            a: "Tus datos están encriptados y NUNCA se comparten con terceros sin tu consentimiento explícito. El quiz es anónimo. Solo si decides aplicar a un producto, te redirigimos a la entidad con los datos que tú autorices."
+            a: "No vendemos ni compartimos tus datos personales con bancos ni terceros. Te pedimos WhatsApp y correo para mostrarte el resultado y contactarte sobre él; las ofertas solo te llegan si marcas la casilla opcional. Cuando das clic en «Solicitar», vas al sitio oficial de la entidad y no le enviamos tus datos. Puedes pedir que borremos tus datos cuando quieras."
           },
           {
             q: "¿Ustedes aprueban la tarjeta o el crédito?",
-            a: "No. Somos un comparador, no un banco. Te recomendamos las mejores opciones para ti y te conectamos con la entidad. Ellos deciden si aprueban basados en su análisis de riesgo. Nuestro quiz pre-filtra para mostrarte solo productos donde tienes alta probabilidad de aprobación según tu perfil."
+            a: "No. Somos un comparador, no un banco. Te recomendamos las mejores opciones para ti y te conectamos con la entidad. Ellos deciden si aprueban basados en su análisis de riesgo. Con tus respuestas te mostramos una probabilidad de aprobación estimada (alta, media o baja), pero no es una garantía."
           },
           {
             q: "¿Qué pasa si ya tengo tarjeta?",
-            a: "¡Perfecto! El 80% de nuestros usuarios ya tienen tarjeta. Te mostraremos opciones mejores para tu perfil. Puedes tener varias tarjetas (es normal y hasta recomendable) y usar cada una para lo que mejor optimiza."
+            a: "¡Perfecto! Te mostramos opciones que pueden servirte más para tu perfil y, si nos dices cuánto pagas de cuota de manejo, cuánto ahorrarías. Puedes tener varias tarjetas (es normal y hasta recomendable) y usar cada una para lo que mejor optimiza."
           },
           {
             q: "¿Cuánto tarda el proceso completo?",
-            a: "El quiz: 2-3 minutos. Aplicar a la entidad: 5-10 minutos. Aprobación: 24-72 horas (algunos fintechs aprueban en minutos). Desembolso de crédito: 24-48 horas según la entidad."
+            a: "El quiz: 2-3 minutos. Aplicar a la entidad: 5-10 minutos. La aprobación y el desembolso dependen de cada entidad: algunas fintechs responden en minutos y otras tardan días."
           },
           {
             q: "¿Qué tipos de crédito comparan?",

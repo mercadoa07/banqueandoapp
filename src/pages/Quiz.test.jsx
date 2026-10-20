@@ -33,7 +33,8 @@ async function startAndChoose(optionLabel) {
 function fillRegistration({ phone = '+57 300 123 4567', email = ' prueba@ejemplo.com ' } = {}) {
   fireEvent.change(screen.getByPlaceholderText('Ej: 3001234567'), { target: { value: phone } });
   fireEvent.change(screen.getByPlaceholderText('tu@email.com'), { target: { value: email } });
-  fireEvent.click(screen.getByRole('checkbox'));
+  // Solo la autorización obligatoria; la de ofertas queda sin marcar.
+  fireEvent.click(screen.getByRole('checkbox', { name: /Acepto los Términos/ }));
 }
 
 const resultsSummary = () => screen.getAllByRole('heading', { level: 3 })
@@ -59,13 +60,14 @@ describe('quiz de tarjetas', () => {
 
     expect(await screen.findByText('MEJOR MATCH', {}, { timeout: 4000 })).toBeTruthy();
     expect(screen.getByText(/Analizamos \d+ tarjetas para ti/)).toBeTruthy();
+    expect(screen.getByText(/no es asesoría financiera/)).toBeTruthy();
     expect(resultsSummary()).toMatchSnapshot();
 
     expect(saveQuizSession).toHaveBeenCalledTimes(1);
     const session = saveQuizSession.mock.calls[0][0];
     expect(session.vertical).toBe('cards');
     expect(session.sessionId).toMatch(/^[0-9a-f-]{36}$/);
-    expect(session.user).toMatchObject({ phone: '3001234567', email: 'prueba@ejemplo.com', termsAccepted: true, age: null, city: null });
+    expect(session.user).toMatchObject({ phone: '3001234567', email: 'prueba@ejemplo.com', termsAccepted: true, marketingAccepted: false, age: null, city: null });
     expect(session.answers.product_selection).toBe('nueva_tarjeta');
 
     fireEvent.click(screen.getByRole('button', { name: /Solicitar Ahora/ }));

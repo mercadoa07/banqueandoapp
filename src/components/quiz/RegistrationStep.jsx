@@ -3,6 +3,9 @@ import { Sparkles, Award, Smartphone, Mail, User, Lock } from 'lucide-react';
 import { CARD_SHADOW, PAGE_BG } from './shared.jsx';
 import { LEGAL_URLS } from '../../constants/legal.js';
 
+const LegalLink = ({ to, children }) => <a href={to} className="text-cyan-600 hover:underline" target="_blank" rel="noopener noreferrer">{children}</a>;
+const CHECKBOX_CLASS = 'mt-0.5 w-5 h-5 shrink-0 text-cyan-600 rounded border-gray-300 focus:ring-cyan-500';
+
 const AGES = [['18-25', '18-25 años'], ['26-35', '26-35 años'], ['36-45', '36-45 años'], ['46-55', '46-55 años'], ['56+', '56+ años']];
 const GENDERS = [['masculino', 'Masculino'], ['femenino', 'Femenino'], ['otro', 'Otro'], ['no_responde', 'Prefiero no decir']];
 const CITIES = [['bogota', 'Bogotá'], ['medellin', 'Medellín'], ['cali', 'Cali'], ['barranquilla', 'Barranquilla'], ['cartagena', 'Cartagena'], ['bucaramanga', 'Bucaramanga'], ['pereira', 'Pereira'], ['manizales', 'Manizales'], ['santa_marta', 'Santa Marta'], ['cucuta', 'Cúcuta'], ['ibague', 'Ibagué'], ['villavicencio', 'Villavicencio'], ['otra', 'Otra ciudad']];
@@ -55,16 +58,21 @@ export default function RegistrationStep({ vertical, form, setFormField, phoneIs
             <label className="block text-gray-700 font-medium mb-2 text-sm"><User className="w-4 h-4 inline mr-2" />Tu nombre</label>
             <input type="text" autoComplete="name" value={form.name} onChange={(e) => setFormField('name', e.target.value)} placeholder="Ej: Juan Pérez" className={INPUT_CLASS} />
           </div>
-          <div>
+          <div className="space-y-3">
+            {/* Dos autorizaciones separadas (Ley 1581): la del servicio es obligatoria; la de ofertas, opcional. */}
             <label className="flex items-start gap-3 cursor-pointer">
-              <input type="checkbox" checked={form.termsAccepted} onChange={(e) => setFormField('termsAccepted', e.target.checked)} className="mt-1 w-5 h-5 text-cyan-600 rounded border-gray-300 focus:ring-cyan-500" />
-              <span className="text-xs text-gray-600">Autorizo el tratamiento de mis datos personales conforme a la <a href={LEGAL_URLS.privacy} className="text-cyan-600 hover:underline" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> y acepto los <a href={LEGAL_URLS.terms} className="text-cyan-600 hover:underline" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>.</span>
+              <input type="checkbox" checked={form.termsAccepted} onChange={(e) => setFormField('termsAccepted', e.target.checked)} className={CHECKBOX_CLASS} />
+              <span className="text-xs text-gray-600">Acepto los <LegalLink to={LEGAL_URLS.terms}>Términos</LegalLink> y autorizo el tratamiento de mis datos para ver mi resultado y que Banqueando me contacte sobre él, según la <LegalLink to={LEGAL_URLS.privacy}>Política de datos</LegalLink>. *</span>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" checked={form.marketingAccepted} onChange={(e) => setFormField('marketingAccepted', e.target.checked)} className={CHECKBOX_CLASS} />
+              <span className="text-xs text-gray-600">Quiero recibir ofertas y novedades de tarjetas y créditos por WhatsApp o correo. (Opcional)</span>
             </label>
           </div>
           <button type="submit" disabled={!canSubmit} className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-cyan-500/25">Ver mi resultado →</button>
           <button type="button" onClick={onBack} className="w-full text-gray-500 hover:text-gray-700 text-sm">← Volver al quiz</button>
         </form>
-        <p className="text-xs text-gray-400 mt-6 flex items-center justify-center"><Lock className="w-3 h-3 mr-1" />Tus datos están protegidos</p>
+        <p className="text-xs text-gray-400 mt-6 flex items-center justify-center"><Lock className="w-3 h-3 mr-1" />No compartimos tus datos con bancos ni terceros</p>
       </div>
     </div>
   );

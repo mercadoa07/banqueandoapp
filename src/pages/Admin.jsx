@@ -57,7 +57,7 @@ function useDashboardData(enabled) {
     const since = new Date(Date.now() - 90 * 86400000).toISOString();
     const [ev, se, cl] = await Promise.all([
       supabase.from('quiz_events').select('visit_id,event,vertical,step,question_id,session_id,created_at').gte('created_at', since).limit(MAX_ROWS),
-      supabase.from('quiz_sessions').select('id,created_at,vertical,user_name,user_phone,user_email,user_city,top_match_name,top_match_bank,time_to_complete_seconds').gte('created_at', since).limit(MAX_ROWS),
+      supabase.from('quiz_sessions').select('id,created_at,vertical,user_name,user_phone,user_email,user_city,top_match_name,top_match_bank,time_to_complete_seconds,accepted_marketing').gte('created_at', since).limit(MAX_ROWS),
       supabase.from('apply_clicks').select('session_id,vertical,product_id,product_name,entity,rank,created_at').gte('created_at', since).limit(MAX_ROWS)
     ]);
     const err = ev.error || se.error || cl.error;

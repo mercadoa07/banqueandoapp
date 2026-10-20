@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { CreditCard } from 'lucide-react';
+import { LEGAL_URLS, LEGAL_ENTITY } from '../constants/legal.js';
 
 const Footer = () => {
   return (
@@ -16,7 +17,7 @@ const Footer = () => {
               <span className="text-xl font-bold">Banqueando</span>
             </Link>
             <p className="text-gray-400 mb-4 max-w-md">
-              Encuentra la tarjeta de crédito perfecta para ti. Comparamos todas las opciones del mercado para que tomes la mejor decisión financiera.
+              Compara tarjetas de crédito y créditos en Colombia según tu perfil. No somos un banco ni damos asesoría financiera: te ayudamos a comparar.
             </p>
           </div>
 
@@ -46,28 +47,17 @@ const Footer = () => {
           <div>
             <h3 className="font-bold mb-4">Legal</h3>
             <ul className="space-y-2">
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  Términos y Condiciones
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  Política de Privacidad
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                  Contacto
-                </a>
-              </li>
+              <li><Link to={LEGAL_URLS.terms} className="text-gray-400 hover:text-white transition-colors">Términos y condiciones</Link></li>
+              <li><Link to={LEGAL_URLS.privacy} className="text-gray-400 hover:text-white transition-colors">Política de datos</Link></li>
+              <li><Link to={LEGAL_URLS.howWeRecommend} className="text-gray-400 hover:text-white transition-colors">Cómo recomendamos</Link></li>
+              {LEGAL_ENTITY.email && <li><a href={`mailto:${LEGAL_ENTITY.email}`} className="text-gray-400 hover:text-white transition-colors">Contacto</a></li>}
             </ul>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
           <p>© {new Date().getFullYear()} Banqueando. Todos los derechos reservados.</p>
-          <p className="mt-2">Comparador independiente de tarjetas de crédito en Colombia 🇨🇴</p>
+          <p className="mt-2">Comparador independiente de tarjetas y créditos en Colombia 🇨🇴</p>
         </div>
       </div>
     </footer>
