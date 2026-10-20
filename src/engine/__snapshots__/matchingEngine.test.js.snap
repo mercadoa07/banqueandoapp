@@ -498,33 +498,31 @@ exports[`motor de tarjetas — perfiles dorados > cambiar tarjeta de Bancolombia
     {
       "id": "rappi_card",
       "reasons": [
+        "Sin cuota de manejo",
         "Mayor beneficio neto al año",
         "Buena tasa para financiar",
-        "Sin cuota de manejo",
       ],
-      "savings": -22500,
-      "score": 90,
+      "savings": -34425,
+      "score": 89,
       "vsCurrent": 240000,
     },
     {
-      "id": "bbva_aqua",
+      "id": "nu_classic",
       "reasons": [
         "Buena tasa para financiar",
-        "Sin cuota de manejo",
       ],
-      "savings": -186750,
-      "score": 86,
-      "vsCurrent": 240000,
+      "savings": -418425,
+      "score": 62,
+      "vsCurrent": 36000,
     },
     {
-      "id": "exito_tuya",
+      "id": "falabella_cmr",
       "reasons": [
         "Buena tasa para financiar",
-        "Sin cuota de manejo",
       ],
-      "savings": -213750,
-      "score": 86,
-      "vsCurrent": 240000,
+      "savings": -598230,
+      "score": 60,
+      "vsCurrent": -143880,
     },
   ],
 }
@@ -535,30 +533,29 @@ exports[`motor de tarjetas — perfiles dorados > financia compras, ingreso medi
   "eligible": 12,
   "top": [
     {
-      "id": "scotiabank_platinum",
+      "id": "bancolombia_ideal",
       "reasons": [
         "Mayor beneficio neto al año",
         "Buena tasa para financiar",
-        "Tasa más baja para financiar",
       ],
-      "savings": -1121250,
-      "score": 78,
+      "savings": -1275626,
+      "score": 68.8066,
     },
     {
       "id": "davivienda_clasica",
       "reasons": [
         "Buena tasa para financiar",
       ],
-      "savings": -1215000,
-      "score": 71.4,
+      "savings": -1446000,
+      "score": 68.03999999999999,
     },
     {
-      "id": "bancolombia_ideal",
+      "id": "bbva_aqua",
       "reasons": [
-        "Buena tasa para financiar",
+        "Tasa más baja para financiar",
       ],
-      "savings": -1275626,
-      "score": 68.8066,
+      "savings": -1378110,
+      "score": 50.2,
     },
   ],
 }
@@ -566,35 +563,33 @@ exports[`motor de tarjetas — perfiles dorados > financia compras, ingreso medi
 
 exports[`motor de tarjetas — perfiles dorados > primera tarjeta, ingreso bajo, sin cuota 1`] = `
 {
-  "eligible": 8,
+  "eligible": 9,
   "top": [
     {
       "id": "rappi_card",
       "reasons": [
+        "Sin cuota de manejo",
         "Mayor beneficio neto al año",
         "Optimizada para pago total",
-        "Sin cuota de manejo",
       ],
       "savings": 96000,
       "score": 100,
     },
     {
-      "id": "bbva_aqua",
+      "id": "nu_classic",
       "reasons": [
         "Optimizada para pago total",
-        "Sin cuota de manejo",
       ],
-      "savings": 0,
-      "score": 100,
+      "savings": -204000,
+      "score": 81,
     },
     {
-      "id": "exito_tuya",
+      "id": "amex_green",
       "reasons": [
         "Optimizada para pago total",
-        "Sin cuota de manejo",
       ],
-      "savings": 0,
-      "score": 85,
+      "savings": -221940,
+      "score": 76,
     },
   ],
 }
@@ -608,28 +603,27 @@ exports[`motor de tarjetas — perfiles dorados > quiere cashback, compra en Rap
       "id": "rappi_card",
       "reasons": [
         "Sin cuota de manejo",
-        "Mayor beneficio neto al año",
         "Optimizada para pago total",
+        "Te devuelve dinero en cada compra",
       ],
       "savings": 144000,
       "score": 100,
     },
     {
-      "id": "bbva_aqua",
+      "id": "latam_pass_platinum",
       "reasons": [
         "Optimizada para pago total",
-        "Sin cuota de manejo",
       ],
-      "savings": 0,
-      "score": 100,
+      "savings": 176640,
+      "score": 89,
     },
     {
       "id": "avianca_lifemiles_gold",
       "reasons": [
         "Optimizada para pago total",
       ],
-      "savings": 187200,
-      "score": 89,
+      "savings": 4872,
+      "score": 85,
     },
   ],
 }
@@ -642,6 +636,7 @@ exports[`motor de tarjetas — perfiles dorados > quiere millas, paga el total, 
     {
       "id": "latam_pass_platinum",
       "reasons": [
+        "Mayor beneficio neto al año",
         "Optimizada para pago total",
         "Acumula millas LATAM Pass",
       ],
@@ -655,9 +650,9 @@ exports[`motor de tarjetas — perfiles dorados > quiere millas, paga el total, 
         "Optimizada para pago total",
         "Acumula millas LifeMiles",
       ],
-      "savings": 324000,
+      "savings": 141672,
       "score": 100,
-      "vsCurrent": -240000,
+      "vsCurrent": -422328,
     },
     {
       "id": "rappi_card",
@@ -694,30 +689,27 @@ exports[`motor de tarjetas — perfiles dorados > sin responder ingreso 1`] = `
     {
       "id": "rappi_card",
       "reasons": [
-        "Mayor beneficio neto al año",
-        "Optimizada para pago total",
         "Sin cuota de manejo",
+        "Optimizada para pago total",
       ],
       "savings": 180000,
       "score": 89,
     },
     {
-      "id": "bbva_aqua",
+      "id": "latam_pass_platinum",
       "reasons": [
         "Optimizada para pago total",
-        "Sin cuota de manejo",
       ],
-      "savings": 0,
-      "score": 85,
+      "savings": 340800,
+      "score": 72,
     },
     {
-      "id": "exito_tuya",
+      "id": "avianca_lifemiles_gold",
       "reasons": [
         "Optimizada para pago total",
-        "Sin cuota de manejo",
       ],
-      "savings": 0,
-      "score": 85,
+      "savings": 141672,
+      "score": 68,
     },
   ],
 }
@@ -742,17 +734,16 @@ exports[`motor de tarjetas — perfiles dorados > viajero frecuente, ingreso alt
       "reasons": [
         "Optimizada para pago total",
       ],
-      "savings": 2376000,
+      "savings": 2193672,
       "score": 100,
     },
     {
-      "id": "amex_green",
+      "id": "rappi_card",
       "reasons": [
         "Optimizada para pago total",
-        "Beneficios de viaje premium",
       ],
-      "savings": -350000,
-      "score": 98,
+      "savings": 720000,
+      "score": 85,
     },
   ],
 }
