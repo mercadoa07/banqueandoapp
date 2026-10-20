@@ -4,7 +4,8 @@
 import { describe, it, expect } from 'vitest';
 import cardsData from '../../config/cards.json';
 import creditData from '../../config/creditProducts.json';
-import { createMatchingEngine, createCreditMatchingEngine } from './matchingEngine.js';
+import questionsData from '../../config/questions.json';
+import { createMatchingEngine, createCreditMatchingEngine, fitsNeed } from './matchingEngine.js';
 import { CARD_PROFILES, CREDIT_PROFILES } from './goldenProfiles.js';
 
 const cards = createMatchingEngine(cardsData, {});
@@ -32,6 +33,57 @@ describe('motor de crédito — perfiles dorados', () => {
   for (const [name, answers] of Object.entries(CREDIT_PROFILES)) {
     it(name, () => expect(summarize(credit.getTopResults(answers))).toMatchSnapshot());
   }
+});
+
+describe('perfiles válidos y recomendaciones que tienen sentido', () => {
+  // Todas las respuestas de los perfiles existen en el quiz: si no, el motor las ignora en silencio.
+  const validValues = {};
+  const walk = (o) => {
+    if (Array.isArray(o)) return o.forEach(walk);
+    if (o && typeof o === 'object') {
+      if (o.id && Array.isArray(o.options)) validValues[o.id] = new Set([...(validValues[o.id] || []), ...o.options.map(x => x.value)]);
+      Object.values(o).forEach(walk);
+    }
+  };
+  walk(questionsData);
+
+  it('los perfiles dorados solo usan respuestas que existen en el quiz', () => {
+    for (const [name, answers] of [...Object.entries(CARD_PROFILES), ...Object.entries(CREDIT_PROFILES)]) {
+      for (const [field, value] of Object.entries(answers)) {
+        if (!validValues[field]) continue; // deslizadores y montos libres
+        for (const v of [].concat(value)) expect(validValues[field].has(v), `${name}: ${field}=${v}`).toBe(true);
+      }
+    }
+  });
+
+  it('el crédito solo recomienda productos que sirven para lo que se pidió', () => {
+    for (const answers of Object.values(CREDIT_PROFILES)) {
+      credit.getTopResults(answers).allResults.forEach(p => expect(fitsNeed(p, answers), p.id).toBe(true));
+    }
+  });
+
+  it('para capital de trabajo no recomienda compras a cuotas (no entregan efectivo)', () => {
+    const r = credit.getTopResults(CREDIT_PROFILES['capital de trabajo, negocio informal, urgente']);
+    expect(r.topMatch).toBeTruthy();
+    r.allResults.forEach(p => expect(p.category).not.toContain('bnpl'));
+  });
+
+  it('la libranza solo aparece para empleados o pensionados', () => {
+    const independiente = credit.getTopResults(CREDIT_PROFILES['emergencia personal, urgente, independiente']);
+    independiente.allResults.forEach(p => expect(p.category).not.toContain('libranza'));
+    const empleado = credit.getTopResults(CREDIT_PROFILES['consolidar deuda, empleado, busca tasa']);
+    expect(empleado.allResults.some(p => p.category.includes('libranza'))).toBe(true);
+  });
+
+  it('quien prefiere millas recibe primero una tarjeta de millas', () => {
+    const r = cards.getTopResults(CARD_PROFILES['quiere millas, paga el total, ingreso medio']);
+    expect(r.topMatch.rewards.type).toBe('miles');
+  });
+
+  it('quien prefiere cashback recibe primero una tarjeta de cashback', () => {
+    const r = cards.getTopResults(CARD_PROFILES['quiere cashback, compra en Rappi']);
+    expect(r.topMatch.rewards.type).toBe('cashback');
+  });
 });
 
 describe('reglas del motor', () => {

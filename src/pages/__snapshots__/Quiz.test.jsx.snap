@@ -2,16 +2,16 @@
 
 exports[`quiz de crédito > recorre el flujo completo y muestra la entidad de cada crédito 1`] = `
 [
-  "ADDI",
-  "Sistecrédito",
   "Lineru",
+  "RapiCredit",
+  "Solventa",
 ]
 `;
 
 exports[`quiz de tarjetas > recorre el flujo completo, guarda la sesión y registra el clic en Solicitar 1`] = `
 [
-  "Nu Tarjeta de Crédito",
   "RappiCard Visa",
   "Aqua Visa",
+  "Tarjeta Tuya",
 ]
 `;

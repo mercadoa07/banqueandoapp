@@ -251,16 +251,17 @@ export function HowWeRecommend() {
       <Section title="Tarjetas de crédito">
         <List items={[
           'Primero descartamos las que no podrías obtener: las que piden un ingreso mínimo mayor al tuyo o no aceptan personas reportadas, si nos dijiste que lo estás. Si quieres cambiar de tarjeta, también quitamos las de tu banco actual.',
-          'Luego damos puntos según tus respuestas: cómo pagas la tarjeta (si financias, pesa más una tasa baja), si quieres no pagar cuota de manejo, cómo prefieres manejarla, tus intereses y, si quieres cambiar, qué te molesta de la actual.',
-          'Calculamos el beneficio neto al año con tu gasto mensual: lo que te devuelve en cashback o millas, menos la cuota de manejo, menos los intereses si dijiste que financias tus compras.',
+          'Luego damos puntos según tus respuestas: cómo pagas la tarjeta (si financias, pesa más una tasa baja), cuánto te importa la cuota de manejo, si prefieres millas, cashback o salas VIP, cada cuánto viajas, dónde compras, cómo prefieres manejarla, tus intereses y, si quieres cambiar, qué te molesta de la actual.',
+          'Calculamos el beneficio neto al año con tu gasto mensual: lo que te devuelve en cashback o millas, menos la cuota de manejo, menos los intereses si dijiste que financias tus compras. Ese beneficio también cuenta para el orden, y si dos tarjetas empatan, gana la que más te deja.',
           'Si quieres cambiar de tarjeta, también te mostramos cuánto ahorrarías frente a lo que pagas hoy de cuota de manejo.'
         ]} />
       </Section>
 
       <Section title="Créditos">
         <List items={[
-          'Descartamos solo lo que te descalifica: productos que no aceptan personas reportadas (si nos dijiste que lo estás) o que exigen ser cliente de una entidad con la que no tienes relación.',
-          'A los demás les damos puntos según qué tan bien encajan con para qué y cuánto necesitas, qué tan urgente es, si es personal o para negocio, tu formalidad, tu historial crediticio, cómo prefieres hacer el proceso y lo que más te importa (tasa, rapidez o facilidad).',
+          'Primero dejamos solo los créditos que sirven para lo que pediste. Por ejemplo, una compra a cuotas en tiendas no aparece si necesitas efectivo para tu negocio; la libranza solo aparece si eres empleado o pensionado; el factoring solo si tu negocio factura formalmente.',
+          'También descartamos los productos que no aceptan personas reportadas (si nos dijiste que lo estás) o que exigen ser cliente de una entidad con la que no tienes relación.',
+          'A los que quedan les damos puntos según qué tan urgente es, tu formalidad, tu historial crediticio, cómo prefieres hacer el proceso, lo que más te importa (tasa, rapidez o facilidad) y si el producto está pensado justo para tu propósito.',
           'Estimamos la cuota mensual con el monto y el plazo que elegiste, usando el rango de tasas que publica cada entidad.',
           <>Comparamos esa cuota con tu capacidad de pago: hasta el {incomePct}% de tus ingresos (o el {salesPct}% de las ventas de tu negocio), menos lo que ya pagas en deudas. Si la cuota no cabe, el producto baja en la lista y te avisamos.</>,
           'Estimamos qué tan probable es la aprobación (alta, media o baja) con tu historial crediticio, tus ingresos y los requisitos del producto.',

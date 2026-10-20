@@ -1,12 +1,14 @@
 /**
- * BANQUEANDO - MATCHING ENGINE v5.0 (MULTI-VERTICAL)
+ * BANQUEANDO - MATCHING ENGINE v6.0 (MULTI-VERTICAL)
  * Soporta: Tarjetas (cards) y Crédito Unificado (credit)
  * v5: beneficio neto real en tarjetas; cuota, capacidad de pago, probabilidad
  *     de aprobación y top 3 variado en créditos.
+ * v6: créditos filtrados por para qué sirven (fit); tarjetas usan millas/cashback/VIP,
+ *     frecuencia de viaje, lugares de compra y beneficio neto para ordenar.
  */
 import { annualFeeCost, cardAnnualBreakdown, switchSavings, estimateLoan, paymentCapacity, approvalLikelihood } from './finance.js';
 
-export const ENGINE_VERSION = '5.0';
+export const ENGINE_VERSION = '6.0';
 
 // ============================================
 // CARDS MATCHING ENGINE
@@ -26,15 +28,21 @@ export class MatchingEngine {
       
       return {
         ...card,
-        score: Math.min(Math.max(scoreResult.score, 0), 100),
+        rawScore: scoreResult.score,
         matchReasons: scoreResult.reasons,
         benefits: benefits,
         cons: card.cons || [],
         ...this.calculateSavings(card, answers)
       };
+    }).map(card => {
+      // El beneficio neto también ordena: hasta ±10 puntos (1 punto por cada $50.000 al año).
+      const benefitPoints = Math.max(Math.min(Math.round(card.personalizedSavings / 50000), 10), -10);
+      const rawScore = card.rawScore + benefitPoints;
+      return { ...card, rawScore, score: Math.min(Math.max(rawScore, 0), 100) };
     });
 
-    const sortedCards = scoredCards.sort((a, b) => b.score - a.score);
+    // Se ordena por el puntaje sin tope (dos tarjetas en 100 no empatan) y, si empatan, por beneficio neto.
+    const sortedCards = scoredCards.sort((a, b) => b.rawScore - a.rawScore || b.personalizedSavings - a.personalizedSavings);
     const topCards = sortedCards.slice(0, 3);
     const cardsWithComparison = this.generateComparativeReasons(topCards, answers);
 
@@ -109,29 +117,61 @@ export class MatchingEngine {
     if (answers.fee_sensitivity === 'no_fee' && annualFeeCost(card) === 0) {
       score += 20;
       reasons.push('Sin cuota de manejo');
+    } else if (answers.fee_sensitivity && answers.fee_sensitivity !== 'no_fee'
+        && (card.matchFactors?.feeSensitivity || []).includes(answers.fee_sensitivity)) {
+      // Acepta pagar cuota si los beneficios lo justifican: suman las tarjetas pensadas para eso.
+      score += 10;
     }
-    
+
     if (answers.digital_preference) {
       const digitalMatch = card.matchFactors?.digitalPreference || [];
       if (digitalMatch.includes(answers.digital_preference)) {
         score += 15;
       }
     }
-    
+
     if (answers.interests?.length) {
       const interestMatch = card.matchFactors?.interests || [];
       const matches = answers.interests.filter(i => interestMatch.includes(i));
       score += matches.length * 5;
     }
-    
+
+    // Lo que prefiere para viajar: millas, cashback o salas VIP.
+    const rewardType = card.rewards?.type;
+    if (answers.travel_preference === 'miles' && rewardType === 'miles') {
+      score += 20;
+      reasons.push(`Acumula millas${card.rewards?.mileProgram ? ' ' + card.rewards.mileProgram : ''}`);
+    } else if (answers.travel_preference === 'cashback' && rewardType === 'cashback') {
+      score += 15;
+      reasons.push('Te devuelve dinero en cada compra');
+    } else if (answers.travel_preference === 'vip'
+        && ((card.matchFactors?.travelPreference || []).includes('vip') || (card.matchFactors?.idealFor || []).some(x => x === 'vip' || x === 'premium'))) {
+      score += 15;
+      reasons.push('Beneficios de viaje premium');
+    }
+    if (answers.travel_frequency && (card.matchFactors?.travelFrequency || []).includes(answers.travel_frequency)) {
+      score += 10;
+    }
+
+    // Dónde compra: 8 puntos por cada lugar donde la tarjeta da beneficio (máx. 16).
+    if (answers.shopping_places?.length) {
+      const places = card.matchFactors?.shoppingPlaces || [];
+      const matched = answers.shopping_places.filter(p => places.includes(p));
+      if (matched.length) {
+        score += Math.min(matched.length * 8, 16);
+        reasons.push('Beneficios donde más compras');
+      }
+    }
+
     if (answers.product_selection === 'cambiar_tarjeta' && answers.current_card_pain) {
       const pains = Array.isArray(answers.current_card_pain) ? answers.current_card_pain : [answers.current_card_pain];
       const solved = card.painPointsSolved || [];
       const matched = pains.filter(p => solved.includes(p));
       score += matched.length * 5;
     }
-    
-    return { score: Math.min(score, 100), reasons };
+
+    // Sin tope aquí: el tope de 100 se aplica al mostrarlo, para que el orden no empate.
+    return { score, reasons };
   }
 
   extractBenefits(card, _answers) {
@@ -157,11 +197,13 @@ export class MatchingEngine {
     if (winner.personalizedSavings > (alts[0]?.personalizedSavings || 0) + 50000) {
       winnerReasons.push('Mayor beneficio neto al año');
     }
+    // Luego, lo que la hace encajar con sus respuestas (sin repetir).
+    (winner.matchReasons || []).forEach(r => { if (!winnerReasons.includes(r)) winnerReasons.push(r); });
     if (!winnerReasons.length) winnerReasons.push('Mejor match para tu perfil');
-    
+
     return [
-      { ...winner, whyWinner: winnerReasons },
-      ...alts.map(a => ({ ...a, whyConsider: ['Alternativa viable'] }))
+      { ...winner, whyWinner: winnerReasons.slice(0, 3) },
+      ...alts.map(a => ({ ...a, whyConsider: a.matchReasons?.length ? a.matchReasons.slice(0, 2) : ['Alternativa viable'] }))
     ];
   }
 }
@@ -176,15 +218,15 @@ export class CreditMatchingEngine {
   }
 
   getTopResults(answers) {
-    // Filtrar por elegibilidad básica
-    let eligible = this.products.filter(product => {
-      return this.checkEligibility(product, answers);
-    });
-    
-    // Si no hay elegibles, usar TODOS los productos pero con score penalizado
+    // Solo productos que sirven para lo que pidió (fit) y cuyos requisitos duros cumple.
+    const fitting = this.products.filter(product => fitsNeed(product, answers));
+    let eligible = fitting.filter(product => this.checkEligibility(product, answers));
+
+    // Si ninguno cumple los requisitos duros, se muestran los que sí sirven para su necesidad,
+    // con puntaje penalizado. Nunca productos que no sirven para lo que pidió.
     let useFallback = false;
     if (eligible.length === 0) {
-      eligible = this.products;
+      eligible = fitting;
       useFallback = true;
     }
 
@@ -235,7 +277,9 @@ export class CreditMatchingEngine {
     });
 
     // Ordenar por score y armar un top 3 variado (no tres productos casi iguales)
-    const sorted = scored.sort((a, b) => b.score - a.score);
+    // Empate de puntaje: primero el que presta el monto completo que pidió.
+    const lendsFull = (p) => (p.loanEstimate?.cappedToMax ? 0 : 1);
+    const sorted = scored.sort((a, b) => b.score - a.score || lendsFull(b) - lendsFull(a));
     const top = this.pickDiverseTop(sorted);
 
     // Generar razones comparativas
@@ -347,35 +391,12 @@ export class CreditMatchingEngine {
       }
     }
     
-    // +15 puntos: Match con propósito del crédito
-    if (answers.loan_purpose && product.useCase) {
-      const purposes = Array.isArray(answers.loan_purpose) ? answers.loan_purpose : [answers.loan_purpose];
-      const useCaseLower = product.useCase.map(uc => uc.toLowerCase());
-      
-      const purposeMapping = {
-        'emergencia_personal': ['emergencia', 'urgente', 'personal'],
-        'consolidar_deuda': ['consolidar', 'deuda', 'cartera'],
-        'compra_especifica': ['compra', 'activo', 'libre'],
-        'inversion_negocio': ['inversión', 'negocio', 'capital', 'emprendimiento'],
-        'capital_trabajo': ['capital', 'trabajo', 'nómina', 'inventario'],
-        'inventario': ['inventario', 'mercancía', 'capital'],
-        'iniciar_negocio': ['iniciar', 'emprender', 'inicial', 'micro'],
-        'oportunidad': ['oportunidad', 'libre'],
-        'libre_inversion': ['libre', 'personal', 'gastos']
-      };
-      
-      let matchCount = 0;
-      purposes.forEach(p => {
-        const keywords = purposeMapping[p] || [];
-        if (keywords.some(kw => useCaseLower.some(uc => uc.includes(kw)))) {
-          matchCount++;
-        }
-      });
-      
-      if (matchCount > 0) {
-        score += 10 + (matchCount * 3);
-        reasons.push('Ideal para tu necesidad');
-      }
+    // +13 puntos: producto pensado para ese propósito (los de uso libre no suman: sirven, pero no son específicos).
+    // Antes se comparaba contra useCase, que en muchos productos es genérico y premiaba a todos por igual.
+    const purposes = asList(answers.loan_purpose);
+    if (product.fit?.purposes && purposes.some(p => product.fit.purposes.includes(p))) {
+      score += 13;
+      reasons.push('Pensado para lo que necesitas');
     }
     
     // +15 puntos: Acepta informales (si el usuario es informal)
@@ -491,6 +512,35 @@ export class CreditMatchingEngine {
       }))
     ];
   }
+}
+
+// ============================================
+// ¿SIRVE ESTE CRÉDITO PARA LO QUE PIDIÓ?
+// ============================================
+const asList = (v) => (v == null || v === '' ? [] : Array.isArray(v) ? v : [v]);
+
+/**
+ * Cada crédito declara en `fit` para quién sirve (config/creditProducts.json):
+ *   destinations  personal | negocio | iniciar_negocio (obligatorio)
+ *   purposes      propósitos de loan_purpose; sin el campo = uso libre (sirve para cualquiera)
+ *   employment    situación laboral exigida (libranza, adelanto de nómina)
+ *   formalization formalidad del negocio exigida (factoring, crédito pyme)
+ *   sectors       sectores para los que existe (p. ej. ferreterías)
+ * Un campo solo filtra si la persona respondió esa pregunta. Sin `fit`, el producto
+ * no se recomienda: no sabemos para qué sirve.
+ */
+export function fitsNeed(product, answers) {
+  const fit = product.fit;
+  if (!fit) return false;
+  const check = (allowed, answer) => {
+    const given = asList(answer);
+    return !allowed || !given.length || given.some(a => allowed.includes(a));
+  };
+  return check(fit.destinations, answers.credit_destination)
+    && check(fit.purposes, answers.loan_purpose)
+    && check(fit.employment, answers.employment_status)
+    && check(fit.formalization, answers.business_formalization)
+    && check(fit.sectors, answers.business_sector);
 }
 
 // ============================================

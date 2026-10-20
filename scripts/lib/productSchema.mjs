@@ -59,6 +59,26 @@ export const cardSchema = z.object({
   ...traceability
 }).passthrough();
 
+// Valores válidos de las respuestas del quiz (config/questions.json) que usa `fit`.
+export const FIT_VALUES = {
+  destinations: ['personal', 'negocio', 'iniciar_negocio'],
+  purposes: ['emergencia_personal', 'consolidar_deuda', 'compra_especifica', 'inversion_negocio', 'capital_trabajo', 'inventario', 'iniciar_negocio', 'oportunidad', 'libre_inversion'],
+  employment: ['empleado_fijo', 'empleado_temporal', 'independiente', 'empresario', 'pensionado', 'desempleado'],
+  formalization: ['informal', 'rut_pn', 'establecimiento', 'empresa'],
+  sectors: ['retail', 'food', 'services', 'tech', 'manufacturing', 'health', 'education', 'logistics', 'construction', 'other']
+};
+const fitList = (key) => z.array(z.enum(FIT_VALUES[key]));
+
+// Para quién sirve el crédito (lo usa fitsNeed en el motor). destinations vacío = no se recomienda.
+const fitSchema = z.object({
+  destinations: fitList('destinations'),
+  purposes: fitList('purposes').min(1).optional(),
+  employment: fitList('employment').min(1).optional(),
+  formalization: fitList('formalization').min(1).optional(),
+  sectors: fitList('sectors').min(1).optional(),
+  why: z.string().min(1)
+}).strict();
+
 export const creditSchema = z.object({
   id: z.string().regex(/^[a-z0-9_]+$/, 'id en snake_case'),
   name: z.string().min(1),
@@ -77,5 +97,6 @@ export const creditSchema = z.object({
   benefits: z.array(z.string()),
   useCase: z.array(z.string()),
   applyUrl: url,
+  fit: fitSchema.optional(),
   ...traceability
-}).passthrough();
+}).passthrough().refine(p => !p.active || p.fit, { message: 'un crédito activo necesita `fit` (para quién sirve)', path: ['fit'] });

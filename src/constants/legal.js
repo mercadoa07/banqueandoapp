@@ -29,14 +29,14 @@ export const SAVINGS_CONFIG = {
 
 export const LEGAL_TEXTS = {
   // Footer del Landing
-  landingFooter: `Banqueando es una plataforma informativa y de comparación. No somos una entidad financiera, no otorgamos créditos ni tarjetas. Las recomendaciones se basan en la información que proporcionas y datos públicos de cada producto. Todas las ofertas están sujetas a evaluación y aprobación por parte de cada entidad financiera. © 2025 Banqueando.`,
+  landingFooter: `Banqueando es una plataforma informativa y de comparación. No somos una entidad financiera, no otorgamos créditos ni tarjetas. Las recomendaciones se basan en la información que proporcionas y datos públicos de cada producto. Todas las ofertas están sujetas a evaluación y aprobación por parte de cada entidad financiera. © ${new Date().getFullYear()} Banqueando.`,
   
   // Footer general (todas las pantallas)
   generalFooter: {
-    line1: "La información de tarjetas se obtiene de fuentes públicas y sitios oficiales de cada banco",
+    line1: "La información de cada producto se obtiene de fuentes públicas y de los sitios oficiales de cada entidad",
     line2: "Los datos se actualizan periódicamente pero pueden variar sin previo aviso",
     line3: "Consulta siempre las condiciones oficiales en el sitio web de cada entidad",
-    copyright: "Banqueando © 2025"
+    copyright: `Banqueando © ${new Date().getFullYear()}`
   },
   
   // Texto del ahorro estimado

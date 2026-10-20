@@ -80,7 +80,7 @@ export default function HeroSection() {
 
           {/* CTA */}
           <Link 
-            to="/quiz"
+            to="/quiz?tipo=tarjeta"
             className="block w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white py-4 rounded-full font-bold text-lg text-center hover:shadow-2xl hover:shadow-cyan-500/50 transition-all transform hover:scale-105"
           >
             👉 Encontrar mi tarjeta ideal
@@ -132,7 +132,7 @@ export default function HeroSection() {
 
           {/* CTA */}
           <Link 
-            to="/quiz"
+            to="/quiz?tipo=credito"
             className="block w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-4 rounded-full font-bold text-lg text-center hover:shadow-2xl hover:shadow-purple-500/50 transition-all transform hover:scale-105"
           >
             👉 Encontrar mi crédito ideal
@@ -176,7 +176,7 @@ export default function HeroSection() {
             </p>
             
             <Link 
-              to="/quiz"
+              to="/quiz?tipo=tarjeta"
               className="block w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white py-3 rounded-full font-bold text-center"
             >
               👉 Encontrar mi tarjeta
@@ -204,7 +204,7 @@ export default function HeroSection() {
             </p>
             
             <Link 
-              to="/quiz"
+              to="/quiz?tipo=credito"
               className="block w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-full font-bold text-center"
             >
               👉 Encontrar mi crédito

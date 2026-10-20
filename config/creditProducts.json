@@ -53,7 +53,16 @@
         "notes": "Modalidad verificada 2026-10-16: co.addi.com/tasas-tarifas dice \"Créditos de consumo de bajo monto: Hasta 66,56% E.A.\"."
       },
       "usuryModality": "consumo_bajo_monto",
-      "usuryModalityVerified": true
+      "usuryModalityVerified": true,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "purposes": [
+          "compra_especifica"
+        ],
+        "why": "Compra a cuotas en comercios aliados: no entrega efectivo."
+      }
     },
     {
       "id": "sistecredito_2",
@@ -102,7 +111,16 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "purposes": [
+          "compra_especifica"
+        ],
+        "why": "Crédito rotativo solo para compras en comercios aliados."
+      }
     },
     {
       "id": "juancho_te_presta_3",
@@ -202,7 +220,19 @@
         "notes": "Cobra la tasa máxima legal (su página citaba la de mayo 2026)."
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal",
+          "negocio",
+          "iniciar_negocio"
+        ],
+        "formalization": [
+          "informal",
+          "rut_pn"
+        ],
+        "why": "Préstamo en efectivo de uso libre y monto bajo."
+      }
     },
     {
       "id": "rapicredit_5",
@@ -252,7 +282,19 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal",
+          "negocio",
+          "iniciar_negocio"
+        ],
+        "formalization": [
+          "informal",
+          "rut_pn"
+        ],
+        "why": "Préstamo en efectivo de uso libre y monto bajo."
+      }
     },
     {
       "id": "nequi_propulsor_6",
@@ -302,7 +344,19 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal",
+          "negocio",
+          "iniciar_negocio"
+        ],
+        "formalization": [
+          "informal",
+          "rut_pn"
+        ],
+        "why": "Crédito de consumo de libre inversión."
+      }
     },
     {
       "id": "monet_7",
@@ -349,7 +403,17 @@
         "notes": "No cobra intereses pero sí costos fijos por servicio: el 0% EA no refleja el costo real (pendiente Fase 3, costo total)."
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "employment": [
+          "empleado_fijo",
+          "empleado_temporal"
+        ],
+        "why": "Adelanto de nómina: exige ser empleado."
+      }
     },
     {
       "id": "kredicity_8",
@@ -450,7 +514,19 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal",
+          "negocio",
+          "iniciar_negocio"
+        ],
+        "formalization": [
+          "informal",
+          "rut_pn"
+        ],
+        "why": "Préstamo rotativo en efectivo de uso libre."
+      }
     },
     {
       "id": "moni_10",
@@ -599,7 +675,19 @@
         "notes": "Cobra la tasa máxima legal vigente."
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal",
+          "negocio",
+          "iniciar_negocio"
+        ],
+        "formalization": [
+          "informal",
+          "rut_pn"
+        ],
+        "why": "Préstamo en efectivo de uso libre y monto bajo."
+      }
     },
     {
       "id": "quipu_13",
@@ -648,7 +736,25 @@
         "notes": null
       },
       "usuryModality": "popular_productivo_urbano",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio",
+          "iniciar_negocio"
+        ],
+        "purposes": [
+          "capital_trabajo",
+          "inventario",
+          "inversion_negocio",
+          "oportunidad",
+          "iniciar_negocio"
+        ],
+        "formalization": [
+          "informal",
+          "rut_pn"
+        ],
+        "why": "Microcrédito para micronegocios y emprendedores."
+      }
     },
     {
       "id": "duna_14",
@@ -746,7 +852,17 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "employment": [
+          "empleado_fijo",
+          "pensionado"
+        ],
+        "why": "Libranza: se descuenta de la nómina o la pensión."
+      }
     },
     {
       "id": "prestagente_16",
@@ -794,7 +910,17 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "employment": [
+          "empleado_fijo",
+          "pensionado"
+        ],
+        "why": "Libranza: se descuenta de la nómina o la pensión."
+      }
     },
     {
       "id": "excelcredit_17",
@@ -843,7 +969,17 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "employment": [
+          "empleado_fijo",
+          "pensionado"
+        ],
+        "why": "Libranza: se descuenta de la nómina o la pensión."
+      }
     },
     {
       "id": "mesfix_18",
@@ -888,7 +1024,22 @@
         "notes": null
       },
       "usuryModality": "no_aplica",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "capital_trabajo",
+          "oportunidad"
+        ],
+        "formalization": [
+          "rut_pn",
+          "establecimiento",
+          "empresa"
+        ],
+        "why": "Factoring: adelanta facturas, exige facturar formalmente."
+      }
     },
     {
       "id": "liquitech_19",
@@ -933,7 +1084,22 @@
         "notes": null
       },
       "usuryModality": "no_aplica",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "capital_trabajo",
+          "oportunidad"
+        ],
+        "formalization": [
+          "rut_pn",
+          "establecimiento",
+          "empresa"
+        ],
+        "why": "Factoring: adelanta facturas, exige facturar formalmente."
+      }
     },
     {
       "id": "credifamilia_20",
@@ -980,7 +1146,11 @@
         "notes": null
       },
       "usuryModality": "vivienda",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [],
+        "why": "Crédito hipotecario: el quiz no tiene la opción de comprar vivienda."
+      }
     },
     {
       "id": "valcredito_21",
@@ -1211,7 +1381,23 @@
         "notes": null
       },
       "usuryModality": "productivo_urbano",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "capital_trabajo",
+          "inventario",
+          "inversion_negocio",
+          "oportunidad"
+        ],
+        "formalization": [
+          "establecimiento",
+          "empresa"
+        ],
+        "why": "Crédito para pymes constituidas."
+      }
     },
     {
       "id": "finaktiva_26",
@@ -1257,7 +1443,23 @@
         "notes": null
       },
       "usuryModality": "no_aplica",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "capital_trabajo",
+          "inventario",
+          "inversion_negocio",
+          "oportunidad"
+        ],
+        "formalization": [
+          "establecimiento",
+          "empresa"
+        ],
+        "why": "Crédito y factoring para pymes constituidas."
+      }
     },
     {
       "id": "omni_27",
@@ -1404,7 +1606,11 @@
         "notes": null
       },
       "usuryModality": "no_aplica",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [],
+        "why": "Anticipo de producción agrícola: el quiz no tiene sector agro."
+      }
     },
     {
       "id": "uala_30",
@@ -1503,7 +1709,19 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal",
+          "negocio",
+          "iniciar_negocio"
+        ],
+        "formalization": [
+          "informal",
+          "rut_pn"
+        ],
+        "why": "Nanocrédito en efectivo de uso libre."
+      }
     },
     {
       "id": "r5_32",
@@ -1599,7 +1817,19 @@
         "notes": null
       },
       "usuryModality": "popular_productivo_urbano",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "capital_trabajo",
+          "inventario",
+          "inversion_negocio",
+          "oportunidad"
+        ],
+        "why": "Crédito para comercios que venden con datáfono Bold."
+      }
     },
     {
       "id": "lumni_34",
@@ -1645,7 +1875,11 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [],
+        "why": "Financiación de estudios: el quiz no tiene la opción de estudiar."
+      }
     },
     {
       "id": "lucas_35",
@@ -1738,7 +1972,17 @@
         "notes": "Enlace corregido 2026-10-20: el sitio se mudó a adelantatupago.com."
       },
       "usuryModality": "no_aplica",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "employment": [
+          "empleado_fijo",
+          "empleado_temporal"
+        ],
+        "why": "Adelanto de salario por convenio con el empleador."
+      }
     },
     {
       "id": "exponencial_confirming_37",
@@ -1785,7 +2029,22 @@
         "notes": null
       },
       "usuryModality": "no_aplica",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "capital_trabajo",
+          "oportunidad"
+        ],
+        "formalization": [
+          "rut_pn",
+          "establecimiento",
+          "empresa"
+        ],
+        "why": "Confirming/factoring: exige facturar formalmente."
+      }
     },
     {
       "id": "finkargo_38",
@@ -1830,7 +2089,21 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "inventario",
+          "capital_trabajo"
+        ],
+        "formalization": [
+          "establecimiento",
+          "empresa"
+        ],
+        "why": "Financia importaciones de empresas."
+      }
     },
     {
       "id": "a2censo_39",
@@ -1923,7 +2196,21 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "inventario",
+          "capital_trabajo"
+        ],
+        "sectors": [
+          "retail",
+          "construction"
+        ],
+        "why": "Crédito para ferreterías y materiales de construcción."
+      }
     },
     {
       "id": "gulungo_41",
@@ -2068,7 +2355,20 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "personal"
+        ],
+        "purposes": [
+          "compra_especifica"
+        ],
+        "employment": [
+          "empleado_fijo",
+          "empleado_temporal"
+        ],
+        "why": "Compra a cuotas por convenio con el empleador."
+      }
     },
     {
       "id": "ledn_44",
@@ -2256,7 +2556,16 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [
+          "negocio"
+        ],
+        "purposes": [
+          "inversion_negocio"
+        ],
+        "why": "Financia maquinaria para el negocio."
+      }
     },
     {
       "id": "welli_48",
@@ -2304,7 +2613,11 @@
         "notes": null
       },
       "usuryModality": "consumo_ordinario",
-      "usuryModalityVerified": false
+      "usuryModalityVerified": false,
+      "fit": {
+        "destinations": [],
+        "why": "Procedimientos médicos: el quiz no tiene esa opción."
+      }
     },
     {
       "id": "mattilda_49",

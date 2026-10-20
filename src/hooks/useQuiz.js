@@ -20,10 +20,13 @@ export function useQuiz() {
     credit: createCreditMatchingEngine(creditProductsData, matchingConfig)
   }), []);
 
-  const [step, setStep] = useState('landing');
-  const [vertical, setVertical] = useState(null);
+  // Quien llega desde "Tarjetas" o "Créditos" en la página de inicio (/quiz?tipo=...) no vuelve a elegir:
+  // crédito arranca en la primera pregunta; tarjeta, en "nueva o cambiar".
+  const [entry] = useState(() => (typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('tipo')));
+  const [step, setStep] = useState(() => (entry === 'credito' ? 'quiz' : entry === 'tarjeta' ? 'prequiz' : 'landing'));
+  const [vertical, setVertical] = useState(() => (entry === 'credito' ? 'credit' : null));
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState(() => (entry === 'credito' ? { product_selection: 'necesito_credito' } : {}));
   const [results, setResults] = useState(null);
   const [user, setUser] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
@@ -42,6 +45,14 @@ export function useQuiz() {
     if (step === 'quiz' && currentQuestionId) trackEvent(visitId, 'question_view', { vertical, step: currentQuestion, questionId: currentQuestionId });
     if (step === 'login') trackEvent(visitId, 'registration_view', { vertical });
   }, [step, currentQuestion, currentQuestionId, vertical, visitId]);
+
+  // Entrada directa: registrar el inicio (y la vertical, si ya viene elegida) una sola vez.
+  useEffect(() => {
+    if (!entry) return;
+    quizStartTime.current = Date.now();
+    trackEvent(visitId, 'quiz_start', { vertical: entry === 'credito' ? 'credit' : null });
+    if (entry === 'credito') trackEvent(visitId, 'vertical_selected', { vertical: 'credit' });
+  }, [entry, visitId]);
 
   const setFormField = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
   const phoneIsValid = normalizePhone(form.phone) !== null;
