@@ -24,7 +24,7 @@ function NoResults({ onReset }) {
         <AlertCircle className="w-16 h-16 text-amber-500 mx-auto mb-4" />
         <h2 className="text-2xl font-bold text-gray-800 mb-2">No encontramos resultados</h2>
         <p className="text-gray-500 mb-6">No pudimos encontrar productos que coincidan con tu perfil.</p>
-        <button onClick={onReset} className="w-full bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-4 rounded-2xl font-semibold">Volver a intentar</button>
+        <button onClick={onReset} className="w-full bg-ink text-white py-4 rounded-2xl font-semibold">Volver a intentar</button>
       </div>
     </div>
   );
@@ -41,7 +41,7 @@ export default function ResultsStep({ results, vertical, user, answers, activeCo
   return (
     <div className={`${PAGE_BG} p-4 py-8`}>
       <div className="max-w-6xl mx-auto">
-        {user && <div className="bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl p-4 mb-6 text-white text-center shadow-lg max-w-md mx-auto flex items-center justify-center"><User className="w-5 h-5 mr-2" /><p>Hola, <strong>{user.user_metadata?.name || user.email}</strong></p></div>}
+        {user && <div className="bg-ink rounded-2xl p-4 mb-6 text-white text-center shadow-lg max-w-md mx-auto flex items-center justify-center"><User className="w-5 h-5 mr-2" /><p>Hola, <strong>{user.user_metadata?.name || user.email}</strong></p></div>}
         <div className="bg-white rounded-2xl p-6 shadow-lg text-center mb-8 max-w-md mx-auto" style={CARD_SHADOW}>
           <Sparkles className="w-12 h-12 text-amber-500 mx-auto mb-3" />
           <h1 className="text-2xl font-bold text-gray-800 mb-1">¡Encontramos tu match!</h1>
@@ -60,7 +60,7 @@ export default function ResultsStep({ results, vertical, user, answers, activeCo
             <a href={LEGAL_URLS.howWeRecommend} target="_blank" rel="noopener noreferrer" className="underline font-medium">Cómo recomendamos</a>
           </p>
         </div>
-        <div className="text-center mb-6"><button onClick={onReset} className="text-cyan-600 hover:text-cyan-800 font-medium">← Volver a empezar</button></div>
+        <div className="text-center mb-6"><button onClick={onReset} className="text-accent hover:text-cyan-800 font-medium">← Volver a empezar</button></div>
         <LegalFooter />
       </div>
       {showSavings && <SavingsBreakdownModal card={topMatch} monthlySpend={answers.monthly_spend || 1500000} onClose={() => setShowSavings(false)} />}

@@ -21,7 +21,7 @@ export default function QuestionStep({ question, index, total, sections, value, 
     <div className={`${PAGE_BG} p-4 py-8`}>
       <div className="max-w-lg mx-auto">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden" style={CARD_SHADOW}>
-          <div className="bg-gradient-to-r from-cyan-500 to-purple-600 p-5">
+          <div className="bg-ink p-5">
             <div className="flex justify-between items-center mb-3">
               <div className="flex items-center"><SectionIcon className="w-5 h-5 text-white mr-2" /><span className="text-white font-medium text-sm">{section?.name || 'Quiz'}</span></div>
               <span className="text-white/70 text-sm bg-white/20 px-3 py-1 rounded-full">{index + 1} / {total}</span>
@@ -35,7 +35,7 @@ export default function QuestionStep({ question, index, total, sections, value, 
           </div>
           <div className="p-5 bg-gray-50 flex justify-between items-center">
             <button onClick={onPrev} disabled={index === 0} className={`flex items-center px-4 py-2 rounded-lg font-medium transition-all ${index === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-200'}`}><ChevronLeft className="w-5 h-5 mr-1" />Anterior</button>
-            <button onClick={onNext} className="flex items-center px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-cyan-500 to-purple-600 text-white transition-all hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-[1.02]">
+            <button onClick={onNext} className="flex items-center px-6 py-3 rounded-xl font-semibold bg-ink text-white transition-all hover:shadow-lg">
               {isLast ? <><Sparkles className="w-5 h-5 mr-2" />Ver Resultados</> : <>Siguiente<ChevronRight className="w-5 h-5 ml-1" /></>}
             </button>
           </div>

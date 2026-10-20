@@ -6,7 +6,7 @@ import { formatCOP } from '../../lib/format.js';
 import { getEntityName } from '../../lib/supabase.js';
 
 export const CARD_SHADOW = { boxShadow: '0 0 40px rgba(8, 145, 178, 0.12)' };
-export const PAGE_BG = 'min-h-screen bg-gradient-to-br from-gray-50 to-stone-100';
+export const PAGE_BG = 'min-h-screen bg-paper';
 
 export const BanqueandoLogo = ({ className = 'w-16 h-16' }) => (
   <img src="/logo.png" alt="Banqueando" className={`${className} object-contain`} />
@@ -20,9 +20,9 @@ export const LegalFooter = ({ variant = 'general' }) => (
       )}
       <p className="mt-3 font-medium">{LEGAL_TEXTS.generalFooter.copyright}</p>
       <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-2">
-        <a href={LEGAL_URLS.privacy} className="text-cyan-600 hover:text-cyan-700">Política de datos</a>
-        <a href={LEGAL_URLS.terms} className="text-cyan-600 hover:text-cyan-700">Términos</a>
-        <a href={LEGAL_URLS.howWeRecommend} className="text-cyan-600 hover:text-cyan-700">Cómo recomendamos</a>
+        <a href={LEGAL_URLS.privacy} className="text-accent hover:text-cyan-700">Política de datos</a>
+        <a href={LEGAL_URLS.terms} className="text-accent hover:text-cyan-700">Términos</a>
+        <a href={LEGAL_URLS.howWeRecommend} className="text-accent hover:text-cyan-700">Cómo recomendamos</a>
       </div>
     </div>
   </div>
@@ -63,12 +63,12 @@ export const ApplyPopup = ({ card, onConfirm, onClose }) => (
       <h3 className="text-lg font-bold text-gray-800 mb-4">{LEGAL_TEXTS.applyPopup.title}</h3>
       <div className="space-y-2 mb-6">
         {LEGAL_TEXTS.applyPopup.items.map((item, idx) => (
-          <div key={idx} className="flex items-start"><span className="text-cyan-600 mr-2">•</span><span className="text-sm text-gray-600">{item.replace('{bankName}', getEntityName(card) || 'la entidad')}</span></div>
+          <div key={idx} className="flex items-start"><span className="text-accent mr-2">•</span><span className="text-sm text-gray-600">{item.replace('{bankName}', getEntityName(card) || 'la entidad')}</span></div>
         ))}
       </div>
       <div className="flex gap-3">
         <button onClick={onClose} className="flex-1 bg-gray-100 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-200">Cancelar</button>
-        <button onClick={onConfirm} className="flex-1 bg-gradient-to-r from-cyan-500 to-purple-600 text-white py-3 rounded-xl font-medium hover:shadow-lg">Continuar →</button>
+        <button onClick={onConfirm} className="flex-1 bg-ink text-white py-3 rounded-xl font-medium hover:shadow-lg">Continuar →</button>
       </div>
     </div>
   </div>

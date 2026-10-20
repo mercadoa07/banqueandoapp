@@ -1,231 +1,81 @@
 import React from 'react';
-import { Sparkles, Shield, Clock, CheckCircle2, CreditCard, DollarSign } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Check } from 'lucide-react';
+import { HERO_EXAMPLE as ex } from '../../constants/landing.js';
+import { formatCOP } from '../../lib/format.js';
 
-// Hero de dos productos (tarjetas y créditos)
+const fmtDate = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
+const fmtNum = (n) => n.toLocaleString('es-CO');
+const fmtPct = (n) => `${String(n).replace('.', ',')}%`;
+
+// Resultado de ejemplo: muestra desde el primer segundo lo que la persona va a recibir.
+function ExampleResult() {
+  return (
+    <article className="bg-white border border-line rounded-3xl p-5 sm:p-6 shadow-[0_24px_60px_-32px_rgba(13,21,23,0.35)] min-w-0" aria-label="Ejemplo de resultado">
+      <div className="flex justify-between items-start gap-3 mb-5">
+        <span className="text-xs font-semibold uppercase tracking-wider bg-accent-soft text-accent px-2.5 py-1 rounded-full">Tu mejor opción</span>
+        <span className="text-xs text-muted text-right">Tarifas verificadas<br />{fmtDate(ex.verified)}</span>
+      </div>
+
+      <div className="flex items-center gap-4 mb-5">
+        <div className="relative w-24 shrink-0 aspect-[1.586] rounded-lg bg-gradient-to-br from-[#22313A] to-ink" aria-hidden="true">
+          <span className="absolute left-3 top-5 w-4 h-3 rounded-sm bg-gradient-to-br from-[#E4C98A] to-[#B9975A]" />
+          <span className="absolute right-2 bottom-1.5 text-[10px] font-display font-extrabold italic text-white tracking-wide">{ex.network}</span>
+        </div>
+        <div className="min-w-0">
+          <p className="font-display font-bold text-lg leading-tight text-ink">{ex.name}</p>
+          <p className="text-sm text-muted">{ex.entity}</p>
+        </div>
+      </div>
+
+      <p className="font-display font-extrabold text-4xl sm:text-[44px] leading-none tracking-tight text-good">+{formatCOP(ex.net)}</p>
+      <p className="text-sm text-muted mt-1.5 mb-4">te deja al año, ya descontada la cuota de manejo</p>
+
+      <ul className="border-t border-line pt-3 mb-4 grid gap-2 text-sm tabular-nums">
+        <li className="flex justify-between gap-3"><span>{fmtNum(ex.miles)} millas LATAM Pass</span><span className="font-semibold text-good">+{formatCOP(ex.milesValue)}</span></li>
+        <li className="flex justify-between gap-3"><span>Cuota de manejo del año</span><span className="font-semibold text-bad">−{formatCOP(ex.annualFee)}</span></li>
+        <li className="flex justify-between gap-3"><span>Intereses (pagas el total)</span><span>$0</span></li>
+      </ul>
+
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        {[[fmtPct(ex.rateEA), 'Tasa EA'], [`$${ex.minIncomeMillions}M`, 'Ingreso mínimo'], [ex.loungeVisits, 'Salas VIP al año']].map(([v, l]) => (
+          <div key={l} className="bg-paper rounded-xl px-3 py-2.5">
+            <b className="block font-display font-bold text-ink">{v}</b>
+            <span className="text-xs text-muted">{l}</span>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-sm text-muted mb-4">Por qué está primero: quieres acumular millas y pagas el total cada mes.</p>
+      <p className="text-xs text-muted text-center">Ejemplo con un gasto de {formatCOP(ex.monthlySpend)} al mes</p>
+    </article>
+  );
+}
+
 export default function HeroSection() {
   return (
-  <section className="relative overflow-hidden bg-white pt-20 pb-32">
-    {/* Overlays decorativos */}
-    <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-100 rounded-full blur-3xl opacity-50"></div>
-    <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-100 rounded-full blur-3xl opacity-50"></div>
-    
-    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      {/* Badge superior */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center bg-gradient-to-r from-cyan-50 to-purple-50 border border-cyan-200 rounded-full px-4 py-2">
-          <Sparkles className="w-4 h-4 text-amber-500 mr-2" />
-          <span className="text-sm font-semibold text-gray-700">Recomendación personalizada • Tarjetas + Crédito • Gratis</span>
+    <section className="bg-paper">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 md:py-16 grid md:grid-cols-[1.05fr_0.95fr] gap-10 md:gap-12 items-center">
+        <div className="min-w-0">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.08em] text-accent mb-4">Comparador independiente · Colombia</p>
+          <h1 className="font-display font-extrabold text-[40px] sm:text-6xl leading-[1.02] tracking-[-0.035em] text-ink mb-5 [text-wrap:balance]">
+            Tu próxima tarjeta o crédito, <span className="text-muted">con números reales.</span>
+          </h1>
+          <p className="text-lg text-muted max-w-[34ch] mb-7">
+            Respondes unas preguntas y te mostramos las tres opciones que más te convienen, cuánto ganas o pagas al año y por qué.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/quiz?tipo=tarjeta" className="bg-ink text-white px-6 py-3 rounded-full font-semibold hover:bg-black transition-colors">Comparar tarjetas</Link>
+            <Link to="/quiz?tipo=credito" className="bg-white text-ink border border-line px-6 py-3 rounded-full font-semibold hover:border-ink transition-colors">Comparar créditos</Link>
+          </div>
+          <ul className="flex flex-wrap gap-x-5 gap-y-1.5 mt-6 text-sm text-muted">
+            {['Gratis', 'No consulta centrales de riesgo', 'Ninguna entidad paga por aparecer'].map(t => (
+              <li key={t} className="flex items-center gap-1.5"><Check className="w-4 h-4 text-accent" aria-hidden="true" />{t}</li>
+            ))}
+          </ul>
         </div>
+        <ExampleResult />
       </div>
-
-      {/* Central Headline */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4 leading-tight">
-          ¿Qué decisión financiera
-          <br/>
-          <span className="bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
-            necesitas tomar hoy?
-          </span>
-        </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Elige tu necesidad y encuentra tu match perfecto en 2 minutos
-        </p>
-      </div>
-
-      {/* ============================================ */}
-      {/* DESKTOP: Dual Product Cards (visible md and up) */}
-      {/* ============================================ */}
-      <div className="hidden md:grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-        
-        {/* Card 1: Tarjetas de Crédito */}
-        <div className="bg-white rounded-3xl p-8 border-2 border-cyan-400 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/20 transition-all hover:scale-105">
-          
-          {/* Icon */}
-          <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6">
-            <CreditCard className="w-8 h-8 text-white" />
-          </div>
-
-          {/* Title */}
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">
-            Tarjetas de Crédito
-          </h3>
-
-          {/* Subtitle */}
-          <p className="text-cyan-600 font-semibold mb-4">
-            Comparamos tarjetas de bancos y fintechs y te mostramos la mejor para ti
-          </p>
-
-          {/* Description */}
-          <p className="text-gray-600 text-sm leading-relaxed mb-6">
-            Analizamos tarjetas de bancos y fintechs en Colombia. Según tu ingreso, historial y forma de uso, <strong className="text-gray-800">te mostramos las tarjetas que realmente te convienen y puedes obtener.</strong>
-          </p>
-
-          {/* Benefits */}
-          <div className="space-y-3 mb-6">
-            <div className="flex items-start text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-cyan-500 mr-3 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">Comparamos tarjetas de <strong>bancos y fintechs</strong></span>
-            </div>
-            <div className="flex items-start text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-cyan-500 mr-3 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">Filtramos las que <strong>sí aplican a tu perfil</strong></span>
-            </div>
-            <div className="flex items-start text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-cyan-500 mr-3 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">Te mostramos la <strong>mejor opción para ti</strong></span>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <Link 
-            to="/quiz?tipo=tarjeta"
-            className="block w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white py-4 rounded-full font-bold text-lg text-center hover:shadow-2xl hover:shadow-cyan-500/50 transition-all transform hover:scale-105"
-          >
-            👉 Encontrar mi tarjeta ideal
-          </Link>
-
-          <p className="text-center text-gray-500 text-sm mt-3">
-            ⏱️ 2 minutos • 🔒 Gratis y seguro
-          </p>
-        </div>
-
-        {/* Card 2: Créditos */}
-        <div className="bg-white rounded-3xl p-8 border-2 border-purple-400 shadow-xl hover:shadow-2xl hover:shadow-purple-500/20 transition-all hover:scale-105">
-          
-          {/* Icon */}
-          <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center mb-6">
-            <DollarSign className="w-8 h-8 text-white" />
-          </div>
-
-          {/* Title */}
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">
-            Créditos
-          </h3>
-
-          {/* Subtitle */}
-          <p className="text-purple-600 font-semibold mb-4">
-            Comparamos créditos de bancos y fintechs y te mostramos la mejor opción para ti
-          </p>
-
-          {/* Description */}
-          <p className="text-gray-600 text-sm leading-relaxed mb-6">
-            Analizamos créditos personales y para negocios, en bancos y fintechs. Según tu necesidad y perfil, <strong className="text-gray-800">te mostramos las opciones más viables para ti.</strong>
-          </p>
-
-          {/* Benefits */}
-          <div className="space-y-3 mb-6">
-            <div className="flex items-start text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-purple-500 mr-3 mt-0.5 flex-shrink-0" />
-              <span className="text-sm"><strong>Créditos personales y para negocio</strong></span>
-            </div>
-            <div className="flex items-start text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-purple-500 mr-3 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">Comparamos <strong>bancos + fintechs</strong></span>
-            </div>
-            <div className="flex items-start text-gray-700">
-              <CheckCircle2 className="w-5 h-5 text-purple-500 mr-3 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">Te mostramos el crédito <strong>más viable para ti</strong></span>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <Link 
-            to="/quiz?tipo=credito"
-            className="block w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-4 rounded-full font-bold text-lg text-center hover:shadow-2xl hover:shadow-purple-500/50 transition-all transform hover:scale-105"
-          >
-            👉 Encontrar mi crédito ideal
-          </Link>
-
-          <p className="text-center text-gray-500 text-sm mt-3">
-            ⏱️ 3 minutos • 🔒 Gratis y seguro
-          </p>
-        </div>
-      </div>
-
-      {/* ============================================ */}
-      {/* MOBILE: Decision Tree (visible only on mobile) */}
-      {/* ============================================ */}
-      <div className="md:hidden">
-        {/* Tree Title */}
-        <div className="text-center mb-8">
-          <p className="text-gray-900 font-bold text-xl mb-6">¿Qué necesitas hoy?</p>
-          
-          {/* Visual Fork */}
-          <div className="flex items-center justify-center mb-8">
-            <div className="w-1 h-12 bg-gradient-to-b from-cyan-400 to-purple-400"></div>
-          </div>
-        </div>
-
-        {/* Mobile Product Cards (stacked) */}
-        <div className="space-y-6">
-          {/* Mobile Card: Tarjetas */}
-          <div className="bg-white rounded-2xl p-6 border-2 border-cyan-400 shadow-lg">
-            <div className="flex items-center mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-xl flex items-center justify-center mr-4">
-                <CreditCard className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">
-                Tarjetas
-              </h3>
-            </div>
-            
-            <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-              Comparamos tarjetas de bancos y fintechs y te mostramos la mejor para ti.
-            </p>
-            
-            <Link 
-              to="/quiz?tipo=tarjeta"
-              className="block w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white py-3 rounded-full font-bold text-center"
-            >
-              👉 Encontrar mi tarjeta
-            </Link>
-          </div>
-
-          {/* Divider */}
-          <div className="flex items-center justify-center">
-            <div className="w-1 h-8 bg-gradient-to-b from-cyan-400/50 to-purple-400/50"></div>
-          </div>
-
-          {/* Mobile Card: Crédito */}
-          <div className="bg-white rounded-2xl p-6 border-2 border-purple-400 shadow-lg">
-            <div className="flex items-center mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl flex items-center justify-center mr-4">
-                <DollarSign className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">
-                Créditos
-              </h3>
-            </div>
-            
-            <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-              Comparamos créditos de bancos y fintechs y te mostramos la mejor opción. Personales y para negocio.
-            </p>
-            
-            <Link 
-              to="/quiz?tipo=credito"
-              className="block w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-full font-bold text-center"
-            >
-              👉 Encontrar mi crédito
-            </Link>
-          </div>
-        </div>
-
-        {/* Mobile Trust Indicators */}
-        <div className="flex items-center justify-center gap-6 mt-8 text-sm text-gray-600">
-          <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-2 text-cyan-600" />
-            <span>2-3 min</span>
-          </div>
-          <div className="flex items-center">
-            <Shield className="w-4 h-4 mr-2 text-purple-600" />
-            <span>Gratis</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
+    </section>
   );
 }

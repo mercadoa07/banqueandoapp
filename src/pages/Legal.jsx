@@ -36,7 +36,7 @@ function LegalLayout({ title, children }) {
   }, [title]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-stone-100 px-4 py-10">
+    <div className="min-h-screen bg-paper px-4 py-10">
       <article className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-12">
         <Link to="/" className="inline-flex items-center gap-2 mb-8">
           <img src="/logo.png" alt="" className="w-10 h-10 object-contain" />
