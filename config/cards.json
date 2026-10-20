@@ -111,14 +111,14 @@
           "services"
         ]
       },
-      "applyUrl": "https://nu.com.co/tarjeta-de-credito/",
+      "applyUrl": "https://nu.com.co/credito/morada",
       "moreInfoUrl": "https://nu.com.co/",
       "entity": "Nu Colombia",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://nu.com.co/",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20"
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -242,14 +242,14 @@
           "rappi"
         ]
       },
-      "applyUrl": "https://www.rappi.com.co/rappicard",
-      "moreInfoUrl": "https://www.rappi.com.co/rappicard",
+      "applyUrl": "https://www.rappicard.co/",
+      "moreInfoUrl": "https://www.rappicard.co/",
       "entity": "RappiPay (Davivienda)",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.rappi.com.co/rappicard",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20"
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -354,14 +354,14 @@
           "emergency"
         ]
       },
-      "applyUrl": "https://www.bancolombia.com/personas/tarjetas/tarjetas-credito",
+      "applyUrl": "https://www.bancolombia.com/personas/productos/tarjetas-credito/mastercard/ideal",
       "moreInfoUrl": "https://www.bancolombia.com/",
       "entity": "Bancolombia",
       "active": true,
       "lastVerified": "2026-10-16",
       "source": {
         "url": "https://www.bancolombia.com/personas/tarjetas-de-credito/mastercard/ideal",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20"
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -605,25 +605,25 @@
           "seleccion"
         ]
       },
-      "applyUrl": "https://www.davivienda.com/tarjetas",
+      "applyUrl": "https://www.davivienda.com/personas/tarjetas-de-credito",
       "moreInfoUrl": "https://www.davivienda.com/",
       "entity": "Davivienda",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.davivienda.com/",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20: La página propia de la Visa Clásica ya no existe; el enlace va al listado de tarjetas de Davivienda."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
     },
     {
       "id": "bbva_aqua",
-      "name": "Aqua Mastercard",
+      "name": "Aqua Visa",
       "bank": "BBVA Colombia",
       "bankLogo": "/logos/bbva.svg",
       "image": "🌊",
-      "network": "Mastercard",
+      "network": "Visa",
       "category": [
         "digital",
         "segura",
@@ -730,14 +730,14 @@
           "environment"
         ]
       },
-      "applyUrl": "https://www.bbva.com.co/personas/tarjetas-de-credito/aqua.html",
+      "applyUrl": "https://www.bbva.com.co/personas/productos/tarjetas/credito/visa/aqua.html",
       "moreInfoUrl": "https://www.bbva.com.co/",
       "entity": "BBVA Colombia",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.bbva.com.co/",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20: BBVA la publica como Visa (antes figuraba como Mastercard)."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -745,7 +745,7 @@
     {
       "id": "avianca_lifemiles_gold",
       "name": "LifeMiles Visa Gold",
-      "bank": "Davivienda",
+      "bank": "DAVIbank",
       "bankLogo": "/logos/davivienda.svg",
       "image": "✈️",
       "network": "Visa",
@@ -861,14 +861,14 @@
           "usa"
         ]
       },
-      "applyUrl": "https://www.davivienda.com/tarjetas/lifemiles",
+      "applyUrl": "https://www.davibank.com/personas/tarjeta-de-credito/lifemiles",
       "moreInfoUrl": "https://www.lifemiles.com/",
-      "entity": "Davivienda",
+      "entity": "DAVIbank",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.lifemiles.com/",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20: La LifeMiles Gold ahora la emite DAVIbank (antes figuraba como Davivienda)."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -998,14 +998,14 @@
           "vip"
         ]
       },
-      "applyUrl": "https://www.bancodebogota.com/tarjetas/latam-pass",
+      "applyUrl": "https://www.bancodebogota.com/personas/tarjetas-de-credito/platinum-latam-pass",
       "moreInfoUrl": "https://www.latampass.latam.com/",
       "entity": "Banco de Bogotá",
       "active": true,
       "lastVerified": "2026-10-16",
       "source": {
         "url": "https://www.bancodebogota.com/personas/tarjetas-de-credito/platinum-latam-pass",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20"
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1013,7 +1013,7 @@
     {
       "id": "scotiabank_platinum",
       "name": "Platinum Mastercard",
-      "bank": "Scotiabank Colpatria",
+      "bank": "DAVIbank (antes Scotiabank Colpatria)",
       "bankLogo": "/logos/scotiabank.svg",
       "image": "🔵",
       "network": "Mastercard",
@@ -1109,14 +1109,14 @@
           "daily"
         ]
       },
-      "applyUrl": "https://www.scotiabankcolpatria.com/tarjetas",
+      "applyUrl": "https://www.davibank.com/personas/tarjeta-de-credito/tarjetas-propias/platinum",
       "moreInfoUrl": "https://www.scotiabankcolpatria.com/",
-      "entity": "Scotiabank Colpatria",
+      "entity": "DAVIbank",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.scotiabankcolpatria.com/",
-        "notes": "Revisión 2026-10-16: el lector propuso cuota $0, pero es condicional; la cuota sin exoneración no está publicada."
+        "notes": "Revisión 2026-10-16: el lector propuso cuota $0, pero es condicional; la cuota sin exoneración no está publicada. | Enlace corregido 2026-10-20: Scotiabank Colpatria pasó a DAVIbank; la tarjeta ahora se llama Platinum One Rewards."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1239,14 +1239,14 @@
           "6+"
         ]
       },
-      "applyUrl": "https://www.americanexpress.com/co/tarjetas/green-card/",
+      "applyUrl": "https://www.bancolombia.com/personas/productos/tarjetas-credito/american-express",
       "moreInfoUrl": "https://www.americanexpress.com/co/",
       "entity": "Bancolombia",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.americanexpress.com/co/",
-        "notes": "Revisión 2026-10-16: posible cuota $36.990 con 50% de descuento, sin confirmar que sea de la Green."
+        "notes": "Revisión 2026-10-16: posible cuota $36.990 con 50% de descuento, sin confirmar que sea de la Green. | Enlace corregido 2026-10-20"
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1362,14 +1362,14 @@
           "gasolina"
         ]
       },
-      "applyUrl": "https://www.bancodebogota.com/tarjetas/biomax",
+      "applyUrl": "https://www.bancodebogota.com/personas/tarjetas-de-credito/biomax-clasica",
       "moreInfoUrl": "https://www.bancodebogota.com/",
       "entity": "Banco de Bogotá",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.bancodebogota.com/",
-        "notes": "Devolución 10% fines de semana y 5% entre semana solo en estaciones Biomax/Brío, máx. $100.000/mes."
+        "notes": "Devolución 10% fines de semana y 5% entre semana solo en estaciones Biomax/Brío, máx. $100.000/mes. | Enlace corregido 2026-10-20"
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1494,14 +1494,14 @@
           "carulla"
         ]
       },
-      "applyUrl": "https://www.tarjetatuya.com/",
-      "moreInfoUrl": "https://www.tarjetatuya.com/",
+      "applyUrl": "https://www.tuya.com.co/",
+      "moreInfoUrl": "https://www.tuya.com.co/",
       "entity": "Tuya (Grupo Éxito)",
       "active": true,
       "lastVerified": null,
       "source": {
         "url": "https://www.tarjetatuya.com/",
-        "notes": null
+        "notes": "Enlace corregido 2026-10-20: El dominio tarjetatuya.com ya no existe."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true

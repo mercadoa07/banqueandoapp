@@ -2,7 +2,7 @@
 
 exports[`motor de crédito — perfiles dorados > cliente Bold 1`] = `
 {
-  "eligible": 35,
+  "eligible": 28,
   "top": [
     {
       "affordability": "sin_datos",
@@ -22,10 +22,10 @@ exports[`motor de crédito — perfiles dorados > cliente Bold 1`] = `
     {
       "affordability": "sin_datos",
       "approval": "media",
-      "id": "nequi_propulsor_6",
+      "id": "excelcredit_17",
       "payment": [
-        687594,
-        714329,
+        685469,
+        700953,
       ],
       "pick": "Menor costo",
       "reasons": [
@@ -53,7 +53,7 @@ exports[`motor de crédito — perfiles dorados > cliente Bold 1`] = `
 
 exports[`motor de crédito — perfiles dorados > consolidar deuda, busca tasa 1`] = `
 {
-  "eligible": 35,
+  "eligible": 28,
   "top": [
     {
       "affordability": "ok",
@@ -106,7 +106,7 @@ exports[`motor de crédito — perfiles dorados > consolidar deuda, busca tasa 1
 
 exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, independiente 1`] = `
 {
-  "eligible": 35,
+  "eligible": 28,
   "top": [
     {
       "affordability": "ok",
@@ -128,17 +128,17 @@ exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, 
     {
       "affordability": "ok",
       "approval": "alta",
-      "id": "juancho_te_presta_3",
+      "id": "sistecredito_2",
       "payment": [
-        280713,
-        280713,
+        280192,
+        280192,
       ],
       "pick": "Menor costo",
       "reasons": [
         "Menor costo",
-        "Desembolso en menos de 24 horas",
+        "Ideal para tu necesidad",
       ],
-      "score": 100,
+      "score": 88,
     },
     {
       "affordability": "ok",
@@ -161,7 +161,7 @@ exports[`motor de crédito — perfiles dorados > emergencia personal, urgente, 
 
 exports[`motor de crédito — perfiles dorados > micronegocio informal, inventario 1`] = `
 {
-  "eligible": 35,
+  "eligible": 28,
   "top": [
     {
       "affordability": "ok",
@@ -183,10 +183,10 @@ exports[`motor de crédito — perfiles dorados > micronegocio informal, inventa
     {
       "affordability": "ok",
       "approval": "media",
-      "id": "sistecredito_2",
+      "id": "credifamilia_20",
       "payment": [
-        280192,
-        280192,
+        271840,
+        271840,
       ],
       "pick": "Menor costo",
       "reasons": [
@@ -216,7 +216,7 @@ exports[`motor de crédito — perfiles dorados > micronegocio informal, inventa
 
 exports[`motor de crédito — perfiles dorados > pide más de lo que puede pagar 1`] = `
 {
-  "eligible": 35,
+  "eligible": 28,
   "top": [
     {
       "affordability": "ok",
@@ -252,10 +252,10 @@ exports[`motor de crédito — perfiles dorados > pide más de lo que puede paga
     {
       "affordability": "ok",
       "approval": "alta",
-      "id": "juancho_te_presta_3",
+      "id": "lineru_4",
       "payment": [
-        887493,
-        887493,
+        266678,
+        268601,
       ],
       "pick": "Alternativa",
       "reasons": [
@@ -270,7 +270,7 @@ exports[`motor de crédito — perfiles dorados > pide más de lo que puede paga
 
 exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabajo 1`] = `
 {
-  "eligible": 35,
+  "eligible": 28,
   "top": [
     {
       "affordability": "ok",
@@ -324,7 +324,7 @@ exports[`motor de crédito — perfiles dorados > pyme formal, capital de trabaj
 
 exports[`motor de crédito — perfiles dorados > reportado, monto pequeño 1`] = `
 {
-  "eligible": 23,
+  "eligible": 20,
   "top": [
     {
       "affordability": "ok",
