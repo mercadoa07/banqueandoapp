@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LEGAL_ENTITY, LEGAL_URLS, CONSENT_VERSION } from '../constants/legal.js';
 import { MAX_DEBT_TO_INCOME, MAX_DEBT_TO_SALES } from '../engine/finance.js';
+import { usePageMeta } from '../hooks/usePageMeta.js';
 
 // Páginas legales: política de datos, términos y cómo recomendamos.
 // Los datos del responsable salen de LEGAL_ENTITY para no repetirlos en tres lugares.
@@ -29,11 +30,9 @@ const List = ({ items }) => (
   </ul>
 );
 
-function LegalLayout({ title, children }) {
-  useEffect(() => {
-    document.title = `${title} | Banqueando`;
-    window.scrollTo(0, 0);
-  }, [title]);
+function LegalLayout({ title, description, children }) {
+  usePageMeta(`${title} | Banqueando`, description);
+  useEffect(() => { window.scrollTo(0, 0); }, [title]);
 
   return (
     <div className="min-h-screen bg-paper px-4 py-10">
@@ -58,7 +57,7 @@ function LegalLayout({ title, children }) {
 
 export function Privacy() {
   return (
-    <LegalLayout title="Política de tratamiento de datos personales">
+    <LegalLayout title="Política de tratamiento de datos personales" description="Qué datos recoge Banqueando, para qué los usa y cómo consultarlos, corregirlos o pedir que los borremos (Ley 1581 de 2012).">
       <p className="text-gray-700 mb-8 leading-relaxed">
         Esta política explica qué datos recogemos en Banqueando, para qué los usamos y cómo puedes consultarlos,
         corregirlos o pedir que los borremos, según la Ley 1581 de 2012 y el Decreto 1377 de 2013 (incorporado en el Decreto 1074 de 2015).
@@ -161,7 +160,7 @@ export function Privacy() {
 
 export function Terms() {
   return (
-    <LegalLayout title="Términos y condiciones">
+    <LegalLayout title="Términos y condiciones" description="Qué es Banqueando, por qué no es asesoría financiera y cómo ordenamos los resultados sin pagos de las entidades.">
       <Section title="1. Qué es Banqueando">
         <p>
           Banqueando es un comparador gratuito que, con tus respuestas a un cuestionario y la información pública de cada
@@ -235,7 +234,7 @@ export function HowWeRecommend() {
   const incomePct = Math.round(MAX_DEBT_TO_INCOME * 100);
   const salesPct = Math.round(MAX_DEBT_TO_SALES * 100);
   return (
-    <LegalLayout title="Cómo recomendamos">
+    <LegalLayout title="Cómo recomendamos" description="Cómo elige Banqueando las tarjetas y créditos que te muestra: de dónde salen los datos, qué filtra el algoritmo y cómo calcula el beneficio neto y la cuota.">
       <p className="text-gray-700 mb-8 leading-relaxed">
         Queremos que entiendas por qué te mostramos cada producto. Esto es lo que hace el algoritmo, sin letra pequeña.
       </p>

@@ -6,6 +6,7 @@ import { computeDashboard } from '../lib/metrics.js';
 import questionsData from '../../config/questions.json';
 import { ADMIN_EMAILS } from '../constants/admin.js';
 import { KpiTile, HBarList, DayColumns, LeadsTable } from '../components/admin/charts.jsx';
+import { usePageMeta } from '../hooks/usePageMeta.js';
 
 const PAGE = 'min-h-screen bg-gray-50';
 const DAYS_OPTIONS = [7, 30, 90];
@@ -141,6 +142,7 @@ function Dashboard({ email }) {
 }
 
 export default function Admin() {
+  usePageMeta('Tablero | Banqueando', null, { noindex: true });
   const [session, setSession] = useState(undefined);
 
   useEffect(() => {
