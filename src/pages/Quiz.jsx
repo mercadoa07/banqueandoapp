@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuiz } from '../hooks/useQuiz.js';
+import { usePageMeta } from '../hooks/usePageMeta.js';
 import WelcomeStep from '../components/quiz/WelcomeStep.jsx';
 import PreQuizStep from '../components/quiz/PreQuizStep.jsx';
 import QuestionStep from '../components/quiz/QuestionStep.jsx';
@@ -10,6 +11,10 @@ import ResultsStep from '../components/quiz/ResultsStep.jsx';
 // Orquesta los pasos del quiz. El estado y las acciones viven en useQuiz.
 export default function Quiz() {
   const quiz = useQuiz();
+  usePageMeta(
+    quiz.vertical === 'credit' ? 'Compara créditos | Banqueando' : 'Compara tarjetas de crédito | Banqueando',
+    'Responde unas preguntas y te mostramos las tres opciones que más te convienen, con cuánto ganas o pagas al año. Gratis y sin consultar centrales de riesgo.'
+  );
   const { step, setStep, vertical, answers, actions } = quiz;
 
   switch (step) {
