@@ -66,17 +66,36 @@ export const LEGAL_TEXTS = {
     ]
   },
   
-  // Checkbox de autorización
-  authorizationCheckbox: `Autorizo el tratamiento de mis datos personales conforme a la Política de Privacidad y acepto los Términos y Condiciones. Mis datos serán utilizados para enviarme resultados, recomendaciones y ofertas relacionadas con productos financieros.`
+  // Aviso visible en resultados
+  notAdvice: 'Banqueando no es asesoría financiera ni una entidad vigilada por la Superintendencia Financiera. Es una comparación orientativa con la información que nos diste y datos públicos de cada producto.'
 };
+
+// ============================================================
+// RESPONSABLE DEL TRATAMIENTO DE DATOS (Ley 1581 de 2012)
+// ============================================================
+// Lo exige el Decreto 1377 de 2013: quién responde por los datos y cómo
+// contactarlo. Mientras un campo esté en null, las páginas legales muestran
+// "pendiente" y la prueba de legal.test.js falla para que no salga así.
+
+export const LEGAL_ENTITY = {
+  name: null,          // nombre de la persona natural o razón social
+  document: null,      // "C.C. 123..." o "NIT 900..."
+  city: null,          // domicilio, ej. "Bogotá D.C., Colombia"
+  email: null          // correo para consultas, reclamos y borrado de datos
+};
+
+// Fecha de la versión vigente de la política y los términos. Se guarda con
+// cada lead para saber qué texto aceptó la persona.
+export const CONSENT_VERSION = '2026-10-20';
 
 // ============================================================
 // URLS DE PÁGINAS LEGALES
 // ============================================================
 
 export const LEGAL_URLS = {
-  privacy: "/privacidad.html",
-  terms: "/terminos.html"
+  privacy: "/privacidad",
+  terms: "/terminos",
+  howWeRecommend: "/como-recomendamos"
 };
 
-export default { SAVINGS_CONFIG, LEGAL_TEXTS, LEGAL_URLS };
+export default { SAVINGS_CONFIG, LEGAL_TEXTS, LEGAL_URLS, LEGAL_ENTITY, CONSENT_VERSION };

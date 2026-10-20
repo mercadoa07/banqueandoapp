@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { CONSENT_VERSION } from '../constants/legal.js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -85,6 +86,8 @@ export const saveQuizSession = async ({
     accepted_terms: user?.termsAccepted === true,
     accepted_privacy: user?.termsAccepted === true,
     accepted_at: user?.termsAcceptedAt || null,
+    accepted_marketing: user?.marketingAccepted === true, // casilla opcional de ofertas
+    consent_version: user?.termsAccepted === true ? CONSENT_VERSION : null,
 
     created_at: new Date().toISOString()
   };

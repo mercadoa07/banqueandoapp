@@ -11,7 +11,7 @@ export default function FinalCtaSection() {
         ¿Listo para optimizar tus finanzas?
       </h2>
       <p className="text-xl text-cyan-50 mb-8">
-        Más de 2,847 personas y negocios encontraron su solución financiera ideal este mes.
+        Responde unas preguntas y en 2 minutos ves tus mejores opciones, con sus razones.
         <br/>
         <strong className="text-white">Tarjeta personal o crédito. ¿Cuál necesitas hoy?</strong>
       </p>

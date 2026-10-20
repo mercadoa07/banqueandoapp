@@ -30,7 +30,7 @@ export default function BenefitsSection() {
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-4">Ahorra Dinero</h3>
           <p className="text-gray-600 leading-relaxed">
-            Te mostramos exactamente cuánto ahorrarás en cuotas, tasas y beneficios vs. otras opciones.
+            Te mostramos un estimado de lo que ganas o pagas al año con cada tarjeta, y la cuota aproximada de cada crédito.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ export default function BenefitsSection() {
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-4">Totalmente Gratis</h3>
           <p className="text-gray-600 leading-relaxed">
-            Sin costos ocultos, sin comisiones. Nuestro servicio es 100% gratuito para ti.
+            Sin costos ocultos. Usar Banqueando no te cuesta nada.
           </p>
         </div>
 
@@ -48,9 +48,9 @@ export default function BenefitsSection() {
           <div className="bg-amber-100 w-14 h-14 rounded-xl flex items-center justify-center mb-6">
             <Zap className="w-7 h-7 text-amber-600" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Tecnología IA</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Reglas transparentes</h3>
           <p className="text-gray-600 leading-relaxed">
-            Algoritmo inteligente que aprende de miles de perfiles para darte la mejor recomendación.
+            Te explicamos por qué aparece cada producto, y ninguna entidad paga por salir primero.
           </p>
         </div>
 

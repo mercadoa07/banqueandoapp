@@ -8,9 +8,9 @@ export default function ProblemSection() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          68% de los colombianos no tiene claro cuál es 
+          Elegir tarjeta o crédito no debería
           <span className="bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
-            {' '}el producto adecuado para él
+            {' '}ser adivinar
           </span>
         </h2>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -79,7 +79,7 @@ export default function ProblemSection() {
                 <h3 className="font-bold text-gray-900 mb-2">Tu banco te ofrece "lo que tiene", no lo que necesitas</h3>
                 <p className="text-gray-600">
                   Tu asesor bancario te muestra solo los productos de SU entidad. 
-                  Nunca comparas con otras 15 opciones del mercado.
+                  Casi nunca lo comparas con lo que ofrecen otras entidades.
                 </p>
               </div>
             </div>
@@ -94,7 +94,7 @@ export default function ProblemSection() {
             <div className="space-y-4 mb-8">
               <div className="flex items-center">
                 <CheckCircle2 className="w-6 h-6 text-cyan-300 mr-3 flex-shrink-0" />
-                <span className="text-lg">Comparamos TODO el mercado (no solo un banco)</span>
+                <span className="text-lg">Comparamos muchos bancos y fintechs (no solo uno)</span>
               </div>
               <div className="flex items-center">
                 <CheckCircle2 className="w-6 h-6 text-cyan-300 mr-3 flex-shrink-0" />

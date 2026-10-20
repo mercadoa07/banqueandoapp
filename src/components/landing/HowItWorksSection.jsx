@@ -37,7 +37,7 @@ export default function HowItWorksSection() {
               <div className="flex-shrink-0 w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold mr-4">2</div>
               <div>
                 <h4 className="font-bold text-gray-900 mb-1">Algoritmo analiza tu perfil</h4>
-                <p className="text-gray-600">15+ variables personales</p>
+                <p className="text-gray-600">Ingresos, hábitos y preferencias</p>
               </div>
             </div>
             <div className="flex items-start">
@@ -51,7 +51,7 @@ export default function HowItWorksSection() {
               <div className="flex-shrink-0 w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold mr-4">4</div>
               <div>
                 <h4 className="font-bold text-gray-900 mb-1">Aplicas directo al banco</h4>
-                <p className="text-gray-600">Seguimiento del proceso de aprobación</p>
+                <p className="text-gray-600">En el sitio oficial de la entidad</p>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@ export default function HowItWorksSection() {
               <div className="flex-shrink-0 w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">2</div>
               <div>
                 <h4 className="font-bold text-gray-900 mb-1">Algoritmo evalúa tu caso</h4>
-                <p className="text-gray-600">20+ variables de viabilidad</p>
+                <p className="text-gray-600">Necesidad, capacidad de pago e historial</p>
               </div>
             </div>
             <div className="flex items-start">
@@ -91,8 +91,8 @@ export default function HowItWorksSection() {
             <div className="flex items-start">
               <div className="flex-shrink-0 w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">4</div>
               <div>
-                <h4 className="font-bold text-gray-900 mb-1">Conectamos con entidades</h4>
-                <p className="text-gray-600">Pre-aprobación rápida y seguimiento</p>
+                <h4 className="font-bold text-gray-900 mb-1">Solicitas directo a la entidad</h4>
+                <p className="text-gray-600">En su sitio oficial, sin intermediarios</p>
               </div>
             </div>
           </div>

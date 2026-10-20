@@ -16,7 +16,7 @@ export default function HeroSection() {
       <div className="text-center mb-8">
         <div className="inline-flex items-center bg-gradient-to-r from-cyan-50 to-purple-50 border border-cyan-200 rounded-full px-4 py-2">
           <Sparkles className="w-4 h-4 text-amber-500 mr-2" />
-          <span className="text-sm font-semibold text-gray-700">IA personalizada • Tarjetas + Crédito • 2,847 usuarios</span>
+          <span className="text-sm font-semibold text-gray-700">Recomendación personalizada • Tarjetas + Crédito • Gratis</span>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export default function HeroSection() {
 
           {/* Subtitle */}
           <p className="text-cyan-600 font-semibold mb-4">
-            Comparamos todas las tarjetas y te mostramos la mejor para ti
+            Comparamos tarjetas de bancos y fintechs y te mostramos la mejor para ti
           </p>
 
           {/* Description */}
@@ -106,7 +106,7 @@ export default function HeroSection() {
 
           {/* Subtitle */}
           <p className="text-purple-600 font-semibold mb-4">
-            Comparamos todos los créditos y te mostramos la mejor opción para ti
+            Comparamos créditos de bancos y fintechs y te mostramos la mejor opción para ti
           </p>
 
           {/* Description */}
@@ -172,7 +172,7 @@ export default function HeroSection() {
             </div>
             
             <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-              Comparamos todas las tarjetas y te mostramos la mejor para ti. Bancos y fintechs.
+              Comparamos tarjetas de bancos y fintechs y te mostramos la mejor para ti.
             </p>
             
             <Link 
@@ -200,7 +200,7 @@ export default function HeroSection() {
             </div>
             
             <p className="text-gray-600 text-sm mb-4 leading-relaxed">
-              Comparamos todos los créditos y te mostramos la mejor opción. Personales y para negocio.
+              Comparamos créditos de bancos y fintechs y te mostramos la mejor opción. Personales y para negocio.
             </p>
             
             <Link 
@@ -220,7 +220,7 @@ export default function HeroSection() {
           </div>
           <div className="flex items-center">
             <Shield className="w-4 h-4 mr-2 text-purple-600" />
-            <span>100% seguro</span>
+            <span>Gratis</span>
           </div>
         </div>
       </div>
