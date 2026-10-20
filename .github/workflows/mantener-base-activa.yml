@@ -1,0 +1,44 @@
+# Mantener la base activa y avisar si está caída.
+# El plan gratis de Supabase pausa el proyecto tras días sin uso, y la app sigue
+# cargando sin guardar leads. Una vez al día se llama una función que solo devuelve
+# la hora (supabase/migrations/20261020_keepalive.sql). Si falla, el workflow queda
+# en rojo y GitHub avisa por correo: es la señal de revisar Supabase.
+#
+# Ojo: en repos públicos GitHub apaga los workflows programados tras 60 días sin
+# commits. Si llega ese correo, reactivarlo en Actions → "Mantener base activa".
+name: Mantener base activa
+
+on:
+  schedule:
+    - cron: '17 13 * * *' # todos los días, 8:17 a. m. hora Colombia
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  tocar-base:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      # Clave pública (publishable): es la misma que lleva el sitio en el navegador. No es secreta.
+      SUPABASE_URL: https://aaofldffwmqbkykyupii.supabase.co
+      SUPABASE_PUBLISHABLE_KEY: sb_publishable_A3MAhIiNYXnzbBuEwBpAxw_moFD4Btc
+    steps:
+      - name: Llamar a keepalive()
+        run: |
+          for intento in 1 2 3; do
+            code=$(curl -s -o respuesta.txt -w '%{http_code}' --max-time 30 -X POST \
+              "$SUPABASE_URL/rest/v1/rpc/keepalive" \
+              -H "apikey: $SUPABASE_PUBLISHABLE_KEY" -H "Content-Type: application/json" -d '{}')
+            echo "Intento $intento: HTTP $code $(cat respuesta.txt)"
+            [ "$code" = "200" ] && exit 0
+            sleep 20
+          done
+          echo "::error::La base no respondió. Revisa en Supabase si el proyecto está pausado."
+          exit 1
+
+      - name: Revisar que el sitio cargue
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://www.banqueando.co/)
+          echo "www.banqueando.co: HTTP $code"
+          [ "$code" = "200" ] || { echo "::error::El sitio no carga (HTTP $code)."; exit 1; }
