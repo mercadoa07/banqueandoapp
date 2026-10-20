@@ -138,11 +138,11 @@
         "annualFee": 0,
         "monthlyFee": 0,
         "feeWaiverCondition": null,
-        "internationalFeePercent": 3.5
+        "internationalFeePercent": 2.5
       },
       "rates": {
-        "interestRateEA": 27,
-        "cashAdvanceRateEA": 28.5
+        "interestRateEA": 28.59,
+        "cashAdvanceRateEA": 28.59
       },
       "rewards": {
         "type": "cashback",
@@ -150,18 +150,7 @@
         "milesPerMillionCOP": null,
         "mileProgram": null,
         "pointsProgram": "RappiCreditos",
-        "specialCategories": [
-          {
-            "category": "Rappi",
-            "multiplier": 3,
-            "description": "3% cashback en Rappi"
-          },
-          {
-            "category": "Restaurantes",
-            "multiplier": 2,
-            "description": "2% en restaurantes"
-          }
-        ]
+        "specialCategories": []
       },
       "requirements": {
         "minIncomeMillions": 1,
@@ -183,11 +172,11 @@
         "priorityPass": false
       },
       "benefits": [
-        "3% cashback en pedidos de Rappi",
-        "2% cashback en restaurantes",
-        "1% cashback en todo lo demás",
+        "1% de cashback en compras en Rappi",
+        "1% de cashback fuera de Rappi si tienes RappiCuenta con saldo promedio mínimo",
+        "Cashback de hasta $200.000 al mes",
         "Sin cuota de manejo",
-        "Descuentos exclusivos en Rappi"
+        "0% de interés a cuotas en comercios aliados"
       ],
       "cons": [
         {
@@ -245,10 +234,10 @@
       "moreInfoUrl": "https://www.rappicard.co/",
       "entity": "RappiPay (Davivienda)",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.rappi.com.co/rappicard",
-        "notes": "Enlace corregido 2026-10-20"
+        "url": "https://www.rappicard.co/tasas-y-tarifas/",
+        "notes": "Verificado 2026-10-20: tarifas oct-2026: cuota $0, tasa 28,59% EA, sin comisión propia en compras internacionales pero la franquicia cobra 2,5%. Términos de cashback: 1% en Rappi; fuera de Rappi solo con RappiCuenta y saldo promedio mínimo; tope $200.000/mes. Antes figuraba 3% en Rappi y 2% en restaurantes, que no aparece en los términos."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -380,12 +369,12 @@
       "fees": {
         "annualFee": 0,
         "monthlyFee": 31990,
-        "feeWaiverCondition": "3 meses gratis para clientes nuevos; solo se cobra en cortes con compras o saldo (sitio, 2026-10-16)",
+        "feeWaiverCondition": "3 meses gratis para clientes nuevos. Después solo se cobra en los cortes con compras o saldo; el banco ofrece dos formas de dejarla en $0.",
         "internationalFeePercent": 3.5
       },
       "rates": {
-        "interestRateEA": 28.5,
-        "cashAdvanceRateEA": 29
+        "interestRateEA": 28.58,
+        "cashAdvanceRateEA": 28.58
       },
       "rewards": {
         "type": "points",
@@ -431,11 +420,11 @@
         "priorityPass": false
       },
       "benefits": [
-        "Sin cuota de manejo",
-        "4X puntos en tiendas Falabella",
-        "Meses sin intereses en Falabella",
-        "Descuentos exclusivos retail",
-        "Puntos canjeables en tiendas"
+        "Doble de CMR Puntos en Falabella y Homecenter",
+        "CMR Puntos por compras en cualquier comercio",
+        "Hasta 40% de descuento en más de 40 aliados",
+        "3 meses sin cuota de manejo para clientes nuevos",
+        "Preventas exclusivas de conciertos y eventos"
       ],
       "cons": [
         {
@@ -490,10 +479,10 @@
       "moreInfoUrl": "https://www.bancofalabella.com.co/",
       "entity": "Banco Falabella",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.bancofalabella.com.co/",
-        "notes": null
+        "url": "https://www.bancofalabella.com.co/tarjetas-credito-cmr/mastercard",
+        "notes": "Verificado 2026-10-20: página del producto: cuota $31.990, solo si hay compras o saldo; puntos dobles en Falabella y Homecenter (antes figuraba 4X y \"sin cuota de manejo\"). Tasa 28,581% EA según tasas vigentes oct-2026."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -512,20 +501,20 @@
       ],
       "fees": {
         "annualFee": 0,
-        "monthlyFee": 17500,
-        "feeWaiverCondition": "Exoneración comprando mínimo $250.000/mes",
+        "monthlyFee": 31500,
+        "feeWaiverCondition": "Sin cuota con compras desde $500.000 al mes (50% de descuento desde $200.000).",
         "internationalFeePercent": 3
       },
       "rates": {
-        "interestRateEA": 26.8,
-        "cashAdvanceRateEA": 28.5
+        "interestRateEA": 28.48,
+        "cashAdvanceRateEA": 28.48
       },
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
         "milesPerMillionCOP": null,
         "mileProgram": null,
-        "pointsProgram": "Programa Davivienda",
+        "pointsProgram": "Davipuntos",
         "specialCategories": []
       },
       "requirements": {
@@ -548,11 +537,11 @@
         "priorityPass": false
       },
       "benefits": [
-        "Amplia red de oficinas",
-        "App DaviPlata integrada",
-        "Cupo inicial desde $1.000.000",
-        "Fácil aprobación",
-        "Descuentos con aliados"
+        "Sin cuota de manejo con compras desde $500.000 al mes",
+        "Davipuntos por tus compras",
+        "1.000 Davipuntos de bienvenida por $900.000 en compras los 3 primeros meses",
+        "Asistencias internacionales",
+        "Pensada para crear historial crediticio"
       ],
       "cons": [
         {
@@ -604,14 +593,14 @@
           "seleccion"
         ]
       },
-      "applyUrl": "https://www.davivienda.com/personas/tarjetas-de-credito",
+      "applyUrl": "https://www.davivienda.com/personas/tarjeta-de-credito-visa/tarjeta-visa-clasica",
       "moreInfoUrl": "https://www.davivienda.com/",
       "entity": "Davivienda",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.davivienda.com/",
-        "notes": "Enlace corregido 2026-10-20: La página propia de la Visa Clásica ya no existe; el enlace va al listado de tarjetas de Davivienda."
+        "url": "https://www.davivienda.com/personas/tarjeta-de-credito-visa/tarjeta-visa-clasica",
+        "notes": "Verificado 2026-10-20: página del producto: cuota $31.500 (antes $17.500), sin cuota con compras desde $500.000/mes; tasa 28,48% EA (oct-2026); ingresos desde 1 SMMLV."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -630,9 +619,9 @@
       ],
       "fees": {
         "annualFee": 0,
-        "monthlyFee": 0,
-        "feeWaiverCondition": null,
-        "internationalFeePercent": 0
+        "monthlyFee": 37030,
+        "feeWaiverCondition": "Aqua Clásica: 100% exonerada con 4 compras al mes con la titular. Aqua Gold y Platinum: exoneradas sin mínimo de compras.",
+        "internationalFeePercent": 2.9
       },
       "rates": {
         "interestRateEA": 24.9,
@@ -653,7 +642,7 @@
         ]
       },
       "requirements": {
-        "minIncomeMillions": 1.5,
+        "minIncomeMillions": 1,
         "minAge": 18,
         "maxAge": 70,
         "creditHistoryRequired": true,
@@ -673,26 +662,24 @@
         "dynamicCVV": true
       },
       "benefits": [
-        "CVV dinámico - máxima seguridad",
-        "Sin cuota de manejo",
-        "Sin comisión compras internacionales",
-        "2X puntos en compras online",
-        "Tarjeta eco-friendly"
+        "CVV dinámico en la app: más seguridad en compras online",
+        "Cuota de manejo exonerada con 4 compras al mes",
+        "Puntos BBVA canjeables en Viajes BBVA (operado por Despegar)",
+        "Puntos al doble los martes en restaurantes y los jueves en cine",
+        "Hasta 5.000 Puntos BBVA de bienvenida (Clásica)"
       ],
       "cons": [
         {
-          "text": "Requiere historial crediticio",
+          "text": "Cuota de $37.030 al mes si no haces 4 compras",
           "severity": "medium"
         },
         {
-          "text": "Programa de puntos no muy generoso",
+          "text": "Compras internacionales con comisión de 2,9%",
           "severity": "low"
         }
       ],
       "painPointsSolved": [
-        "cuota_alta",
-        "seguridad",
-        "comision_internacional"
+        "seguridad"
       ],
       "matchFactors": {
         "idealFor": [
@@ -710,7 +697,8 @@
           "hybrid"
         ],
         "feeSensitivity": [
-          "no_fee"
+          "flexible",
+          "moderate"
         ],
         "interests": [
           "technology",
@@ -733,10 +721,10 @@
       "moreInfoUrl": "https://www.bbva.com.co/",
       "entity": "BBVA Colombia",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.bbva.com.co/",
-        "notes": "Enlace corregido 2026-10-20: BBVA la publica como Visa (antes figuraba como Mastercard)."
+        "url": "https://www.bbva.com.co/personas/informacion-practica/tasas-y-tarifas.html",
+        "notes": "Verificado 2026-10-20: tabla de tarifas: Visa Aqua $37.030 mes anticipado, exonerable con 4 compras/mes (página del producto); compras internacionales 2,9% (antes figuraba sin cuota y 0%). Ingreso mínimo $1.000.000 empleados, $2.000.000 independientes. Tasa sin confirmar: el PDF de tasas bloquea descargas."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -754,14 +742,14 @@
         "premium_entry"
       ],
       "fees": {
-        "annualFee": 360000,
-        "monthlyFee": 30000,
+        "annualFee": 0,
+        "monthlyFee": 45194,
         "feeWaiverCondition": null,
-        "internationalFeePercent": 2.5
+        "internationalFeePercent": 4.03
       },
       "rates": {
-        "interestRateEA": 26.5,
-        "cashAdvanceRateEA": 28.5
+        "interestRateEA": 28.59,
+        "cashAdvanceRateEA": 28.59
       },
       "rewards": {
         "type": "miles",
@@ -784,7 +772,7 @@
       },
       "requirements": {
         "minIncomeMillions": 3,
-        "minAge": 18,
+        "minAge": 21,
         "maxAge": 70,
         "creditHistoryRequired": true,
         "acceptsFirstTimers": false,
@@ -802,20 +790,23 @@
         "priorityPass": false
       },
       "benefits": [
-        "Acumula 1 milla por cada $1.000 gastados",
-        "3X millas en Avianca",
-        "2X millas en viajes",
-        "Seguro de viaje incluido",
-        "Millas LifeMiles nunca vencen"
+        "Acumula millas LifeMiles con cada compra",
+        "50% de descuento en salas VIP Avianca Lounges en Colombia",
+        "Asistencias en hogar y transporte al aeropuerto",
+        "Cupo desde $4.000.000"
       ],
       "cons": [
         {
-          "text": "Cuota de manejo alta ($30K/mes)",
+          "text": "Cuota de manejo alta ($45.194/mes)",
           "severity": "high"
         },
         {
-          "text": "Requiere ingresos altos",
+          "text": "Compras internacionales con comisión de 4,03%",
           "severity": "medium"
+        },
+        {
+          "text": "Exige ser mayor de 21 años e historial positivo",
+          "severity": "low"
         }
       ],
       "painPointsSolved": [
@@ -864,10 +855,10 @@
       "moreInfoUrl": "https://www.lifemiles.com/",
       "entity": "DAVIbank",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.lifemiles.com/",
-        "notes": "Enlace corregido 2026-10-20: La LifeMiles Gold ahora la emite DAVIbank (antes figuraba como Davivienda)."
+        "url": "https://www.davibank.com/tasas-y-tarifas",
+        "notes": "Verificado 2026-10-20: tarifario DAVIbank personas (desde 1-nov-2026): Visa LifeMiles Oro $45.194/mes (antes $30.000); conversión de compras internacionales 4,03%; tasa 28,59% EA (oct-2026). La acumulación de 1 milla por $1.000 no está confirmada en la página del producto."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1011,7 +1002,7 @@
     },
     {
       "id": "scotiabank_platinum",
-      "name": "Platinum Mastercard",
+      "name": "ONE Rewards Platinum",
       "bank": "DAVIbank (antes Scotiabank Colpatria)",
       "bankLogo": "/logos/scotiabank.svg",
       "image": "🔵",
@@ -1022,14 +1013,14 @@
         "balance"
       ],
       "fees": {
-        "annualFee": 240000,
-        "monthlyFee": 20000,
+        "annualFee": 0,
+        "monthlyFee": 48334,
         "feeWaiverCondition": "Cuota $0 si haces 7 compras al mes (sitio, 2026-10-16)",
-        "internationalFeePercent": 2.5
+        "internationalFeePercent": 4.03
       },
       "rates": {
-        "interestRateEA": 23.5,
-        "cashAdvanceRateEA": 26
+        "interestRateEA": 28.59,
+        "cashAdvanceRateEA": 28.59
       },
       "rewards": {
         "type": "points",
@@ -1059,36 +1050,30 @@
         "priorityPass": false
       },
       "benefits": [
-        "Una de las tasas más bajas del mercado (23.5%)",
-        "Seguro de viaje incluido",
-        "Protección de compras",
-        "Cuota exonerable con uso",
-        "Scotia Puntos canjeables"
+        "Puntos ONE Rewards por tus compras",
+        "Cuota de manejo exonerable con uso (según condiciones del banco)"
       ],
       "cons": [
         {
-          "text": "App no tan buena como otros bancos",
-          "severity": "medium"
+          "text": "Cuota de manejo de $48.334/mes si no la exoneras",
+          "severity": "high"
         },
         {
-          "text": "Programa de puntos básico",
-          "severity": "low"
+          "text": "Compras internacionales con comisión de 4,03%",
+          "severity": "medium"
         }
       ],
       "painPointsSolved": [
-        "tasa_alta",
         "financio_mucho"
       ],
       "matchFactors": {
         "idealFor": [
-          "tasa_baja",
-          "financiacion",
-          "cuotas"
+          "puntos",
+          "premium"
         ],
         "paymentBehavior": [
-          "sometimes",
-          "finance",
-          "minimum"
+          "full",
+          "sometimes"
         ],
         "digitalPreference": [
           "hybrid",
@@ -1112,10 +1097,10 @@
       "moreInfoUrl": "https://www.scotiabankcolpatria.com/",
       "entity": "DAVIbank",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.scotiabankcolpatria.com/",
-        "notes": "Revisión 2026-10-16: el lector propuso cuota $0, pero es condicional; la cuota sin exoneración no está publicada. | Enlace corregido 2026-10-20: Scotiabank Colpatria pasó a DAVIbank; la tarjeta ahora se llama Platinum One Rewards."
+        "url": "https://www.davibank.com/tasas-y-tarifas",
+        "notes": "Verificado 2026-10-20: tarifario DAVIbank (desde 1-nov-2026): ONE Rewards Platinum $48.334/mes (antes $20.000); tasa 28,59% EA como todas las tarjetas DAVIbank (antes figuraba \"una de las tasas más bajas, 23,5%\", falso); internacionales 4,03%. La exoneración con 7 compras viene de la revisión del 16-oct y no se reconfirmó."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1133,36 +1118,24 @@
         "experiencias"
       ],
       "fees": {
-        "annualFee": 350000,
-        "monthlyFee": 29200,
-        "feeWaiverCondition": null,
-        "internationalFeePercent": 0
+        "annualFee": 0,
+        "monthlyFee": 18495,
+        "feeWaiverCondition": "Tarifa de $36.990/mes con 50% de descuento permanente."
       },
       "rates": {
-        "interestRateEA": 25.5,
-        "cashAdvanceRateEA": 28
+        "interestRateEA": 28.56,
+        "cashAdvanceRateEA": 28.56
       },
       "rewards": {
         "type": "points",
         "cashbackPercent": null,
         "milesPerMillionCOP": null,
         "mileProgram": null,
-        "pointsProgram": "Membership Rewards",
-        "specialCategories": [
-          {
-            "category": "Viajes",
-            "multiplier": 3,
-            "description": "3x puntos en viajes"
-          },
-          {
-            "category": "Restaurantes",
-            "multiplier": 2,
-            "description": "2x puntos en restaurantes"
-          }
-        ]
+        "pointsProgram": "Puntos Colombia",
+        "specialCategories": []
       },
       "requirements": {
-        "minIncomeMillions": 4,
+        "minIncomeMillions": 1,
         "minAge": 21,
         "maxAge": 65,
         "creditHistoryRequired": true,
@@ -1173,28 +1146,27 @@
         "virtualCard": true,
         "instantApproval": false,
         "appRating": 4.4,
-        "hasLounge": true,
+        "hasLounge": false,
         "loungeVisits": 2,
         "travelInsurance": true,
         "purchaseProtection": true,
         "concierge": true,
-        "priorityPass": true
+        "priorityPass": false
       },
       "benefits": [
-        "Puntos transferibles a aerolíneas",
-        "Acceso a salas VIP con Priority Pass",
-        "Sin comisión compras internacionales",
-        "Membership Rewards flexible",
-        "Experiencias exclusivas Amex"
+        "Puntos Colombia: 6 puntos por cada $5.300 en compras nacionales",
+        "10.720 Puntos Colombia de bienvenida si facturas $2.000.000 en 6 meses",
+        "Cuota de manejo con 50% de descuento siempre",
+        "Cupo entre $3 y $15 millones"
       ],
       "cons": [
         {
-          "text": "No se acepta en todos los comercios",
+          "text": "Cuota de manejo de $18.495/mes",
           "severity": "medium"
         },
         {
-          "text": "Cuota alta",
-          "severity": "medium"
+          "text": "Acumula Puntos Colombia, no millas",
+          "severity": "low"
         }
       ],
       "painPointsSolved": [
@@ -1204,9 +1176,7 @@
       ],
       "matchFactors": {
         "idealFor": [
-          "premium",
-          "viajes",
-          "experiencias",
+          "puntos",
           "amex"
         ],
         "paymentBehavior": [
@@ -1220,9 +1190,9 @@
           "flexible"
         ],
         "interests": [
-          "travel",
           "dining",
-          "entertainment"
+          "entertainment",
+          "shopping"
         ],
         "incomeRange": [
           "6-10",
@@ -1232,20 +1202,16 @@
           "travel",
           "dining",
           "online"
-        ],
-        "travelFrequency": [
-          "3-5",
-          "6+"
         ]
       },
       "applyUrl": "https://www.bancolombia.com/personas/productos/tarjetas-credito/american-express",
       "moreInfoUrl": "https://www.americanexpress.com/co/",
       "entity": "Bancolombia",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.americanexpress.com/co/",
-        "notes": "Revisión 2026-10-16: posible cuota $36.990 con 50% de descuento, sin confirmar que sea de la Green. | Enlace corregido 2026-10-20"
+        "url": "https://www.bancolombia.com/personas/productos/tarjetas-credito/american-express/green",
+        "notes": "Verificado 2026-10-20: página del producto: cuota $36.990/mes con 50% de descuento siempre; tasa 28,5582% EA; Puntos Colombia; ingresos desde 1 SMMLV. Antes figuraba Membership Rewards, Priority Pass, sin comisión internacional e ingreso mínimo $4M: nada de eso aparece. Comisión internacional sin confirmar."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
@@ -1281,13 +1247,8 @@
         "specialCategories": [
           {
             "category": "Biomax",
-            "multiplier": 1,
-            "description": "$100 descuento por galón"
-          },
-          {
-            "category": "Peajes",
-            "multiplier": 1,
-            "description": "10% descuento en peajes electrónicos"
+            "multiplier": null,
+            "description": "10% fines de semana y 5% entre semana tanqueando en Biomax (máx. $100.000/mes)"
           }
         ]
       },
@@ -1311,11 +1272,10 @@
         "priorityPass": false
       },
       "benefits": [
-        "$100 descuento por galón en Biomax",
-        "10% descuento en peajes electrónicos",
-        "Cuota exonerable fácilmente",
-        "Ideal si tienes carro",
-        "Ahorro real mensual si tanqueas frecuente"
+        "Devolución del 10% tanqueando en Biomax los fines de semana",
+        "Devolución del 5% de lunes a viernes en Biomax",
+        "Hasta $100.000 de devolución al mes",
+        "3 meses sin cuota de manejo"
       ],
       "cons": [
         {
@@ -1365,17 +1325,17 @@
       "moreInfoUrl": "https://www.bancodebogota.com/",
       "entity": "Banco de Bogotá",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.bancodebogota.com/",
-        "notes": "Devolución 10% fines de semana y 5% entre semana solo en estaciones Biomax/Brío, máx. $100.000/mes. | Enlace corregido 2026-10-20"
+        "url": "https://www.bancodebogota.com/personas/tarjetas-de-credito/biomax-clasica",
+        "notes": "Verificado 2026-10-20: página del producto: devolución 10% fines de semana y 5% entre semana en Biomax, tope $100.000/mes, 3 meses sin cuota (antes figuraba \"$100 por galón\" y \"10% en peajes\"). Cuota $33.100 según la revisión del 16-oct; tasa sin confirmar (el PDF de tasas bloquea descargas)."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true
     },
     {
       "id": "exito_tuya",
-      "name": "Tarjeta Tuya",
+      "name": "Tarjeta Éxito Mastercard",
       "bank": "Tuya (Grupo Éxito)",
       "bankLogo": "/logos/tuya.svg",
       "image": "🟡",
@@ -1387,8 +1347,8 @@
       ],
       "fees": {
         "annualFee": 0,
-        "monthlyFee": 0,
-        "feeWaiverCondition": null,
+        "monthlyFee": 37800,
+        "feeWaiverCondition": "Solo se cobra en los meses con saldo pendiente o compras.",
         "internationalFeePercent": 3.5
       },
       "rates": {
@@ -1439,24 +1399,18 @@
         "priorityPass": false
       },
       "benefits": [
-        "Sin cuota de manejo",
-        "5X Puntos Colombia en Éxito y Carulla",
-        "Descuentos exclusivos cada semana",
-        "Aprobación fácil y rápida",
-        "Puntos canjeables en todo el ecosistema"
+        "Puntos Colombia por tus compras",
+        "Descuentos en Éxito, Carulla y Surtimax",
+        "Cuota de manejo solo en los meses con saldo o compras",
+        "Compras nacionales, internacionales y por internet"
       ],
       "cons": [
         {
-          "text": "Beneficios concentrados en Grupo Éxito",
-          "severity": "medium"
-        },
-        {
-          "text": "Tasa de interés alta",
+          "text": "Cuota de $37.800 en los meses que la uses",
           "severity": "medium"
         }
       ],
       "painPointsSolved": [
-        "cuota_alta",
         "compro_mucho_mercado"
       ],
       "matchFactors": {
@@ -1474,7 +1428,8 @@
           "traditional"
         ],
         "feeSensitivity": [
-          "no_fee"
+          "flexible",
+          "moderate"
         ],
         "interests": [
           "family",
@@ -1493,14 +1448,14 @@
           "carulla"
         ]
       },
-      "applyUrl": "https://www.tuya.com.co/",
-      "moreInfoUrl": "https://www.tuya.com.co/",
+      "applyUrl": "https://www.tuya.com.co/tarjetas/tarjeta-basica-exito-mastercard",
+      "moreInfoUrl": "https://www.tuya.com.co/tarjetas/tarjeta-basica-exito-mastercard",
       "entity": "Tuya (Grupo Éxito)",
       "active": true,
-      "lastVerified": null,
+      "lastVerified": "2026-10-20",
       "source": {
-        "url": "https://www.tarjetatuya.com/",
-        "notes": "Enlace corregido 2026-10-20: El dominio tarjetatuya.com ya no existe."
+        "url": "https://www.tuya.com.co/tasas-tarifas-2026",
+        "notes": "Verificado 2026-10-20: tarifas 2026 de Tuya: Tarjeta Éxito Mastercard $37.800/mes si hay saldo o utilizaciones (antes figuraba \"sin cuota de manejo\"). Tasa sin confirmar."
       },
       "usuryModality": "consumo_ordinario",
       "usuryModalityVerified": true

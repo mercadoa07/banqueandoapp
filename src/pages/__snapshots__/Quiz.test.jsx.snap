@@ -11,7 +11,7 @@ exports[`quiz de crédito > recorre el flujo completo y muestra la entidad de ca
 exports[`quiz de tarjetas > recorre el flujo completo, guarda la sesión y registra el clic en Solicitar 1`] = `
 [
   "RappiCard Visa",
-  "Aqua Visa",
-  "Tarjeta Tuya",
+  "Nu Tarjeta de Crédito Morada",
+  "American Express Green",
 ]
 `;
