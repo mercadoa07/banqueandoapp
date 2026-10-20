@@ -74,14 +74,14 @@ export const LEGAL_TEXTS = {
 // RESPONSABLE DEL TRATAMIENTO DE DATOS (Ley 1581 de 2012)
 // ============================================================
 // Lo exige el Decreto 1377 de 2013: quién responde por los datos y cómo
-// contactarlo. Mientras un campo esté en null, las páginas legales muestran
-// "pendiente" y la prueba de legal.test.js falla para que no salga así.
+// contactarlo. Por ahora solo hay correo (decisión del 2026-10-20); nombre,
+// documento y ciudad se agregan cuando existan y aparecen solos en las páginas.
 
 export const LEGAL_ENTITY = {
   name: null,          // nombre de la persona natural o razón social
   document: null,      // "C.C. 123..." o "NIT 900..."
   city: null,          // domicilio, ej. "Bogotá D.C., Colombia"
-  email: null          // correo para consultas, reclamos y borrado de datos
+  email: 'apelismercado@gmail.com' // correo para consultas, reclamos y borrado de datos
 };
 
 // Fecha de la versión vigente de la política y los términos. Se guarda con

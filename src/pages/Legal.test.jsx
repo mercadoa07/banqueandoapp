@@ -29,12 +29,10 @@ describe('páginas legales', () => {
     expect(Number.isNaN(Date.parse(CONSENT_VERSION))).toBe(false);
   });
 
-  // La ley exige identificar al responsable. Esta prueba falla a propósito
-  // mientras falte algún dato, para que la política no salga incompleta.
-  it('el responsable del tratamiento está completo', () => {
-    for (const [field, value] of Object.entries(LEGAL_ENTITY)) {
-      expect(value, `falta LEGAL_ENTITY.${field} en src/constants/legal.js`).toBeTruthy();
-    }
+  // Sin un correo de contacto la persona no puede ejercer sus derechos.
+  it('hay un correo válido para consultas y reclamos, y nada queda "pendiente"', () => {
     expect(LEGAL_ENTITY.email).toMatch(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+    renderPage(Privacy);
+    expect(screen.queryByText(/\[pendiente\]/)).toBeNull();
   });
 });

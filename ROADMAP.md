@@ -142,7 +142,7 @@ Objetivo: convertir el tráfico en valor medible.
 - [ ] Nuevas verticales con el mismo motor: cuentas de ahorro / CDT, seguros, crédito de vehículo.
 
 **Legal y confianza**
-- [x] Cumplimiento de habeas data (Ley 1581): dos autorizaciones separadas (servicio obligatoria, ofertas opcional) guardadas con la versión aceptada; política nueva en `/privacidad` con responsable, finalidades, encargados (Supabase, Vercel), derechos, plazos de consultas y reclamos, conservación de 2 años y borrado por correo. *Falta llenar `LEGAL_ENTITY` en `src/constants/legal.js` (la prueba falla hasta entonces).*
+- [x] Cumplimiento de habeas data (Ley 1581): dos autorizaciones separadas (servicio obligatoria, ofertas opcional) guardadas con la versión aceptada; política nueva en `/privacidad` con responsable, finalidades, encargados (Supabase, Vercel), derechos, plazos de consultas y reclamos, conservación de 2 años y borrado por correo. Por ahora el responsable se identifica solo con el correo apelismercado@gmail.com; nombre, NIT y ciudad se agregan en `LEGAL_ENTITY` cuando existan.
 - [x] Aviso visible: "no es asesoría financiera" en resultados; página `/como-recomendamos`; términos nuevos en `/terminos` (hoy nadie paga; si algún día hay comisión, se dice y no cambia el orden).
 - [x] Quitar de la página de inicio las cifras sin sustento (2.847 usuarios, 4,9/5, 68%, "IA que aprende", "todo el mercado").
 - [ ] Revisar con un abogado el modelo de recomendación + afiliación.

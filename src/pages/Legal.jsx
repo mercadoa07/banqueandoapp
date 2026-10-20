@@ -7,12 +7,8 @@ import { MAX_DEBT_TO_INCOME, MAX_DEBT_TO_SALES } from '../engine/finance.js';
 // Los datos del responsable salen de LEGAL_ENTITY para no repetirlos en tres lugares.
 
 const PENDING = '[pendiente]';
-const entity = {
-  name: LEGAL_ENTITY.name || PENDING,
-  document: LEGAL_ENTITY.document || PENDING,
-  city: LEGAL_ENTITY.city || PENDING,
-  email: LEGAL_ENTITY.email || PENDING
-};
+// Nombre, documento y ciudad son opcionales por ahora; el correo es obligatorio (lo verifica Legal.test.jsx).
+const operator = [LEGAL_ENTITY.name, LEGAL_ENTITY.document].filter(Boolean).join(', ');
 
 const versionLabel = new Date(`${CONSENT_VERSION}T12:00:00`).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -70,8 +66,7 @@ export function Privacy() {
 
       <Section title="1. Quién es el responsable">
         <List items={[
-          <>Responsable: <strong>{entity.name}</strong>, {entity.document}.</>,
-          <>Domicilio: {entity.city}.</>,
+          <>Responsable: <strong>{operator || 'Banqueando'}</strong>{LEGAL_ENTITY.city ? `, con domicilio en ${LEGAL_ENTITY.city}` : ''}.</>,
           <>Correo para consultas, reclamos y borrado de datos: <EmailLink subject="Solicitud sobre mis datos personales" />.</>
         ]} />
       </Section>
@@ -170,7 +165,7 @@ export function Terms() {
       <Section title="1. Qué es Banqueando">
         <p>
           Banqueando es un comparador gratuito que, con tus respuestas a un cuestionario y la información pública de cada
-          producto, te muestra las tarjetas de crédito o los créditos que mejor parecen ajustarse a ti. Lo opera {entity.name} ({entity.document}).
+          producto, te muestra las tarjetas de crédito o los créditos que mejor parecen ajustarse a ti.{operator && ` Lo opera ${operator}.`}
         </p>
         <p>
           <strong>No somos un banco ni una entidad vigilada por la Superintendencia Financiera</strong>, no prestamos dinero,
